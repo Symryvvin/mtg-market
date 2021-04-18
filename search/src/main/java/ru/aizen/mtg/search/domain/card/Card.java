@@ -5,10 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -27,6 +24,7 @@ public class Card {
 	@Column(name = "set_code")
 	private String setCode;
 	@Column(name = "lang")
+	@Convert(converter = LanguageConverter.class)
 	private Language language;
 
 	private Card(String id, String oracleName, String printedName, String setCode, Language language) {
@@ -37,8 +35,7 @@ public class Card {
 		this.language = language;
 	}
 
-	public static Card from(String id, String oracleName, String printedName, String printCode, String languageCode)
-			throws NotSupportedLanguageException {
+	public static Card from(String id, String oracleName, String printedName, String printCode, String languageCode) {
 		Language language = Language.fromCode(languageCode);
 		return new Card(id, oracleName, printedName, printCode, language);
 	}

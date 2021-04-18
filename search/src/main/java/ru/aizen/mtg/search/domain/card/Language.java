@@ -25,7 +25,8 @@ public enum Language {
 	LA("Latin", "la"),
 	HE("Hebrew", "he"),
 	SA("Arabic (Saudi Arabia)", "sa"),
-	PX("Phyrexian", "px");
+	PX("Phyrexian", "px"),
+	UNDEFINED("undefined", "und");
 
 	private final String name;
 	private final String code;
@@ -35,15 +36,19 @@ public enum Language {
 		this.code = code;
 	}
 
-	public static Language fromCode(String code) throws NotSupportedLanguageException {
+	public static Language fromCode(String code) {
 		return Arrays.stream(Language.values())
 				.filter(l -> l.code.equalsIgnoreCase(code))
 				.findFirst()
-				.orElseThrow(() -> new NotSupportedLanguageException(code));
+				.orElse(UNDEFINED);
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getCode() {
+		return code;
 	}
 
 	public boolean isHieroglyphic() {
