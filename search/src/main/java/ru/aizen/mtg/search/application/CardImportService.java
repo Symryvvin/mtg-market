@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.aizen.mtg.search.domain.card.Card;
 import ru.aizen.mtg.search.domain.card.CardRepository;
+import ru.aizen.mtg.search.domain.card.Language;
 import ru.aizen.mtg.search.domain.importer.CardDownloader;
 import ru.aizen.mtg.search.domain.importer.CardImporterException;
 import ru.aizen.mtg.search.domain.parser.CardParser;
@@ -17,6 +18,7 @@ import ru.aizen.mtg.search.domain.parser.CardParserException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class CardImportService {
@@ -45,9 +47,16 @@ public class CardImportService {
 			logger.info("Start import cards from {}", cardDataLocal);
 			Path cardDataPath = cardDownloader.downloadDataTo(Paths.get(cardDataLocal));
 			Collection<Card> cardsToImport = cardParser.parseCardFrom(cardDataPath);
-			cardRepository.saveAll(cardsToImport);
+			cardRepository.saveAll(filterCollection(cardsToImport));
 		} catch (CardParserException | CardImporterException e) {
 			logger.warn("Import cards error", e);
 		}
 	}
+
+	private Collection<Card> filterCollection(Collection<Card> cards) {
+		return cards.stream()
+				.filter(card -> card.getLanguage() == Language.EN || card.getLanguage() == Language.RU)
+				.collect(Collectors.toList());
+	}
+
 }

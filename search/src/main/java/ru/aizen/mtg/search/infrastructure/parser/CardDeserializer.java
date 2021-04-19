@@ -15,7 +15,7 @@ public class CardDeserializer extends JsonDeserializer<Card> {
 		JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 		return Card.from(node.get("id").textValue(),
 				node.get("name").textValue(),
-				node.get("printed_name") == null ? null : node.get("printed_name").textValue(),
+				node.get("printed_name") == null ? node.get("name").textValue() : node.get("printed_name").textValue(),
 				node.get("set").textValue(),
 				node.get("lang").textValue());
 
