@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.aizen.mtg.search.domain.card.Card;
 import ru.aizen.mtg.search.domain.card.CardRepository;
+import ru.aizen.mtg.search.domain.card.Language;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -30,7 +31,8 @@ public class SearchService {
 	@PostConstruct
 	private void postConstruct() {
 		cardNameCollection = new ArrayList<>();
-		cardRepository.findAll()
+		cardRepository.findAll().stream()
+				.filter(card -> card.getLanguage() == Language.EN || card.getLanguage() == Language.RU)
 				.forEach(card -> cardNameCollection.add(card.getPrintedName()));
 		cardNameCollection = cardNameCollection.stream().distinct().collect(Collectors.toList());
 	}
