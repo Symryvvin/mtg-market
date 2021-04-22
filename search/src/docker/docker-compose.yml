@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  health:
+    build:
+      context: .
+    image: symryvvin/@project.name@:@project.version@
+    container_name: @project.name@
+    ports:
+      - "8080:8080"

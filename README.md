@@ -4,6 +4,9 @@ kubectl config set-context --current --namespace mtg
 ```
 
 ```shell
-helm install mtg-db bitnami/postgresql -f search/deploy/database/values.yml
+helm install mtg-db bitnami/postgresql -f deploy/database/search/values.yml
 ```
 
+```shell
+docker-compose -f search/target/docker-compose.yml build
+```
