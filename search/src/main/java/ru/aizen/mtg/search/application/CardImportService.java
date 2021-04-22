@@ -15,6 +15,7 @@ import ru.aizen.mtg.search.domain.importer.CardImporterException;
 import ru.aizen.mtg.search.domain.parser.CardParser;
 import ru.aizen.mtg.search.domain.parser.CardParserException;
 
+import javax.annotation.PostConstruct;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -39,6 +40,11 @@ public class CardImportService {
 		this.cardDownloader = cardDownloader;
 		this.cardParser = cardParser;
 		this.cardRepository = cardRepository;
+	}
+
+	@PostConstruct
+	private void postConstruct() {
+		importCards();
 	}
 
 	@Scheduled(cron = "${card.import.time}")

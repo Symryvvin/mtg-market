@@ -7,6 +7,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.aizen.mtg.search.domain.importer.CardDownloader;
@@ -25,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class ScryfallCardDownloader implements CardDownloader {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScryfallCardDownloader.class);
+
 	private static final String DOWNLOAD_URI = "download_uri";
 	private static final String UPDATED_AT = "updated_at";
 
@@ -41,6 +45,7 @@ public class ScryfallCardDownloader implements CardDownloader {
 			LocalDateTime updatedAt = LocalDateTime.parse(bulkData.get(UPDATED_AT).asText().replaceAll("/+", ""), DateTimeFormatter.ISO_ZONED_DATE_TIME);
 
 			if (isCardDataOutdatedOrMissing(cardsDataPath, updatedAt)) {
+				LOGGER.info("Card data is outdated. Try get new bulk data from scryfall.com");
 				InputStream is = HttpClients.createDefault()
 						.execute(new HttpGet(bulkData.get(DOWNLOAD_URI).asText()))
 						.getEntity()
@@ -73,7 +78,6 @@ public class ScryfallCardDownloader implements CardDownloader {
 
 	private boolean isCardDataOutdatedOrMissing(Path cardData, LocalDateTime actualDataUpdatedAt) throws CardImporterException {
 		if (Files.exists(cardData)) {
-			System.out.println(fileCreationDate(cardData));
 			return actualDataUpdatedAt.isAfter(fileCreationDate(cardData));
 		}
 		return true;
