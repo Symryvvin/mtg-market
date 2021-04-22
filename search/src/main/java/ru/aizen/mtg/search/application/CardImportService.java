@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.aizen.mtg.search.domain.card.Card;
@@ -53,12 +52,13 @@ public class CardImportService {
 			logger.info("Start import cards from {}", cardDataLocal);
 			Path cardDataPath = cardDownloader.downloadDataTo(Paths.get(cardDataLocal));
 			Collection<Card> cardsToImport = cardParser.parseCardFrom(cardDataPath);
-			cardRepository.saveAll(filterCollection(cardsToImport));
+			cardRepository.saveAll(cardsToImport);
 		} catch (CardParserException | CardImporterException e) {
 			logger.warn("Import cards error", e);
 		}
 	}
 
+	@Deprecated
 	private Collection<Card> filterCollection(Collection<Card> cards) {
 		return cards.stream()
 				.filter(card -> card.getLanguage() == Language.EN || card.getLanguage() == Language.RU)

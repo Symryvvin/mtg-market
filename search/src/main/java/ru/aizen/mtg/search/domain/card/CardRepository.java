@@ -8,4 +8,6 @@ public interface CardRepository extends JpaRepository<Card, String> {
 
 	Collection<Card> findByOracleId(String oracleId);
 
+	Collection<Card> findByPrintedName(String printedName);
+
 }
