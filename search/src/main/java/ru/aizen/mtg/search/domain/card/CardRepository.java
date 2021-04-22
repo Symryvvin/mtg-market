@@ -1,9 +1,11 @@
 package ru.aizen.mtg.search.domain.card;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
+import java.util.Collection;
 
-public interface CardRepository extends CrudRepository<Card, UUID> {
+public interface CardRepository extends JpaRepository<Card, String> {
+
+	Collection<Card> findByOracleId(String oracleId);
 
 }

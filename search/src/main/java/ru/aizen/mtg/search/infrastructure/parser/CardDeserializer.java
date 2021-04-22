@@ -14,6 +14,7 @@ public class CardDeserializer extends JsonDeserializer<Card> {
 	public Card deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 		JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 		return Card.from(node.get("id").textValue(),
+				node.get("oracle_id").textValue(),
 				node.get("name").textValue(),
 				node.get("printed_name") == null ? node.get("name").textValue() : node.get("printed_name").textValue(),
 				node.get("set").textValue(),
