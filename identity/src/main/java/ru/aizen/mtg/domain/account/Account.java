@@ -7,30 +7,35 @@ import lombok.ToString;
 import org.springframework.util.Assert;
 import ru.aizen.mtg.domain.account.security.Role;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
+@Entity(name = "account")
 public class Account {
 
 	private static final int MAX_LOGIN_LENGTH = 50;
 
+	@Id
 	private long id;
+	@Column(name = "login", nullable = false)
 	private String login;
+	@Column(name = "password", nullable = false)
 	private String password;
-
+	@Column(name = "is_blocked", nullable = false)
 	private boolean blocked;
-	private Collection<Role> roles;
+	@Column(name = "role", nullable = false)
+	private Role role;
 
 	private Account(String login, String password) {
 		this.login = login;
 		this.password = password;
 		this.blocked = false;
-		this.roles = Collections.singleton(Role.CLIENT);
+		this.role = Role.CLIENT;
 	}
 
 	public static Account register(String login, String password) throws AccountException {
@@ -60,9 +65,8 @@ public class Account {
 		this.blocked = false;
 	}
 
-	public void addRole(Role role) {
-		this.roles = new ArrayList<>(this.roles);
-		this.roles.add(role);
+	public void changeRole(Role role) {
+		this.role = role;
 	}
 
 }

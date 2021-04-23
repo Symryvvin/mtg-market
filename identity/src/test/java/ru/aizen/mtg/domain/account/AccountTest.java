@@ -12,7 +12,7 @@ class AccountTest {
 		Account account = Account.register("login", "password");
 		assertEquals("login", account.getLogin());
 		assertEquals("password", account.getPassword());
-		assertTrue(account.getRoles().contains(Role.CLIENT));
+		assertEquals(Role.CLIENT, account.getRole());
 		assertFalse(account.isBlocked());
 	}
 
@@ -50,7 +50,7 @@ class AccountTest {
 	@Test
 	void addRole() throws AccountException {
 		Account account = Account.register("login", "password");
-		account.addRole(Role.MANAGER);
-		assertTrue(account.getRoles().contains(Role.CLIENT) && account.getRoles().contains(Role.MANAGER));
+		account.changeRole(Role.MANAGER);
+		assertEquals(Role.MANAGER, account.getRole());
 	}
 }
