@@ -1,0 +1,315 @@
+{
+	"info": {
+		"_postman_id": "1c8ae56a-79c7-4775-ab35-1d33b2108198",
+		"name": "indentity-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"jwt\", \"\");",
+							"pm.collectionVariables.set(\"username\", pm.variables.replaceIn('{{$randomUserName}}'));",
+							"pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/registration",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/login",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all accounts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"username@example.com\",\r\n  \"phone\": \"+71002003040\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/users",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update profile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'));",
+							"pm.collectionVariables.set(\"fullName\", pm.variables.replaceIn('{{$randomFirstName}}' + ' ' + '{{$randomLastName}}'));",
+							"pm.collectionVariables.set(\"phone\", pm.variables.replaceIn('{{$randomPhoneNumber}}'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fullName\": \"{{fullName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"phone\": \"{{phone}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/user/:id/edit",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						":id",
+						"edit"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{username}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update address",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"settlement\", pm.variables.replaceIn('{{$randomCity}}'));",
+							"pm.collectionVariables.set(\"street\", pm.variables.replaceIn('{{$randomStreetName}}'));",
+							"pm.collectionVariables.set(\"building\", pm.variables.replaceIn(_.random(1, 200)));",
+							"pm.collectionVariables.set(\"apartment\", pm.variables.replaceIn(_.random(1, 200)));",
+							"pm.collectionVariables.set(\"postIndex\", pm.variables.replaceIn('{{$randomInt}}' + '{{$randomInt}}'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"settlement\": \"{{settlement}}\",\r\n  \"street\": \"{{street}}\",\r\n  \"building\": \"{{building}}\",\r\n  \"apartment\": \"{{apartment}}\",\r\n  \"postIndex\": {{postIndex}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/user/:username/address/edit",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						":username",
+						"address",
+						"edit"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{username}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/api/v1/user/:username",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						":username"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{username}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "jwt",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "fullName",
+			"value": ""
+		},
+		{
+			"key": "phone",
+			"value": ""
+		},
+		{
+			"key": "apartment",
+			"value": ""
+		},
+		{
+			"key": "building",
+			"value": ""
+		},
+		{
+			"key": "postIndex",
+			"value": ""
+		},
+		{
+			"key": "settlement",
+			"value": ""
+		},
+		{
+			"key": "street",
+			"value": ""
+		}
+	]
+}
