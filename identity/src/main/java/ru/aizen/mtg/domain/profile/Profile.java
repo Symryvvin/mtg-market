@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.aizen.mtg.domain.account.Account;
 import ru.aizen.mtg.insfrastructure.persistence.EmailConverter;
 import ru.aizen.mtg.insfrastructure.persistence.PhoneConverter;
 
@@ -16,11 +17,14 @@ import javax.persistence.*;
 @Entity(name = "profile")
 public class Profile {
 
-	private long profileOwnerId;
-
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private long id;
+	@Column(name = "account_id")
+	private Long id;
+	@OneToOne
+	@MapsId
+	@JoinColumn(name = "account_id")
+	private Account account;
+
 	@Column(name = "full_name")
 	private String fullName;
 	@Column(name = "email")
@@ -33,42 +37,30 @@ public class Profile {
 	@PrimaryKeyJoinColumn
 	private Address address;
 
-	private Profile(long profileOwnerId) {
-		this.profileOwnerId = profileOwnerId;
+	private Profile(Account account) {
+		this.account = account;
+		this.id = account.getId();
 	}
 
-	public static Profile newProfile(long accountId) {
-		return new Profile(accountId);
+	public static Profile createFor(Account account) {
+		return new Profile(account);
 	}
 
-	public void updateProfile(String fullName, String email, String phone) {
-		if (fullName != null && !fullName.isEmpty()) {
-			this.fullName = fullName;
-		}
-		if (email != null && !email.isEmpty()) {
-			this.email = Email.from(email);
-		}
-		if (phone != null && !phone.isEmpty()) {
-			this.phone = Phone.from(phone);
-		}
+	public void update(String fullName, String email, String phone) {
+		this.fullName = fullName;
+		this.email = Email.from(email);
+		this.phone = Phone.from(phone);
 	}
 
 	public void updateAddress(String settlement, String street, String building, String apartment, Integer postIndex) {
-		if (settlement != null && !settlement.isEmpty()) {
-			this.address.setSettlement(settlement);
+		if (this.address == null) {
+			address = Address.create(this);
 		}
-		if (street != null && !street.isEmpty()) {
-			this.address.setStreet(street);
-		}
-		if (building != null && !building.isEmpty()) {
-			this.address.setBuilding(building);
-		}
-		if (apartment != null && !apartment.isEmpty()) {
-			this.address.setApartment(apartment);
-		}
-		if (postIndex != null) {
-			this.address.setPostIndex(postIndex);
-		}
+		this.address.setSettlement(settlement);
+		this.address.setStreet(street);
+		this.address.setBuilding(building);
+		this.address.setApartment(apartment);
+		this.address.setPostIndex(postIndex);
 	}
 
 	public void deleteAddress() {

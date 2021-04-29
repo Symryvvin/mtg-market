@@ -28,7 +28,10 @@ public class Phone {
 		}
 	}
 
-	public static Phone from(long phoneNumber) {
+	public static Phone from(Long phoneNumber) {
+		if (phoneNumber == null) {
+			return null;
+		}
 		return new Phone(phoneNumber);
 	}
 

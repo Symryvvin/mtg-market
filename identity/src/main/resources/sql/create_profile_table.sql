@@ -1,12 +1,9 @@
 create table profile
 (
-    id               bigserial not null
-        constraint profile_pk
-            primary key,
-    profile_owner_id int       not null,
-    full_name        varchar(256),
-    email            varchar(256),
-    phone            int8
+    account_id int not null,
+    full_name  varchar(256),
+    email      varchar(256),
+    phone      int8
 );
 
 create table address

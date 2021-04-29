@@ -13,6 +13,9 @@ public class Email {
 	}
 
 	public static Email from(String email) {
+		if (email == null) {
+			return null;
+		}
 		email = email.trim();
 		if (emailPattern.matcher(email).matches()) {
 			return new Email(email);

@@ -34,6 +34,15 @@ public class Address {
 	@Column(name = "apartment", nullable = false)
 	private String apartment;
 
+	public Address(Profile profile) {
+		this.id = profile.getId();
+		this.profile = profile;
+	}
+
+	public static Address create(Profile profile) {
+		return new Address(profile);
+	}
+
 	public String inline() {
 		return postIndex + "\n" + settlement + ", ул. " + street + ", д. " + building + ", " + "кв. " + apartment;
 	}

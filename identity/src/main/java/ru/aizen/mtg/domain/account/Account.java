@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.Assert;
 import ru.aizen.mtg.domain.account.security.Role;
+import ru.aizen.mtg.domain.profile.Profile;
 
 import javax.persistence.*;
 
@@ -19,7 +20,7 @@ public class Account {
 	private static final int MAX_LOGIN_LENGTH = 50;
 
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(name = "login", nullable = false)
 	private String login;
@@ -30,6 +31,9 @@ public class Account {
 	@Column(name = "role", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private Profile profile;
 
 	private Account(String login, String password) {
 		this.login = login;
@@ -54,6 +58,22 @@ public class Account {
 			this.password = newPassword;
 		} else {
 			throw new AccountException("Old password does not match");
+		}
+	}
+
+	public void updateProfile(String fullName, String email, String phone) {
+		createProfile();
+		profile.update(fullName, email, phone);
+	}
+
+	public void updateAddress(String settlement, String street, String building, String apartment, Integer postIndex) {
+		createProfile();
+		profile.updateAddress(settlement, street, building, apartment, postIndex);
+	}
+
+	private void createProfile() {
+		if (profile == null) {
+			this.profile = Profile.createFor(this);
 		}
 	}
 
