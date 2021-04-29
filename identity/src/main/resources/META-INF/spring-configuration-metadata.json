@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "jwt.publicKey",
+      "type": "java.lang.String",
+      "description": "Json web token public key."
+    },
+    {
+      "name": "jwt.privateKey",
+      "type": "java.lang.String",
+      "description": "Json web token private key."
+    }
+  ] }
