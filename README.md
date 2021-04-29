@@ -10,4 +10,5 @@ helm install mtg-db bitnami/postgresql -f deploy/database/identity/values.yml -n
 
 ```shell
 docker-compose -f search/target/docker-compose.yml build
+docker-compose -f identity/target/docker-compose.yml build
 ```

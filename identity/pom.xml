@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ru.aizen.mtg</groupId>
 	<artifactId>identity</artifactId>
-	<version>1.0</version>
+	<version>0.1.0</version>
 	<name>identity</name>
 
 	<properties>
@@ -84,15 +84,16 @@
 				<version>${maven.resource.plugin.version}</version>
 				<executions>
 					<execution>
-						<id>copy-docker-config</id>
+						<id>copy-container-config</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
+
 						<configuration>
 							<resources>
 								<resource>
-									<directory>${project.basedir}/docker</directory>
+									<directory>${project.basedir}/src/docker</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
