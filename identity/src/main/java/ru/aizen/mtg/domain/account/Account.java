@@ -19,6 +19,7 @@ public class Account {
 	private static final int MAX_LOGIN_LENGTH = 50;
 
 	@Id
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(name = "login", nullable = false)
 	private String login;
