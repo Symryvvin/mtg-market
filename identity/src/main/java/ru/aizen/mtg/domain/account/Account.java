@@ -7,9 +7,7 @@ import lombok.ToString;
 import org.springframework.util.Assert;
 import ru.aizen.mtg.domain.account.security.Role;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -29,6 +27,7 @@ public class Account {
 	@Column(name = "is_blocked", nullable = false)
 	private boolean blocked;
 	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	private Account(String login, String password) {

@@ -1,5 +1,3 @@
-CREATE TYPE role AS ENUM ('CLIENT', 'TRADER', 'MANAGER');
-
 create table account
 (
     id         bigserial     not null
@@ -8,7 +6,7 @@ create table account
     login      varchar(50)   not null,
     password   varchar(1000) not null,
     is_blocked bool default false,
-    role       role          not null
+    role       varchar(50)   not null
 );
 
 create
