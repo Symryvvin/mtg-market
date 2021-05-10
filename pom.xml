@@ -12,6 +12,7 @@
     <modules>
         <module>search</module>
         <module>identity</module>
+        <module>store</module>
     </modules>
 
     <properties>
