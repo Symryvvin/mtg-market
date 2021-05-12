@@ -21,7 +21,7 @@ public class FoundCard {
 	private String style;
 
 	private String storeId;
-	private String productId;
+	private String singleId;
 	private String ownerName;
 	private String ownerLocation;
 

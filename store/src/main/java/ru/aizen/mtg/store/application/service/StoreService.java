@@ -32,19 +32,25 @@ public class StoreService {
 	}
 
 	public void blockStore(String storeId) {
-		storeRepository.findById(storeId)
-				.ifPresent(store -> {
-					store.block();
-					storeRepository.save(store);
-				});
+		Optional<Store> storeOptional = storeRepository.findById(storeId);
+		if (storeOptional.isPresent()) {
+			Store store = storeOptional.get();
+			store.block();
+			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
+		}
 	}
 
 	public void unblockStore(String storeId) {
-		storeRepository.findById(storeId)
-				.ifPresent(store -> {
-					store.unblock();
-					storeRepository.save(store);
-				});
+		Optional<Store> storeOptional = storeRepository.findById(storeId);
+		if (storeOptional.isPresent()) {
+			Store store = storeOptional.get();
+			store.unblock();
+			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
+		}
 	}
 
 	public void removeStore(String storeId) {
@@ -60,19 +66,25 @@ public class StoreService {
 	}
 
 	public void addSingle(String storeId, Single single) {
-		storeRepository.findById(storeId)
-				.ifPresent(store -> {
-					store.add(single);
-					storeRepository.save(store);
-				});
+		Optional<Store> storeOptional = storeRepository.findById(storeId);
+		if (storeOptional.isPresent()) {
+			Store store = storeOptional.get();
+			store.add(single);
+			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
+		}
 	}
 
 	public void addSingles(String storeId, Collection<Single> singles) {
-		storeRepository.findById(storeId)
-				.ifPresent(store -> {
-					store.add(singles);
-					storeRepository.save(store);
-				});
+		Optional<Store> storeOptional = storeRepository.findById(storeId);
+		if (storeOptional.isPresent()) {
+			Store store = storeOptional.get();
+			store.add(singles);
+			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
+		}
 	}
 
 	public void editSingle(String storeId, String singleId,
@@ -86,15 +98,20 @@ public class StoreService {
 			single.tradeParameters(conditionValue, price, inStock);
 			store.update(single);
 			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
 		}
 	}
 
 	public void deleteSingle(String storeId, String singleId) {
-		storeRepository.findById(storeId)
-				.ifPresent(store -> {
-					store.remove(singleId);
-					storeRepository.save(store);
-				});
+		Optional<Store> storeOptional = storeRepository.findById(storeId);
+		if (storeOptional.isPresent()) {
+			Store store = storeOptional.get();
+			store.remove(singleId);
+			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
+		}
 	}
 
 	public void reserveSingle(String storeId, String singleId, int count) {
@@ -105,6 +122,8 @@ public class StoreService {
 			single.reserve(count);
 			store.update(single);
 			storeRepository.save(store);
+		} else {
+			throw new StoreNotFountException(storeId);
 		}
 	}
 

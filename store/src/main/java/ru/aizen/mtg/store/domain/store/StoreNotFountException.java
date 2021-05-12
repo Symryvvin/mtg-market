@@ -6,4 +6,7 @@ public class StoreNotFountException extends RuntimeException {
 		super(owner + "'s store '" + name + "' not found");
 	}
 
+	public StoreNotFountException(String storeId) {
+		super("Store with id '" + storeId + "' not found");
+	}
 }
