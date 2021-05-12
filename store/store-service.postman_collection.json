@@ -1,0 +1,531 @@
+{
+	"info": {
+		"_postman_id": "5fc512a1-5a5d-4444-a39a-60829a222003",
+		"name": "store-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create store",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{userId}},\n    \"username\": \"{{username}}\",\n    \"userLocation\": \"{{location}}\",\n    \"storeName\": \"{{storeName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/create",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view store",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resp = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"storeId\", pm.variables.replaceIn(resp.id));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:owner/:name",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":owner",
+						":name"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{username}}"
+						},
+						{
+							"key": "name",
+							"value": "{{storeName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find stores",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/find/:userId",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"find",
+						":userId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "{{userId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add single",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"oracleId\", pm.variables.replaceIn('{{$randomUUID}}'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oracleId\": \"{{oracleId}}\",\n    \"oracleName\": \"Shock\",\n    \"name\": \"Шок\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"FOIL\",\n    \"condition\": \"NM\",\n    \"price\": 50.00,\n    \"inStock\": 12\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:storeId/add",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":storeId",
+						"add"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search singles",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resp = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"singleId\", pm.variables.replaceIn(resp[0].singleId));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/singles/:oracleId",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						"singles",
+						":oracleId"
+					],
+					"variable": [
+						{
+							"key": "oracleId",
+							"value": "{{oracleId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit single",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Отвергнуть\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"REGULAR\",\n    \"condition\": \"SP\",\n    \"price\": 20.00,\n    \"inStock\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:storeId/:singleId/edit",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":storeId",
+						":singleId",
+						"edit"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
+						},
+						{
+							"key": "singleId",
+							"value": "{{singleId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reserve singles",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"singleId\": \"{{singleId}}\",\n        \"count\": 2\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:storeId/reserve",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":storeId",
+						"reserve"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "import singles",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/aizen/Desktop/import.xlsx"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:storeId/import",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":storeId",
+						"import"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete single",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:storeId/:singleId/delete",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":storeId",
+						":singleId",
+						"delete"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
+						},
+						{
+							"key": "singleId",
+							"value": "{{singleId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete store",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/api/v1/store/:storeId/delete",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"store",
+						":storeId",
+						"delete"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "location",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "storeName",
+			"value": ""
+		},
+		{
+			"key": "storeId",
+			"value": ""
+		},
+		{
+			"key": "singleId",
+			"value": ""
+		},
+		{
+			"key": "oracleId",
+			"value": ""
+		}
+	]
+}
