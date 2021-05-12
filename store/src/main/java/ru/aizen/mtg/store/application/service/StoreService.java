@@ -110,9 +110,10 @@ public class StoreService {
 
 	public Collection<FoundCard> findInStoresBySingleId(String oracleId) {
 		return storeRepository.findAllBySinglesOracleId(oracleId).stream()
+				.filter(store -> !store.blocked())
 				.flatMap(store ->
 						store.singles().stream()
-								.filter(single -> single.oracleId().equals(oracleId))
+								.filter(single -> single.oracleId().equals(oracleId) && !single.isReserved())
 								.map(single -> FoundCard.from(store, single)))
 				.collect(Collectors.toList());
 	}
