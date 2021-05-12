@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface StoreRepository extends MongoRepository<Store, String> {
@@ -15,5 +16,7 @@ public interface StoreRepository extends MongoRepository<Store, String> {
 	Collection<Store> findAllByOwnerId(long userId);
 
 	Collection<Store> findAllByOwnerName(String ownerName);
+
+	Optional<Store> findByNameAndOwnerName(String name, String ownerName);
 
 }

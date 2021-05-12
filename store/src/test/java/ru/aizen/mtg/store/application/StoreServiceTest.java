@@ -1,13 +1,16 @@
 package ru.aizen.mtg.store.application;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.aizen.mtg.store.application.service.StoreService;
 import ru.aizen.mtg.store.domain.single.Condition;
 import ru.aizen.mtg.store.domain.single.Single;
 import ru.aizen.mtg.store.domain.single.Style;
 import ru.aizen.mtg.store.domain.store.Store;
-import ru.aizen.mtg.store.domain.store.StoreException;
 import ru.aizen.mtg.store.domain.store.StoreRepository;
 
 import java.util.Arrays;
@@ -51,8 +54,8 @@ class StoreServiceTest {
 	}
 
 	@Test
-	void createStore() {
-		Store store = service.createStore(1, "Username", "Краснодар", "MyStore");
+	void create() {
+		Store store = service.create(1, "Username", "Краснодар", "MyStore");
 
 		repository.findById(store.id()).ifPresentOrElse(
 				s -> {
@@ -64,6 +67,15 @@ class StoreServiceTest {
 		);
 
 		repository.delete(store);
+	}
+
+	@Test
+	void view() {
+		Store store = service.view("Test Username", "MyStore");
+
+		assertEquals("Test Username", store.owner().name());
+		assertEquals("Test City", store.owner().location());
+		assertEquals("MyStore", store.name());
 	}
 
 	@Test
@@ -151,7 +163,7 @@ class StoreServiceTest {
 	}
 
 	@Test
-	void editSingle() throws Exception {
+	void editSingle() {
 		Single single = Single.create(
 				UUID.randomUUID().toString(), "oracleName")
 				.name("name")
@@ -168,14 +180,10 @@ class StoreServiceTest {
 				"new_name", "code", "lang", "FOIL", "M", single.price(), single.inStock());
 
 		repository.findById(store.id()).ifPresentOrElse(
-				s -> {
-					try {
-						Single updatedSingle = s.findSingleById(single.id());
-						assertEquals("new_name", updatedSingle.name());
-					} catch (StoreException e) {
-						Assertions.fail("Single with id " + single.id() + " not found");
-					}
-				},
+				s -> s.findSingleById(single.id()).ifPresentOrElse(
+						updatedSingle -> assertEquals("new_name", updatedSingle.name()),
+						() -> Assertions.fail("Single with id " + single.id() + " not found")
+				),
 				() -> Assertions.fail("Store with id " + store.id() + " not found")
 		);
 	}
@@ -187,7 +195,7 @@ class StoreServiceTest {
 					service.deleteSingle(store.id(), single.id());
 
 					repository.findById(store.id()).ifPresentOrElse(
-							s -> assertThrows(StoreException.class, () -> s.findSingleById(single.id())),
+							s -> assertFalse(s.findSingleById(single.id()).isPresent()),
 							() -> Assertions.fail("Store with id " + store.id() + " not found")
 					);
 				},
@@ -196,7 +204,7 @@ class StoreServiceTest {
 	}
 
 	@Test
-	void reserveSingle() throws Exception {
+	void reserveSingle() {
 		Single single = Single.create(
 				UUID.randomUUID().toString(), "oracleName")
 				.name("name")
@@ -211,13 +219,10 @@ class StoreServiceTest {
 		service.reserveSingle(store.id(), single.id(), 2);
 
 		repository.findById(store.id()).ifPresentOrElse(
-				s -> {
-					try {
-						assertTrue(s.findSingleById(single.id()).isReserved());
-					} catch (StoreException e) {
-						Assertions.fail("Single with id " + single.id() + " not found");
-					}
-				},
+				s -> s.findSingleById(single.id()).ifPresentOrElse(
+						updatedSingle -> assertTrue(updatedSingle.isReserved()),
+						() -> Assertions.fail("Single with id " + single.id() + " not found")
+				),
 				() -> Assertions.fail("Store with id " + store.id() + " not found")
 		);
 	}

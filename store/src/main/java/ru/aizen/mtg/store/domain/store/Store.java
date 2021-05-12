@@ -11,6 +11,7 @@ import ru.aizen.mtg.store.domain.single.Single;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Accessors(fluent = true)
 @Getter
@@ -42,11 +43,10 @@ public class Store {
 		return new Store(owner, name);
 	}
 
-	public Single findSingleById(String singleId) throws StoreException {
+	public Optional<Single> findSingleById(String singleId) {
 		return singles.stream()
 				.filter(single -> single.id().equalsIgnoreCase(singleId))
-				.findFirst()
-				.orElseThrow(() -> new StoreException("Single with id " + singleId + " not found in store " + name));
+				.findFirst();
 
 	}
 

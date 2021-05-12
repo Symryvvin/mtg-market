@@ -1,10 +1,11 @@
-package ru.aizen.mtg.store.application;
+package ru.aizen.mtg.store.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aizen.mtg.store.domain.single.Single;
+import ru.aizen.mtg.store.domain.single.SingleNotFoundException;
 import ru.aizen.mtg.store.domain.store.Store;
-import ru.aizen.mtg.store.domain.store.StoreException;
+import ru.aizen.mtg.store.domain.store.StoreNotFountException;
 import ru.aizen.mtg.store.domain.store.StoreRepository;
 
 import java.util.Collection;
@@ -21,9 +22,13 @@ public class StoreService {
 		this.storeRepository = storeRepository;
 	}
 
-	public Store createStore(long userId, String username, String userLocation, String name) {
+	public Store create(long userId, String username, String userLocation, String name) {
 		Store store = Store.create(userId, username, userLocation, name);
 		return storeRepository.save(store);
+	}
+
+	public Store view(String owner, String name) {
+		return storeRepository.findByNameAndOwnerName(name, owner).orElseThrow(() -> new StoreNotFountException(name, owner));
 	}
 
 	public void blockStore(String storeId) {
@@ -72,13 +77,13 @@ public class StoreService {
 
 	public void editSingle(String storeId, String singleId,
 	                       String name, String setCode, String langCode, String style,
-	                       String conditionValue, double price, int inStock) throws StoreException {
+	                       String conditionValue, double price, int inStock) throws SingleNotFoundException {
 		Optional<Store> storeOptional = storeRepository.findById(storeId);
 		if (storeOptional.isPresent()) {
 			Store store = storeOptional.get();
-			Single single = store.findSingleById(singleId);
-			single.changePrintParameters(name, setCode, langCode, style);
-			single.changeTradeParameters(conditionValue, price, inStock);
+			Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, store.name()));
+			single.printParameters(name, setCode, langCode, style);
+			single.tradeParameters(conditionValue, price, inStock);
 			store.update(single);
 			storeRepository.save(store);
 		}
@@ -92,11 +97,11 @@ public class StoreService {
 				});
 	}
 
-	public void reserveSingle(String storeId, String singleId, int count) throws StoreException {
+	public void reserveSingle(String storeId, String singleId, int count) {
 		Optional<Store> storeOptional = storeRepository.findById(storeId);
 		if (storeOptional.isPresent()) {
 			Store store = storeOptional.get();
-			Single single = store.findSingleById(singleId);
+			Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, store.name()));
 			single.reserve(count);
 			store.update(single);
 			storeRepository.save(store);

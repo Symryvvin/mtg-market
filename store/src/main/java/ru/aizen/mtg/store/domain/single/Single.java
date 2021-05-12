@@ -39,22 +39,24 @@ public class Single {
 		return new Single(oracleId, oracleName);
 	}
 
-	public void changePrintParameters(String name, String setCode, String langCode, String style) {
+	public Single printParameters(String name, String setCode, String langCode, String style) {
 		this.name = name;
 		this.setCode = setCode;
 		this.langCode = langCode;
 		this.style = Style.valueOf(style.toUpperCase());
+		return this;
 	}
 
-	public void changeTradeParameters(String condition, double price, int inStock) {
+	public Single tradeParameters(String condition, double price, int inStock) {
 		this.condition = Condition.from(condition);
 		this.price = price;
 		this.inStock = inStock;
+		return this;
 	}
 
 	public void reserve(int count) {
 		if (this.inStock < count) {
-			System.out.println("нельзя");
+			throw new IllegalArgumentException("Can`t reserve more single that has in stock");
 		}
 
 		this.inStock -= count;

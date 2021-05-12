@@ -1,4 +1,4 @@
-package ru.aizen.mtg.store.application;
+package ru.aizen.mtg.store.application.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
