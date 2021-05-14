@@ -1,6 +1,7 @@
 package ru.aizen.mtg.insfrastructure.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.aizen.mtg.domain.account.Account;
@@ -37,17 +38,16 @@ public class JwtTokenService implements TokenService {
 	public String generate(Account account) {
 		Date date = Date.from(LocalDateTime.now().plusHours(12).atZone(ZoneId.systemDefault()).toInstant());
 		return Jwts.builder()
-				.setSubject(account.getLogin())
 				.setClaims(
 						Map.of("role", account.getRole(),
-								"id", account.getId(),
-								Claims.SUBJECT, account.getLogin(),
-								"is_blocked", account.isBlocked()))
+								"location", account.location(),
+								"username", account.getLogin(),
+								"isBlocked", account.isBlocked()))
+				.setSubject(String.valueOf(account.getId()))
 				.setExpiration(date)
 				.setHeaderParam("alg", "RS256")
 				.signWith(privateKey, SignatureAlgorithm.RS256)
 				.compact();
-
 	}
 
 	@Override

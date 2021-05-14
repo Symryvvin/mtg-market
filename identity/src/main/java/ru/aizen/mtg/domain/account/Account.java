@@ -77,6 +77,16 @@ public class Account {
 		}
 	}
 
+	public String location() {
+		if (profile == null) {
+			return "";
+		}
+		if (profile.getAddress() == null) {
+			return "";
+		}
+		return profile.getAddress().getSettlement();
+	}
+
 	public void block() {
 		this.blocked = true;
 	}
