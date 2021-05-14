@@ -1,4 +1,4 @@
-package ru.aizen.mtg.application.rest.dto;
+package ru.aizen.mtg.application.resource.dto;
 
 import lombok.Getter;
 import lombok.Setter;

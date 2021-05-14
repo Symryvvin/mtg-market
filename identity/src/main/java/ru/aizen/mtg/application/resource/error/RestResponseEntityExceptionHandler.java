@@ -1,4 +1,4 @@
-package ru.aizen.mtg.application.rest.error;
+package ru.aizen.mtg.application.resource.error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.aizen.mtg.application.resource.dto.response.Error;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler
@@ -21,7 +22,7 @@ public class RestResponseEntityExceptionHandler
 		logger.error(exception.getMessage(), exception);
 		return handleExceptionInternal(
 				exception,
-				new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()),
+				new Error(HttpStatus.BAD_REQUEST.value(), exception.getMessage()),
 				new HttpHeaders(),
 				HttpStatus.BAD_REQUEST,
 				request

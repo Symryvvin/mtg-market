@@ -264,10 +264,6 @@
 	],
 	"variable": [
 		{
-			"key": "baseUri",
-			"value": "http://localhost:8080"
-		},
-		{
 			"key": "jwt",
 			"value": ""
 		},
@@ -310,6 +306,10 @@
 		{
 			"key": "street",
 			"value": ""
+		},
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8082"
 		}
 	]
 }

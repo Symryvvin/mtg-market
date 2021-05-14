@@ -1,14 +1,14 @@
-package ru.aizen.mtg.application.rest.error;
+package ru.aizen.mtg.application.resource.dto.response;
 
 import lombok.Getter;
 
 @Getter
-public class ErrorResponse {
+public class Error {
 
 	private final int statusCode;
 	private final String message;
 
-	public ErrorResponse(int statusCode, String message) {
+	public Error(int statusCode, String message) {
 		this.statusCode = statusCode;
 		this.message = message;
 	}

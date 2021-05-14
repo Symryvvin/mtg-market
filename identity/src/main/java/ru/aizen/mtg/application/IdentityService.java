@@ -8,9 +8,6 @@ import ru.aizen.mtg.domain.account.AccountRepository;
 import ru.aizen.mtg.domain.account.security.PasswordSecure;
 import ru.aizen.mtg.domain.account.security.PasswordSecureException;
 import ru.aizen.mtg.domain.jwt.TokenService;
-import ru.aizen.mtg.domain.profile.Email;
-import ru.aizen.mtg.domain.profile.Phone;
-import ru.aizen.mtg.domain.profile.Profile;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
