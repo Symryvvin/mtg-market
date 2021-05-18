@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "jwt.publicKey",
+      "type": "java.lang.String",
+      "description": "JWT public key."
+    },
+    {
+      "name": "service.search.uri",
+      "type": "java.lang.String",
+      "description": "Search Service."
+    },
+    {
+      "name": "service.identity.uri",
+      "type": "java.lang.String",
+      "description": "Identity Service."
+    },
+    {
+      "name": "service.store.uri",
+      "type": "java.lang.String",
+      "description": "Store Service."
+    }
+  ]
+}
