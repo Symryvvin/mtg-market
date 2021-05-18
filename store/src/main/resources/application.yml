@@ -1,0 +1,16 @@
+server:
+  port: 8083
+  forward-headers-strategy: native
+  servlet:
+    context-path: /store/
+
+spring:
+  application:
+    name: store
+  data:
+    mongodb:
+      database: store
+      host: 192.168.49.2
+      port: 31389
+      username: user
+      password: pass

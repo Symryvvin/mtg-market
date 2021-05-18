@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/store")
 public class StoreResource {
 
 	private final StoreService storeService;
@@ -32,7 +31,7 @@ public class StoreResource {
 		this.storeService = storeService;
 	}
 
-	@PostMapping(path = "create",
+	@PostMapping(path = "/create",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> create(@RequestBody CreateStoreDTO request) {
@@ -42,7 +41,18 @@ public class StoreResource {
 		);
 	}
 
-	@GetMapping(path = "find/{userId}",
+	@GetMapping(path = "/{storeId}/edit",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StoreDTO> userStores(@PathVariable("storeId") String storeId,
+	                                           @RequestHeader("X-UserId") Long userId) {
+		Store store = storeService.find(storeId);
+
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
+		return ResponseEntity.ok(StoreDTO.of(store));
+	}
+
+	@GetMapping(path = "/find/{userId}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StoreDTO>> userStores(@PathVariable("userId") long userId) {
 		Collection<Store> stores = storeService.stores(userId);
@@ -52,7 +62,7 @@ public class StoreResource {
 				.collect(Collectors.toList()));
 	}
 
-	@GetMapping(path = "{owner}/{name}",
+	@GetMapping(path = "/{owner}/{name}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StoreDTO> view(@PathVariable("owner") String owner,
 	                                     @PathVariable("name") String name) {
@@ -64,11 +74,14 @@ public class StoreResource {
 		return ResponseEntity.ok(storeDTO);
 	}
 
-	@PutMapping(path = "{storeId}/add",
+	@PutMapping(path = "/{storeId}/singles/add",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> addSingleToStore(@PathVariable("storeId") String storeId,
+	                                                @RequestHeader("X-UserId") Long userId,
 	                                                @RequestBody CreateSingleDTO request) {
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
 		Single single = Single.create(request.getOracleId(), request.getOracleName())
 				.printParameters(request.getName(), request.getSetCode(), request.getLangCode(), request.getStyle())
 				.tradeParameters(request.getCondition(), request.getPrice(), request.getInStock());
@@ -78,23 +91,29 @@ public class StoreResource {
 		);
 	}
 
-	@PutMapping(path = "{storeId}/import",
+	@PutMapping(path = "/{storeId}/singles/import",
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> importSinglesToStore(@PathVariable("storeId") String storeId,
+	                                                    @RequestHeader("X-UserId") Long userId,
 	                                                    @RequestPart("file") MultipartFile file) {
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
 		storeService.addSingles(storeId, new SingleParser().singles(file));
 		return ResponseEntity.ok(
 				new Success(HttpStatus.OK, "Singles imported to store")
 		);
 	}
 
-	@PutMapping(path = "{storeId}/{singleId}/edit",
+	@PutMapping(path = "/{storeId}/singles/{singleId}/edit",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> editSingleInStore(@PathVariable("storeId") String storeId,
+	                                                 @RequestHeader("X-UserId") Long userId,
 	                                                 @PathVariable("singleId") String singleId,
 	                                                 @RequestBody CreateSingleDTO request) {
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
 		storeService.editSingle(storeId, singleId, request.getName(), request.getSetCode(), request.getLangCode(), request.getStyle(),
 				request.getCondition(), request.getPrice(), request.getInStock());
 		return ResponseEntity.ok(
@@ -102,17 +121,20 @@ public class StoreResource {
 		);
 	}
 
-	@DeleteMapping(path = "{storeId}/{singleId}/delete",
+	@DeleteMapping(path = "/{storeId}/singles/{singleId}/delete",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> deleteSingleFromStore(@PathVariable("storeId") String storeId,
+	                                                     @RequestHeader("X-UserId") Long userId,
 	                                                     @PathVariable("singleId") String singleId) {
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
 		storeService.deleteSingle(storeId, singleId);
 		return ResponseEntity.ok(
 				new Success(HttpStatus.OK, "Single deleted from store")
 		);
 	}
 
-	@PutMapping(path = "{storeId}/reserve",
+	@PutMapping(path = "/{storeId}/singles/reserve",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> reserveSinglesInStore(@PathVariable("storeId") String storeId,
@@ -123,7 +145,7 @@ public class StoreResource {
 		);
 	}
 
-	@PostMapping(path = "{storeId}/block",
+	@PostMapping(path = "/{storeId}/block",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> blockStore(@PathVariable("storeId") String storeId) {
 		storeService.blockStore(storeId);
@@ -133,7 +155,7 @@ public class StoreResource {
 	}
 
 
-	@PostMapping(path = "{storeId}/unblock",
+	@PostMapping(path = "/{storeId}/unblock",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> unblockStore(@PathVariable("storeId") String storeId) {
 		storeService.unblockStore(storeId);
@@ -142,16 +164,19 @@ public class StoreResource {
 		);
 	}
 
-	@DeleteMapping(path = "{storeId}/delete",
+	@DeleteMapping(path = "/{storeId}/delete",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Success> deleteStore(@PathVariable("storeId") String storeId) {
+	public ResponseEntity<Success> deleteStore(@PathVariable("storeId") String storeId,
+	                                           @RequestHeader("X-UserId") Long userId) {
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
 		storeService.removeStore(storeId);
 		return ResponseEntity.ok(
 				new Success(HttpStatus.OK, "Store deleted")
 		);
 	}
 
-	@GetMapping(path = "singles/{oracleId}",
+	@GetMapping(path = "/singles/{oracleId}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<FoundCard> findByOracleID(@PathVariable("oracleId") String oracleId) {
 		return storeService.findInStoresBySingleId(oracleId);

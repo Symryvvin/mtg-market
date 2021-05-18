@@ -6,6 +6,7 @@ import org.springframework.hateoas.RepresentationModel;
 import ru.aizen.mtg.store.application.resource.StoreResource;
 import ru.aizen.mtg.store.application.resource.dto.CreateSingleDTO;
 import ru.aizen.mtg.store.domain.single.Single;
+import ru.aizen.mtg.store.domain.store.Store;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -25,7 +26,7 @@ public class SingleDTO extends RepresentationModel<SingleDTO> {
 	private final double price;
 	private final int inStock;
 
-	public static SingleDTO of(Single single, String storeId) {
+	public static SingleDTO of(Single single, Store store) {
 		SingleDTO dto = new SingleDTO(
 				single.id(),
 				single.oracleId(),
@@ -38,8 +39,8 @@ public class SingleDTO extends RepresentationModel<SingleDTO> {
 				single.price(),
 				single.inStock()
 		);
-		dto.add(linkTo(methodOn(StoreResource.class).editSingleInStore(storeId, single.id(), new CreateSingleDTO())).withRel("edit"));
-		dto.add(linkTo(methodOn(StoreResource.class).deleteSingleFromStore(storeId, single.id())).withRel("delete"));
+		dto.add(linkTo(methodOn(StoreResource.class).editSingleInStore(store.id(), store.owner().id(), single.id(), new CreateSingleDTO())).withRel("edit"));
+		dto.add(linkTo(methodOn(StoreResource.class).deleteSingleFromStore(store.id(), store.owner().id(), single.id())).withRel("delete"));
 		return dto;
 	}
 

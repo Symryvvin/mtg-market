@@ -31,13 +31,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/create",
+					"raw": "{{baseUri}}/store/create",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						"create"
 					]
@@ -73,13 +71,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:owner/:name",
+					"raw": "{{baseUri}}/store/:owner/:name",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":owner",
 						":name"
@@ -113,15 +109,19 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/find/:userId",
+					"raw": "{{baseUri}}/store/find/:userId",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						"find",
 						":userId"
@@ -130,6 +130,48 @@
 						{
 							"key": "userId",
 							"value": "{{userId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit store",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "{{userId}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUri}}/store/:storeId/edit",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"store",
+						":storeId",
+						"edit"
+					],
+					"variable": [
+						{
+							"key": "storeId",
+							"value": "{{storeId}}"
 						}
 					]
 				}
@@ -151,7 +193,13 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"oracleId\": \"{{oracleId}}\",\n    \"oracleName\": \"Shock\",\n    \"name\": \"Шок\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"FOIL\",\n    \"condition\": \"NM\",\n    \"price\": 50.00,\n    \"inStock\": 12\n}",
@@ -162,15 +210,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:storeId/add",
+					"raw": "{{baseUri}}/store/:storeId/singles/add",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":storeId",
+						"singles",
 						"add"
 					],
 					"variable": [
@@ -223,13 +270,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/singles/:oracleId",
+					"raw": "{{baseUri}}/store/singles/:oracleId",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						"singles",
 						":oracleId"
@@ -259,7 +304,13 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"Отвергнуть\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"REGULAR\",\n    \"condition\": \"SP\",\n    \"price\": 20.00,\n    \"inStock\": 4\n}",
@@ -270,15 +321,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:storeId/:singleId/edit",
+					"raw": "{{baseUri}}/store/:storeId/singles/:singleId/edit",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":storeId",
+						"singles",
 						":singleId",
 						"edit"
 					],
@@ -322,15 +372,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:storeId/reserve",
+					"raw": "{{baseUri}}/store/:storeId/singles/reserve",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":storeId",
+						"singles",
 						"reserve"
 					],
 					"variable": [
@@ -358,7 +407,13 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -375,15 +430,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:storeId/import",
+					"raw": "{{baseUri}}/store/:storeId/singles/import",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":storeId",
+						"singles",
 						"import"
 					],
 					"variable": [
@@ -411,17 +465,22 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:storeId/:singleId/delete",
+					"raw": "{{baseUri}}/store/:storeId/singles/:singleId/delete",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":storeId",
+						"singles",
 						":singleId",
 						"delete"
 					],
@@ -454,15 +513,19 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/store/:storeId/delete",
+					"raw": "{{baseUri}}/store/:storeId/delete",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"store",
 						":storeId",
 						"delete"
@@ -526,6 +589,10 @@
 		{
 			"key": "oracleId",
 			"value": ""
+		},
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8083"
 		}
 	]
 }

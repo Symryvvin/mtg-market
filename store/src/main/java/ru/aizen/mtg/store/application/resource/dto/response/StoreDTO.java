@@ -30,13 +30,13 @@ public class StoreDTO extends RepresentationModel<StoreDTO> {
 				store.owner().location(),
 				store.owner().name(),
 				store.singles().stream()
-						.map(single -> SingleDTO.of(single, store.id()))
+						.map(single -> SingleDTO.of(single, store))
 						.collect(Collectors.toList()));
-		dto.add(linkTo(methodOn(StoreResource.class).addSingleToStore(store.id(), new CreateSingleDTO())).withRel("add"));
-		dto.add(linkTo(methodOn(StoreResource.class).importSinglesToStore(store.id(), null)).withRel("import"));
+		dto.add(linkTo(methodOn(StoreResource.class).addSingleToStore(store.id(), store.owner().id(), new CreateSingleDTO())).withRel("add"));
+		dto.add(linkTo(methodOn(StoreResource.class).importSinglesToStore(store.id(), store.owner().id(), null)).withRel("import"));
 		dto.add(linkTo(methodOn(StoreResource.class).blockStore(store.id())).withRel("block"));
 		dto.add(linkTo(methodOn(StoreResource.class).unblockStore(store.id())).withRel("unblock"));
-		dto.add(linkTo(methodOn(StoreResource.class).deleteStore(store.id())).withRel("delete"));
+		dto.add(linkTo(methodOn(StoreResource.class).deleteStore(store.id(), store.owner().id())).withRel("delete"));
 		return dto;
 	}
 
