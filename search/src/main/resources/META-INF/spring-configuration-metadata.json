@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "card.import.time",
+      "type": "java.lang.String",
+      "description": "Time to start scheduler."
+    },
+    {
+      "name": "card.data.remote",
+      "type": "java.lang.String",
+      "description": "Link to remote card data."
+    },
+    {
+      "name": "card.data.local",
+      "type": "java.lang.String",
+      "description": "Path to local card data."
+    }
+  ] }

@@ -117,7 +117,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/details/print?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d&set=aer",
+					"raw": "{{baseUri}}/api/v1/details/set?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d",
 					"host": [
 						"{{baseUri}}"
 					],
@@ -125,21 +125,43 @@
 						"api",
 						"v1",
 						"details",
-						"print"
+						"set"
 					],
 					"query": [
 						{
 							"key": "oracle_id",
 							"value": "a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d"
-						},
-						{
-							"key": "set",
-							"value": "aer"
 						}
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8081"
 		}
 	]
 }
