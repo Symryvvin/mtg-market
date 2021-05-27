@@ -1,10 +1,8 @@
 package ru.aizen.mtg.search.application.resource;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.aizen.mtg.search.application.OracleCard;
 import ru.aizen.mtg.search.application.SearchService;
 import ru.aizen.mtg.search.domain.card.Card;
 
@@ -13,6 +11,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("api/v1")
+@CrossOrigin
 public class CardSearchResource {
 
 	private static final int MINIMUM_NUMBER_OF_CHARS = 3;
@@ -24,9 +23,9 @@ public class CardSearchResource {
 	}
 
 	@GetMapping(path = "auto", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<String> autocomplete(@RequestParam("search") String searchStr) {
+	public Collection<OracleCard> autocomplete(@RequestParam("search") String searchStr) {
 		if (checkMinNumberOfCharacters(searchStr)) {
-			return searchService.findByPartOfName(searchStr);
+			return searchService.findByNameText(searchStr);
 		}
 		return Collections.emptyList();
 	}
@@ -52,7 +51,7 @@ public class CardSearchResource {
 
 	@GetMapping(path = "details/lang", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<String> allLangForOracleIdBySet(@RequestParam("oracle_id") String oracleId,
-	                                                @RequestParam("set") String setCode) {
+	                                                  @RequestParam("set") String setCode) {
 		return searchService.languagesForSet(oracleId, setCode);
 	}
 

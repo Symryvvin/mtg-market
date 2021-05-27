@@ -8,7 +8,9 @@ import ru.aizen.mtg.search.domain.card.CardRepository;
 import ru.aizen.mtg.search.domain.card.Language;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,7 +23,7 @@ public class SearchService {
 	private static final int MAX_SEARCH_RESULT_LIMIT = 15;
 	private static final Pattern NOT_WORD_PATTERN = Pattern.compile("\\W", Pattern.UNICODE_CHARACTER_CLASS);
 
-	private Collection<String> cardNameCollection;
+	private Collection<OracleCard> cardCollection;
 
 	@Autowired
 	public SearchService(CardRepository cardRepository) {
@@ -30,39 +32,39 @@ public class SearchService {
 
 	@PostConstruct
 	private void postConstruct() {
-		cardNameCollection = new ArrayList<>();
-		cardRepository.findAll().stream()
+		cardCollection = cardRepository.findAll().stream()
 				.filter(card -> card.getLanguage() == Language.EN || card.getLanguage() == Language.RU)
-				.forEach(card -> cardNameCollection.add(card.getPrintedName()));
-		cardNameCollection = cardNameCollection.stream().distinct().collect(Collectors.toList());
+				.map(OracleCard::new)
+				.distinct()
+				.collect(Collectors.toList());
 	}
 
-	public Collection<String> findByPartOfName(String findString) {
-		Collection<String> result;
+	public Collection<OracleCard> findByNameText(String findString) {
+		Collection<OracleCard> result;
 		if (NOT_WORD_PATTERN.matcher(findString).find()) {
-			result = findByPartOfName(findString, cardNameCollection.stream());
+			result = findByNameText(findString, cardCollection.stream());
 		} else {
-			result = findByStartOfWord(findString, cardNameCollection.stream());
+			result = findByWordInName(findString, cardCollection.stream());
 			if (result.isEmpty()) {
-				result = findByPartOfName(findString, cardNameCollection.stream());
+				result = findByNameText(findString, cardCollection.stream());
 			}
 		}
 		return result.stream()
 				.limit(MAX_SEARCH_RESULT_LIMIT)
-				.sorted(Comparator.comparingInt(String::length))
+				.sorted(Comparator.comparingInt(c -> c.getName().length()))
 				.collect(Collectors.toList());
 	}
 
-	private Collection<String> findByPartOfName(String findString, Stream<String> nameStream) {
-		return nameStream.filter(cn -> cn.toLowerCase().contains(findString.toLowerCase()))
+	private Collection<OracleCard> findByNameText(String findString, Stream<OracleCard> stream) {
+		return stream.filter(card -> card.getName().toLowerCase().contains(findString.toLowerCase()))
 				.collect(Collectors.toList());
 	}
 
-	private Collection<String> findByStartOfWord(String findString, Stream<String> nameStream) {
+	private Collection<OracleCard> findByWordInName(String findString, Stream<OracleCard> stream) {
 		Pattern pattern = Pattern.compile(
 				"\\b" + findString,
 				Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
-		return nameStream.filter(cn -> pattern.matcher(cn).find())
+		return stream.filter(card -> pattern.matcher(card.getName()).find())
 				.collect(Collectors.toList());
 	}
 
