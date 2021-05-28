@@ -50,9 +50,13 @@ public class CardSearchResource {
 	}
 
 	@GetMapping(path = "details/lang", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<String> allLangForOracleIdBySet(@RequestParam("oracle_id") String oracleId,
-	                                                  @RequestParam("set") String setCode) {
+	public Collection<String> allLangForOracleIdBySet(@RequestParam("oracle_id") String oracleId, @RequestParam("set") String setCode) {
 		return searchService.languagesForSet(oracleId, setCode);
+	}
+
+	@GetMapping(path = "random", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<Card> random(@RequestParam("size") int size, @RequestParam("lang") String languageCode) {
+		return searchService.randomCollection(size, languageCode);
 	}
 
 }

@@ -8,9 +8,8 @@ import ru.aizen.mtg.search.domain.card.CardRepository;
 import ru.aizen.mtg.search.domain.card.Language;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.UUID;
+import java.security.SecureRandom;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -99,4 +98,17 @@ public class SearchService {
 				.collect(Collectors.toSet());
 	}
 
+	public Collection<Card> randomCollection(int size, String languageCode) {
+		Collection<Card> result = new ArrayList<>();
+		List<Card> copy = cardRepository.findAll().stream()
+				.filter(card -> card.getLanguage().getCode().equalsIgnoreCase(languageCode)).collect(Collectors.toList());
+		int maxSize = copy.size();
+
+		SecureRandom rand = new SecureRandom();
+		for (int i = 0; i < Math.min(size, maxSize); i++) {
+			result.add(copy.remove(rand.nextInt(copy.size())));
+		}
+
+		return result;
+	}
 }

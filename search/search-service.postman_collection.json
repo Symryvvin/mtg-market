@@ -11,11 +11,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/auto?search=shock",
+					"raw": "{{baseUri}}/rest/search/api/v1/auto?search=shock",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"search",
 						"api",
 						"v1",
 						"auto"
@@ -36,11 +38,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/find/oracle_id?printed_name=Shock",
+					"raw": "{{baseUri}}/rest/search/api/v1/find/oracle_id?printed_name=Shock",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"search",
 						"api",
 						"v1",
 						"find",
@@ -62,11 +66,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/details?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d",
+					"raw": "{{baseUri}}/rest/search/api/v1/details?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"search",
 						"api",
 						"v1",
 						"details"
@@ -87,11 +93,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/details/lang?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d&set=aer",
+					"raw": "{{baseUri}}/rest/search/api/v1/details/lang?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d&set=aer",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"search",
 						"api",
 						"v1",
 						"details",
@@ -117,11 +125,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/details/set?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d",
+					"raw": "{{baseUri}}/rest/search/api/v1/details/set?oracle_id=a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"search",
 						"api",
 						"v1",
 						"details",
@@ -131,6 +141,37 @@
 						{
 							"key": "oracle_id",
 							"value": "a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "random",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUri}}/rest/search/api/v1/random?size=100&lang=ru",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"rest",
+						"search",
+						"api",
+						"v1",
+						"random"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "100"
+						},
+						{
+							"key": "lang",
+							"value": "ru"
 						}
 					]
 				}
