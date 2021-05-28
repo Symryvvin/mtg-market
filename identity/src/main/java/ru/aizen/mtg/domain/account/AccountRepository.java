@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-	boolean existsAccountByLogin(String login);
+	boolean existsAccountByLoginIgnoreCase(String login);
 
-	Optional<Account> findByLogin(String login);
+	Optional<Account> findByLoginIgnoreCase(String login);
 
 }

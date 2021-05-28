@@ -34,7 +34,7 @@ public class IdentityService {
 	@Transactional
 	public void create(String login, String password) throws IdentityServiceException {
 		try {
-			if (accountRepository.existsAccountByLogin(login)) {
+			if (accountRepository.existsAccountByLoginIgnoreCase(login)) {
 				throw new IdentityServiceException("User with login '" + login + "' already exists");
 			} else {
 				Account account = Account.register(login, passwordSecure.encrypt(password));
@@ -47,7 +47,7 @@ public class IdentityService {
 
 	public String authenticate(String username, String password) throws IdentityServiceException {
 		try {
-			Optional<Account> accountOptional = accountRepository.findByLogin(username);
+			Optional<Account> accountOptional = accountRepository.findByLoginIgnoreCase(username);
 
 			if (accountOptional.isPresent()) {
 				Account account = accountOptional.get();
@@ -67,7 +67,7 @@ public class IdentityService {
 
 	public void changePassword(String username, String oldPassword, String newPassword) throws IdentityServiceException {
 		try {
-			Optional<Account> accountOptional = accountRepository.findByLogin(username);
+			Optional<Account> accountOptional = accountRepository.findByLoginIgnoreCase(username);
 
 			if (accountOptional.isPresent()) {
 				accountOptional.get()
@@ -81,7 +81,7 @@ public class IdentityService {
 	}
 
 	public UserInfo userInfo(String username) throws IdentityServiceException {
-		Optional<Account> accountOptional = accountRepository.findByLogin(username);
+		Optional<Account> accountOptional = accountRepository.findByLoginIgnoreCase(username);
 
 		if (accountOptional.isPresent()) {
 			return UserInfo.from(accountOptional.get());
@@ -97,7 +97,7 @@ public class IdentityService {
 	}
 
 	public void updateProfile(String username, String fullName, String email, String phone) throws IdentityServiceException {
-		Optional<Account> accountOptional = accountRepository.findByLogin(username);
+		Optional<Account> accountOptional = accountRepository.findByLoginIgnoreCase(username);
 
 		if (accountOptional.isPresent()) {
 			Account account = accountOptional.get();
@@ -110,7 +110,7 @@ public class IdentityService {
 
 	public void updateProfileAddress(String username, String settlement, String street, String building, String apartment, Integer postIndex)
 			throws IdentityServiceException {
-		Optional<Account> accountOptional = accountRepository.findByLogin(username);
+		Optional<Account> accountOptional = accountRepository.findByLoginIgnoreCase(username);
 
 		if (accountOptional.isPresent()) {
 			Account account = accountOptional.get();
