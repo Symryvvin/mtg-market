@@ -17,6 +17,14 @@ public class StoreServiceRouteConfig {
 	private String serviceUri;
 
 	@Bean
+	public RouteLocator unsecureRouteLocator(RouteLocatorBuilder builder) {
+		return builder.routes()
+				.route("search", route -> route.path("/store/singles/{oracleId}")
+						.uri(serviceUri))
+				.build();
+	}
+
+	@Bean
 	public RouteLocator storeRouteLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
 		return builder.routes()
 				.route("create_store",
@@ -50,11 +58,6 @@ public class StoreServiceRouteConfig {
 				.route("view_user_store",
 						route -> route
 								.path("/{owner}/{name}")
-								.filters(f -> f.filter(jwtFilter))
-								.uri(serviceUri))
-				.route("search",
-						route -> route
-								.path("/singles/{oracleId}")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("add_single",
