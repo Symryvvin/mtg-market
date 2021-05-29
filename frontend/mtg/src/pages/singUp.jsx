@@ -1,7 +1,7 @@
 import React from "react";
-import {Button, Grid, Paper, TextField} from "@material-ui/core";
+import {Button, Grid, Link, Paper, TextField} from "@material-ui/core";
 
-class SingInPage extends React.Component {
+class SingUpPage extends React.Component {
 
     render() {
         const onSubmit = (event) => {
@@ -26,12 +26,14 @@ class SingInPage extends React.Component {
         return (
             <div>
                 <Grid container
-                      direction="row"
+                      direction="column"
                       justify="center"
                       alignItems="center"
                       className="vh-100">
+                    <Grid item>
+                        <div style={{fontSize: '2em'}}>Регистрация</div>
+                    </Grid>
                     <Paper variant="outlined" style={{width: 400, padding: 10}}>
-                        <div style={{fontSize: '2em', padding: 5, marginBottom: 20}}>Регистрация</div>
                         <form onSubmit={onSubmit}>
                             <Grid container spacing={1}
                                   justify="center"
@@ -79,13 +81,26 @@ class SingInPage extends React.Component {
                                             color="primary"
                                             type="submit"> Зарегистрироваться </Button>
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <span>Уже зарегистрированы?</span>
+                                    <Link href={"/sing_in"}> Войти </Link>
+                                </Grid>
                             </Grid>
                         </form>
                     </Paper>
+                    <Grid container spacing={2}
+                          direction="row"
+                          justify="flex-end"
+                          alignItems="flex-end"
+                          style={{width: 400}}>
+                        <Grid item>
+                            <Link href={"/"}>На главную</Link>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </div>
         );
     };
 }
 
-export default SingInPage;
+export default SingUpPage;
