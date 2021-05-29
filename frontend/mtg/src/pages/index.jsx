@@ -22,6 +22,14 @@ const MainPage = () => {
         setIsLogin(false);
     }
 
+    const search = () => {
+        if (oracleId) {
+            window.location.replace("/search/" + oracleId)
+        } else {
+            alert("oracleId is null");
+        }
+    }
+
     React.useEffect(() => {
         if (inputValue === '') {
             setOptions(value ? [value] : []);
@@ -83,7 +91,7 @@ const MainPage = () => {
                               )}/>
                 <Grid item style={{width: 10}}/>
                 <Button variant="outlined" color="primary" style={{textTransform: "none"}}
-                        onClick={() => window.location.replace("/search/" + oracleId)}>Поиск</Button>
+                        onClick={search}>Поиск</Button>
             </Grid>
             <Grid item className="border bg-light ">
 
