@@ -1,7 +1,10 @@
 package ru.aizen.mtg.search.application.resource;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.aizen.mtg.search.application.OracleCard;
 import ru.aizen.mtg.search.application.SearchService;
 import ru.aizen.mtg.search.domain.card.Card;
@@ -11,7 +14,6 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin
 public class CardSearchResource {
 
 	private static final int MINIMUM_NUMBER_OF_CHARS = 3;

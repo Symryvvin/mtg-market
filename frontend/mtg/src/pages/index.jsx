@@ -5,7 +5,7 @@ import {useCookies} from 'react-cookie'
 import {Link} from "react-router-dom";
 
 const MainPage = () => {
-    const autocompleteUri = "http://localhost:8081/rest/search/api/v1/auto?search=";
+    const autocompleteUri = "http://localhost:8080/rest/search/auto?search=";
 
     const [oracleId, setOracleId] = React.useState(null);
     const [value, setValue] = React.useState(null);
