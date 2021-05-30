@@ -21,6 +21,8 @@ public class StoreServiceRouteConfig {
 		return builder.routes()
 				.route("search", route -> route.path("/store/singles/{oracleId}")
 						.uri(serviceUri))
+				.route("view_user_store", route -> route.path("/store/{owner}/{name}")
+						.uri(serviceUri))
 				.build();
 	}
 
@@ -53,11 +55,6 @@ public class StoreServiceRouteConfig {
 				.route("find_user_stores",
 						route -> route
 								.path("/find/{userId}")
-								.filters(f -> f.filter(jwtFilter))
-								.uri(serviceUri))
-				.route("view_user_store",
-						route -> route
-								.path("/{owner}/{name}")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("add_single",

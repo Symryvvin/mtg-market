@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.aizen.mtg.apigateway.filter.jwt.JwtFilter;
 
 @Configuration
 public class IdentityServiceRouteConfig {
@@ -17,11 +18,19 @@ public class IdentityServiceRouteConfig {
 		return builder.routes()
 				.route("registration",
 						route -> route.path("/registration")
-								.filters(f -> f.rewritePath("/registration", "/api/v1/registration"))
 								.uri(serviceUri))
 				.route("login",
 						route -> route.path("/login")
-								.filters(f -> f.rewritePath("/login", "/api/v1/login"))
+								.uri(serviceUri))
+				.build();
+	}
+
+	@Bean
+	public RouteLocator secureRouteLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
+		return builder.routes()
+				.route("registration",
+						route -> route.path("/user/{username}/address/edit")
+								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.build();
 	}
