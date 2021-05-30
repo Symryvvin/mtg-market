@@ -42,13 +42,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/registration",
+					"raw": "{{baseUri}}/registration",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"registration"
 					]
 				}
@@ -70,13 +68,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/login",
+					"raw": "{{baseUri}}/login",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"login"
 					]
 				}
@@ -101,13 +97,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/users",
+					"raw": "{{baseUri}}/users",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"users"
 					]
 				}
@@ -142,13 +136,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/user/:id/edit",
+					"raw": "{{baseUri}}/user/:id/edit",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"user",
 						":id",
 						"edit"
@@ -193,13 +185,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/api/v1/user/:username/address/edit",
+					"raw": "{{baseUri}}/user/:username/address/edit",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"user",
 						":username",
 						"address",
@@ -221,13 +211,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/api/v1/user/:username",
+					"raw": "{{baseUri}}/user/:username",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"api",
-						"v1",
 						"user",
 						":username"
 					],

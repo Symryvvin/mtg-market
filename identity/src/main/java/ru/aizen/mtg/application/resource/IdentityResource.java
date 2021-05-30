@@ -18,7 +18,7 @@ import ru.aizen.mtg.application.resource.dto.response.UserLogin;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/")
 public class IdentityResource {
 
 	private final IdentityService identityService;
