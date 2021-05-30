@@ -99,7 +99,21 @@ public class StoreResource {
 	                                                    @RequestPart("file") MultipartFile file) {
 		storeService.permissionsToOperateByUserId(userId, storeId);
 
-		storeService.addSingles(storeId, new SingleParser().singles(file));
+		storeService.addSingles(storeId, new ExcelSingleParser().singles(file));
+		return ResponseEntity.ok(
+				new Success(HttpStatus.OK, "Singles imported to store")
+		);
+	}
+
+	@PutMapping(path = "/{storeId}/singles/import/json",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Success> importJsonSinglesToStore(@PathVariable("storeId") String storeId,
+	                                                        @RequestHeader("X-UserId") Long userId,
+	                                                        @RequestBody String json) {
+		storeService.permissionsToOperateByUserId(userId, storeId);
+
+		storeService.addSingles(storeId, new JsonSingleParser().singles(json));
 		return ResponseEntity.ok(
 				new Success(HttpStatus.OK, "Singles imported to store")
 		);

@@ -10,7 +10,7 @@ public enum Condition {
 	MP("Moderately Played", "MP"),
 	HP("Heavy Played", "HP"),
 	D("Damaged", "D"),
-	UNDEFINED("Undefined", "");
+	UNDEFINED("Undefined", "U");
 
 	private final String condition;
 	private final String value;

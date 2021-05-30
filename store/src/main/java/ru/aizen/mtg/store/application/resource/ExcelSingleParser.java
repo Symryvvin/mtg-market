@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SingleParser {
+public class ExcelSingleParser {
 
 	private static final int FIRST_READ_ROW = 1;
 

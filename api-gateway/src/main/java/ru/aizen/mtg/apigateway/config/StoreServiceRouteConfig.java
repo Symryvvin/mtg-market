@@ -52,6 +52,16 @@ public class StoreServiceRouteConfig {
 								.path("/store/{storeId}/edit")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
+				.route("import_singles",
+						route -> route
+								.path("/store/{storeId}/singles/import")
+								.filters(f -> f.filter(jwtFilter))
+								.uri(serviceUri))
+				.route("import_singles_json",
+						route -> route
+								.path("/store/{storeId}/singles/import/json")
+								.filters(f -> f.filter(jwtFilter))
+								.uri(serviceUri))
 				.route("find_user_stores",
 						route -> route
 								.path("/find/{userId}")
@@ -62,11 +72,7 @@ public class StoreServiceRouteConfig {
 								.path("/{storeId}/singles/add")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
-				.route("import_singles",
-						route -> route
-								.path("/{storeId}/singles/import")
-								.filters(f -> f.filter(jwtFilter))
-								.uri(serviceUri))
+
 				.route("edit_single_in_store",
 						route -> route
 								.path("/{storeId}/singles/{singleId}/edit")
