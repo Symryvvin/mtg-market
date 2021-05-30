@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/")
 @CrossOrigin
 public class CardSearchResource {
 
