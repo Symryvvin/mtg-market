@@ -1,6 +1,7 @@
 import React from "react";
-import {Button, Grid, Link, Paper, TextField} from "@material-ui/core";
+import {Button, Grid, Paper, TextField} from "@material-ui/core";
 import {useCookies} from "react-cookie";
+import {Link} from "react-router-dom";
 
 
 const SingInPage = () => {
@@ -78,11 +79,20 @@ const SingInPage = () => {
                                     type="submit"> Войти </Button>
                             </Grid>
                             <Grid item xs={12}>
-                                <span>Еще нет аккаунта?</span><Link href={"/sing_up"}> Зарегистрироваться </Link>
+                                <span>Еще нет аккаунта?</span><Link to="/sing_up"> Зарегистрироваться </Link>
                             </Grid>
                         </Grid>
                     </form>
                 </Paper>
+                <Grid container spacing={2}
+                      direction="row"
+                      justify="flex-end"
+                      alignItems="flex-end"
+                      style={{width: 400}}>
+                    <Grid item>
+                        <Link to="/">На главную</Link>
+                    </Grid>
+                </Grid>
             </Grid>
         </div>
     );

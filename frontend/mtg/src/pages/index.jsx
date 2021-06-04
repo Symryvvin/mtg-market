@@ -56,7 +56,7 @@ const MainPage = () => {
                 <Grid item hidden={isLogin}>
                     <Link to="/sing_in">Войти</Link>
                     <span> или </span>
-                    <Link to="/sing_up">Зарегистрироваться</Link>
+                    <Link to="/sing_up">Регистрация</Link>
                 </Grid>
                 <Grid container justify="space-between" alignItems="center" item hidden={!isLogin}>
                     <Link to="/profile/:username">Профиль</Link>

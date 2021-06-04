@@ -1,5 +1,6 @@
 import React from "react";
-import {Button, Grid, Link, Paper, TextField} from "@material-ui/core";
+import {Button, Grid, Paper, TextField} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 class SingUpPage extends React.Component {
 
@@ -21,6 +22,8 @@ class SingUpPage extends React.Component {
                 }).then(data => {
                 alert(data.message);
             });
+
+            window.location.href = "/";
         }
 
         return (
@@ -83,7 +86,7 @@ class SingUpPage extends React.Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <span>Уже зарегистрированы?</span>
-                                    <Link href={"/sing_in"}> Войти </Link>
+                                    <Link to="/sing_in"> Войти </Link>
                                 </Grid>
                             </Grid>
                         </form>
@@ -94,7 +97,7 @@ class SingUpPage extends React.Component {
                           alignItems="flex-end"
                           style={{width: 400}}>
                         <Grid item>
-                            <Link href={"/"}>На главную</Link>
+                            <Link to="/">На главную</Link>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -19,6 +19,11 @@
       "name": "service.store.uri",
       "type": "java.lang.String",
       "description": "Store Service."
+    },
+    {
+      "name": "service.frontend.uri",
+      "type": "java.lang.String",
+      "description": "Frontend."
     }
   ]
 }

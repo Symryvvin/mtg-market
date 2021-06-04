@@ -20,6 +20,8 @@ service:
       uri: ${STORE_SERVICE_URI}
   search:
       uri: ${SEARCH_SERVICE_URI}
+  frontend:
+      uri: ${FRONTEND}
 
 jwt:
   publicKey: ${JWT_PUBLIC_KEY}
