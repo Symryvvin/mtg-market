@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "service.store.uri",
+      "type": "java.lang.String",
+      "description": "Discovery store service."
+    }
+  ]
+}

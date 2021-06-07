@@ -1,0 +1,390 @@
+{
+	"info": {
+		"_postman_id": "2d3cc1a3-9a0d-452e-a986-de08856eeca8",
+		"name": "order-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "4589",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"storeId\": \"60b3b0e2416c030709334d98\",\r\n    \"singleId\": \"0452fdd6-fdae-4ee6-bd5b-04b515b901e2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/order/cart/add",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"order",
+						"cart",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "4589"
+					}
+				],
+				"url": {
+					"raw": "{{baseUri}}/order/cart/view",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"order",
+						"cart",
+						"view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "4589"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/order/cart/:cartId/remove",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"order",
+						"cart",
+						":cartId",
+						"remove"
+					],
+					"variable": [
+						{
+							"key": "cartId",
+							"value": "60be7600ddce626e7562979c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "increase",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "4589"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/order/cart/:cartId/increase",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"order",
+						"cart",
+						":cartId",
+						"increase"
+					],
+					"variable": [
+						{
+							"key": "cartId",
+							"value": "60be7600ddce626e7562979c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "decrease",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "4589"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/order/cart/:cartId/decrease",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"order",
+						"cart",
+						":cartId",
+						"decrease"
+					],
+					"variable": [
+						{
+							"key": "cartId",
+							"value": "60be7600ddce626e7562979c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "clear cart",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-UserId",
+						"type": "text",
+						"value": "4589"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUri}}/order/cart/:cartId/clear",
+					"host": [
+						"{{baseUri}}"
+					],
+					"path": [
+						"order",
+						"cart",
+						":cartId",
+						"clear"
+					],
+					"variable": [
+						{
+							"key": "cartId",
+							"value": "60be7600ddce626e7562979c"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUri",
+			"value": "http://localhost:8084"
+		},
+		{
+			"key": "jwt",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "username",
+			"value": ""
+		}
+	]
+}

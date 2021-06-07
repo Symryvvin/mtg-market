@@ -1,0 +1,26 @@
+server:
+  port: 8084
+  forward-headers-strategy: native
+  servlet:
+    context-path: /order/
+
+spring:
+  application:
+    name: order
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  data:
+    mongodb:
+      database: store
+      host: 192.168.49.2
+      port: 31389
+      username: user
+      password: pass
+
+service:
+  identity:
+    uri: ${IDENTITY_SERVICE_URI}
+  store:
+    uri: ${STORE_SERVICE_URI}
