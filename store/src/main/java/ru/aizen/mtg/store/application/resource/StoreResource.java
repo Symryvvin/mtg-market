@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.aizen.mtg.store.application.resource.dto.CreateSingleDTO;
 import ru.aizen.mtg.store.application.resource.dto.CreateStoreDTO;
 import ru.aizen.mtg.store.application.resource.dto.ReserveSingleDTO;
+import ru.aizen.mtg.store.application.resource.dto.response.SingleInfoDTO;
 import ru.aizen.mtg.store.application.resource.dto.response.StoreDTO;
 import ru.aizen.mtg.store.application.resource.dto.response.Success;
 import ru.aizen.mtg.store.application.service.FoundCard;
@@ -35,6 +36,7 @@ public class StoreResource {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> create(@RequestBody CreateStoreDTO request) {
+		//TODO request to identity for user location by userId
 		storeService.create(request.getUserId(), request.getUsername(), request.getUserLocation(), request.getStoreName());
 		return ResponseEntity.ok(
 				new Success(HttpStatus.CREATED, "Store created")
@@ -194,6 +196,14 @@ public class StoreResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<FoundCard> findByOracleID(@PathVariable("oracleId") String oracleId) {
 		return storeService.findInStoresBySingleId(oracleId);
+	}
+
+	@GetMapping(path = "/{storeId}/single/{singleId}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public SingleInfoDTO detailsSingle(@PathVariable("storeId") String storeId,
+	                                   @PathVariable("singleId") String singleId) {
+		Store store = storeService.find(storeId);
+		return SingleInfoDTO.of(storeService.findSingleInStore(store, singleId), store);
 	}
 
 }

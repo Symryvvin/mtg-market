@@ -47,7 +47,6 @@ public class Store {
 		return singles.stream()
 				.filter(single -> single.id().equalsIgnoreCase(singleId))
 				.findFirst();
-
 	}
 
 	public void block() {

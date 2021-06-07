@@ -152,4 +152,7 @@ public class StoreService {
 				.collect(Collectors.toList());
 	}
 
+	public Single findSingleInStore(Store store, String singleId) {
+		return store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, store.name()));
+	}
 }

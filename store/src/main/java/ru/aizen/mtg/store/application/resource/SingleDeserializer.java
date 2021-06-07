@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import ru.aizen.mtg.store.domain.single.Condition;
 import ru.aizen.mtg.store.domain.single.Single;
+import ru.aizen.mtg.store.domain.single.Style;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -21,6 +22,7 @@ public class SingleDeserializer extends JsonDeserializer<Single> {
 
 		Random random = new Random();
 		String condition = Condition.values()[random.nextInt(Condition.values().length)].getValue();
+		String style = Style.values()[random.nextInt(Style.values().length)].name();
 		double price = 0.25 + (100 - 0.25) * random.nextDouble();
 		DecimalFormat df = new DecimalFormat("#.##");
 		price = Double.parseDouble(df.format(price));
@@ -30,7 +32,7 @@ public class SingleDeserializer extends JsonDeserializer<Single> {
 				.printParameters(node.get("printedName").asText(),
 						node.get("setCode").asText(),
 						node.get("language").asText(),
-						"regular")
+						style)
 				.tradeParameters(condition, price, inStock);
 	}
 }
