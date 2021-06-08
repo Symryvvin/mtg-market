@@ -3,6 +3,7 @@ import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
 import {Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import TopPanel from "../component/TopPanel";
 
 class SearchResultPage extends React.Component {
     static propTypes = {
@@ -67,6 +68,7 @@ class SearchResultPage extends React.Component {
                       direction="column"
                       justify="flex-start"
                       alignItems="center">
+                    <TopPanel/>
                     <Grid item>
                         <h2>Результат поиска</h2>
                     </Grid>

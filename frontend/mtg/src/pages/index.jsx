@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Grid, TextField} from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useCookies} from 'react-cookie'
-import {Link} from "react-router-dom";
+import TopPanel from "../component/TopPanel";
 
 const MainPage = () => {
     const autocompleteUri = "http://localhost:8080/rest/search/auto?search=";
@@ -52,18 +52,7 @@ const MainPage = () => {
 
     return (
         <Grid container direction="column" justify="space-between" alignItems="stretch" className="vh-100">
-            <Grid container item className="border bg-light p-2">
-                <Grid item hidden={isLogin}>
-                    <Link to="/sing_in">Войти</Link>
-                    <span> или </span>
-                    <Link to="/sing_up">Регистрация</Link>
-                </Grid>
-                <Grid container justify="space-between" alignItems="center" item hidden={!isLogin}>
-                    <Link to="/profile/:username">Профиль</Link>
-                    <Button variant="outlined" color="primary" style={{textTransform: "none"}}
-                            onClick={logout}>Выход</Button>
-                </Grid>
-            </Grid>
+            <TopPanel/>
             <Grid container item direction="row" justify="center" alignItems="center">
                 <Autocomplete id="single-search"
                               style={{width: 500}}
