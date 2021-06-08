@@ -1,6 +1,7 @@
 package ru.aizen.mtg.order.application.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,11 +9,10 @@ import ru.aizen.mtg.order.application.rest.request.AddSingleToCartDTO;
 import ru.aizen.mtg.order.application.rest.response.CartDTO;
 import ru.aizen.mtg.order.application.service.CartService;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("cart")
+@RequestMapping("/cart")
 public class CartResource {
 
 	private final CartService cartService;
@@ -24,10 +24,11 @@ public class CartResource {
 
 	@GetMapping(path = "/edit",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<CartDTO> edit(@RequestHeader("X-UserId") Long userId) {
-		return cartService.viewUserCarts(userId).stream()
+	public CollectionModel<CartDTO> edit(@RequestHeader("X-UserId") Long userId) {
+		return CollectionModel.of(cartService.viewUserCarts(userId).stream()
 				.map(CartDTO::from)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList())
+		);
 	}
 
 	@PutMapping(path = "/add",
@@ -37,23 +38,20 @@ public class CartResource {
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "/{cardId}/remove",
-			consumes = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Void> remove(@PathVariable("cardId") String cartId, @RequestBody String singleId) {
+	@PutMapping(path = "/{cardId}/remove/{singleId}")
+	public ResponseEntity<Void> remove(@PathVariable("cardId") String cartId, @PathVariable("singleId") String singleId) {
 		cartService.removeFromUserCart(cartId, singleId);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "/{cardId}/increase",
-			consumes = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Void> increase(@PathVariable("cardId") String cartId, @RequestBody String singleId) {
+	@PutMapping(path = "/{cardId}/increase/{singleId}")
+	public ResponseEntity<Void> increase(@PathVariable("cardId") String cartId, @PathVariable("singleId")  String singleId) {
 		cartService.increaseSingleCountInUserCart(cartId, singleId);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "/{cardId}/decrease",
-			consumes = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Void> decrease(@PathVariable("cardId") String cartId, @RequestBody String singleId) {
+	@PutMapping(path = "/{cardId}/decrease/{singleId}")
+	public ResponseEntity<Void> decrease(@PathVariable("cardId") String cartId, @PathVariable("singleId")  String singleId) {
 		cartService.decreaseSingleCountInUserCart(cartId, singleId);
 		return ResponseEntity.ok().build();
 	}
