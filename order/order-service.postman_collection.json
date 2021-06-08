@@ -32,7 +32,7 @@
 				"header": [
 					{
 						"key": "X-UserId",
-						"value": "4589",
+						"value": "27",
 						"type": "text"
 					}
 				],
@@ -46,11 +46,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/order/cart/add",
+					"raw": "{{baseUri}}/rest/order/cart/add",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"order",
 						"cart",
 						"add"
@@ -91,14 +92,15 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUri}}/order/cart/view",
+					"raw": "{{baseUri}}/rest/order/cart/edit",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"order",
 						"cart",
-						"view"
+						"edit"
 					]
 				}
 			},
@@ -145,11 +147,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/order/cart/:cartId/remove",
+					"raw": "{{baseUri}}/rest/order/cart/:cartId/remove",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"order",
 						"cart",
 						":cartId",
@@ -206,11 +209,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/order/cart/:cartId/increase",
+					"raw": "{{baseUri}}/rest/order/cart/:cartId/increase",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"order",
 						"cart",
 						":cartId",
@@ -267,11 +271,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/order/cart/:cartId/decrease",
+					"raw": "{{baseUri}}/rest/order/cart/:cartId/decrease",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"order",
 						"cart",
 						":cartId",
@@ -328,11 +333,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/order/cart/:cartId/clear",
+					"raw": "{{baseUri}}/rest/order/cart/:cartId/clear",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"order",
 						"cart",
 						":cartId",
