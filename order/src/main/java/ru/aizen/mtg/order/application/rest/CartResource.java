@@ -26,6 +26,7 @@ public class CartResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<CartDTO> edit(@RequestHeader("X-UserId") Long userId) {
 		return CollectionModel.of(cartService.viewUserCarts(userId).stream()
+				.filter(cart -> !cart.singles().isEmpty())
 				.map(CartDTO::from)
 				.collect(Collectors.toList())
 		);

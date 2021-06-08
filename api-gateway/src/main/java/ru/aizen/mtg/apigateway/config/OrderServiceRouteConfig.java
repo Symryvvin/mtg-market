@@ -19,6 +19,9 @@ public class OrderServiceRouteConfig {
 				.route("edit_cart", route -> route.path("/rest/order/cart/edit")
 						.filters(f -> f.filter(jwtFilter))
 						.uri(serviceUri))
+				.route("add_to_cart", route -> route.path("/rest/order/cart/add")
+						.filters(f -> f.filter(jwtFilter))
+						.uri(serviceUri))
 				.build();
 	}
 

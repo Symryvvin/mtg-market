@@ -1,7 +1,7 @@
 import React from "react";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
-import {Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import TopPanel from "../component/TopPanel";
 
@@ -55,6 +55,26 @@ class SearchResultPage extends React.Component {
             });
     }
 
+    addToCart(event, single) {
+        event.preventDefault();
+        fetch("http://localhost:8080/rest/order/cart/add", {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + this.state.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                storeId: single.storeId,
+                singleId: single.singleId
+            })
+        }).then(response => {
+            if (!response.ok) {
+                console.log(response.error);
+                throw Error(response.statusText);
+            }
+        });
+    }
+
     render() {
         const {error, errorMessage, isLoaded, items} = this.state;
 
@@ -86,20 +106,25 @@ class SearchResultPage extends React.Component {
                                         <TableCell align="right">Состояние</TableCell>
                                         <TableCell align="right">Количество</TableCell>
                                         <TableCell align="right">Цена</TableCell>
+                                        <TableCell align="right"> </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {items.map((row) => (
-                                        <TableRow key={row.singleId}>
-                                            <TableCell align="right">{row.oracleName} - {row.name}</TableCell>
-                                            <TableCell align="right">{row.setCode}</TableCell>
-                                            <TableCell align="right">{row.langCode}</TableCell>
-                                            <TableCell align="right">{row.style}</TableCell>
-                                            <TableCell align="right">{row.ownerName}</TableCell>
-                                            <TableCell align="right">{row.ownerLocation}</TableCell>
-                                            <TableCell align="right">{row.condition}</TableCell>
-                                            <TableCell align="right">{row.inStock}</TableCell>
-                                            <TableCell align="right">{row.price}</TableCell>
+                                    {items.map((single) => (
+                                        <TableRow key={single.singleId}>
+                                            <TableCell align="right">{single.oracleName} - {single.name}</TableCell>
+                                            <TableCell align="right">{single.setCode}</TableCell>
+                                            <TableCell align="right">{single.langCode}</TableCell>
+                                            <TableCell align="right">{single.style}</TableCell>
+                                            <TableCell align="right">{single.ownerName}</TableCell>
+                                            <TableCell align="right">{single.ownerLocation}</TableCell>
+                                            <TableCell align="right">{single.condition}</TableCell>
+                                            <TableCell align="right">{single.inStock}</TableCell>
+                                            <TableCell align="right">{single.price}</TableCell>
+                                            <TableCell align="right">
+                                                <Button
+                                                    onClick={(event) => this.addToCart(event, single)}> + </Button>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

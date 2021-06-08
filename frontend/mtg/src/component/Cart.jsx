@@ -55,7 +55,7 @@ class Cart extends React.Component {
                 console.log(response.error);
                 throw Error(response.statusText);
             }
-            singles.splice(single);
+            singles.splice(singles.indexOf(single), 1);
             this.setState(this.state);
         });
     }

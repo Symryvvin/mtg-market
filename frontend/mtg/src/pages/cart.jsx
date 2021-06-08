@@ -60,6 +60,17 @@ class CartPage extends React.Component {
     render() {
         const {error, errorMessage, isLoaded, carts} = this.state;
 
+        let cartRender;
+        if (carts._embedded) {
+            cartRender = carts._embedded.cartDTOList.map((cart) => (
+                <Cart key={cart.trader.id}
+                      trader={cart.trader}
+                      singles={cart.singles}/>
+            ))
+        } else {
+            cartRender = <div/>
+        }
+
         if (error) {
             return <div>Ошибка: {errorMessage}</div>;
         } else if (!isLoaded) {
@@ -74,11 +85,7 @@ class CartPage extends React.Component {
                     <Grid item>
                         <h2>Корзина</h2>
                     </Grid>
-                    {carts._embedded.cartDTOList.map((cart) => (
-                        <Cart key={cart.trader.id}
-                              trader={cart.trader}
-                              singles={cart.singles}/>
-                    ))}
+                    {cartRender}
                     <Grid container item justify="flex-end" className="w-75">
                         <Link to="/">Назад</Link>
                     </Grid>
