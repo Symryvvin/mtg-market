@@ -21,6 +21,11 @@
       "description": "Store Service."
     },
     {
+      "name": "service.order.uri",
+      "type": "java.lang.String",
+      "description": "Order Service."
+    },
+    {
       "name": "service.frontend.uri",
       "type": "java.lang.String",
       "description": "Frontend."

@@ -15,13 +15,15 @@ spring:
 
 service:
   identity:
-      uri: ${IDENTITY_SERVICE_URI}
+    uri: ${IDENTITY_SERVICE_URI}
   store:
-      uri: ${STORE_SERVICE_URI}
+    uri: ${STORE_SERVICE_URI}
   search:
-      uri: ${SEARCH_SERVICE_URI}
+    uri: ${SEARCH_SERVICE_URI}
+  order:
+    uri: ${ORDER_SERVICE_URI}
   frontend:
-      uri: ${FRONTEND}
+    uri: ${FRONTEND}
 
 jwt:
   publicKey: ${JWT_PUBLIC_KEY}

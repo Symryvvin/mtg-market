@@ -22,6 +22,7 @@ public class FrontendRouteConfig {
 				.route("hot_update_main", route -> route.path("/main.**").uri(reactAppUri))
 				.route("sing_up", route -> route.path("/sing_up").uri(reactAppUri))
 				.route("sing_in", route -> route.path("/sing_in").uri(reactAppUri))
+				.route("cart", route -> route.path("/cart").uri(reactAppUri))
 				.route("not_found", route -> route.path("/404").uri(reactAppUri))
 				.route("search", route -> route.path("/search/{oracleId}").uri(reactAppUri))
 				.build();
