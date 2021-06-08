@@ -10,6 +10,7 @@ import NotFoundPage from "./pages/404";
 import SingUpPage from "./pages/singUp";
 import SingInPage from "./pages/singIn";
 import {Component} from "react";
+import CartPage from "./pages/cart";
 
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
         return <Router>
             <Switch>
                 <Route exact path="/" component={MainPage}/>
+                <Route exact path="/cart" component={CartPage}/>
                 <Route exact path="/sing_up" component={SingUpPage}/>
                 <Route exact path="/sing_in" component={SingInPage}/>
                 <Route path="/search/:id" component={SearchResultPage}/>
