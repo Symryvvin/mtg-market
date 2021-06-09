@@ -16,12 +16,12 @@ public class IdentityServiceRouteConfig {
 	@Bean
 	public RouteLocator noSecureRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route("registration",
-						route -> route.path("/registration")
-								.uri(serviceUri))
-				.route("login",
-						route -> route.path("/login")
-								.uri(serviceUri))
+				.route("registration", route -> route.path("/registration")
+						.uri(serviceUri))
+				.route("login", route -> route.path("/login")
+						.uri(serviceUri))
+				.route("username", route -> route.path("/user/{userId}/username")
+						.uri(serviceUri))
 				.build();
 	}
 

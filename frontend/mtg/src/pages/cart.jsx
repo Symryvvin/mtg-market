@@ -8,7 +8,8 @@ import Cart from "../component/Cart";
 
 class CartPage extends React.Component {
     /**
-     * @typedef {{_embedded: {cartDTOList: array}}} Cart
+     * @typedef {{_embedded: {cartModelList: array}}} CartModel
+     * @typedef {{traderId: number}} Cart
      */
 
     static propTypes = {
@@ -62,9 +63,9 @@ class CartPage extends React.Component {
 
         let cartRender;
         if (carts._embedded) {
-            cartRender = carts._embedded.cartDTOList.map((cart) => (
-                <Cart key={cart.trader.id}
-                      trader={cart.trader}
+            cartRender = carts._embedded.cartModelList.map((cart) => (
+                <Cart key={cart.traderId}
+                      traderId={cart.traderId}
                       singles={cart.singles}/>
             ))
         } else {

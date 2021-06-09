@@ -10,8 +10,13 @@ public class Success {
 	private final int status;
 	private final String message;
 
-	public Success(HttpStatus status, String message) {
+	private Success(HttpStatus status, String message) {
 		this.status = status.value();
 		this.message = message;
 	}
+
+	public static Success OK(String message) {
+		return new Success(HttpStatus.OK, message);
+	}
+
 }

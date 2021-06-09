@@ -1,4 +1,4 @@
-package ru.aizen.mtg.order.application.service;
+package ru.aizen.mtg.order.application.rest.response.store;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SingleResponse {
+public class StoreSingle {
 
 	private String singleId;
 	private String trader;

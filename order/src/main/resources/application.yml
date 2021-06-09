@@ -20,7 +20,5 @@ spring:
       password: pass
 
 service:
-  identity:
-    uri: ${IDENTITY_SERVICE_URI}
   store:
     uri: ${STORE_SERVICE_URI}

@@ -11,9 +11,27 @@ class Cart extends React.Component {
         super(props);
 
         this.state = {
-            trader: props.trader,
+            trader: "",
             singles: props.singles
         };
+    }
+
+    componentDidMount() {
+        const {traderId} = this.props;
+
+        fetch("user/" + traderId + "/username")
+            .then(response => {
+                if (!response.ok) {
+                    console.log(response.error);
+                    throw Error(response.statusText);
+                }
+                return response.text();
+            })
+            .then(response => {
+                this.setState({
+                    trader: response
+                })
+            });
     }
 
     onIncreaseSingleClick(event, single) {
@@ -67,7 +85,7 @@ class Cart extends React.Component {
         return (
             <Grid container item className="w-75 p-2">
                 <Grid item>
-                    <a href="#">{trader.name}</a>
+                    <a href="#">{trader}</a>
                 </Grid>
                 <TableContainer component={Paper}>
                     <Table size="small">

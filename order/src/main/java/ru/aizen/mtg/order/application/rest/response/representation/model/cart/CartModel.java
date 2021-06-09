@@ -1,4 +1,4 @@
-package ru.aizen.mtg.order.application.rest.response;
+package ru.aizen.mtg.order.application.rest.response.representation.model.cart;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,21 +17,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CartDTO extends RepresentationModel<CartDTO> {
+public class CartModel extends RepresentationModel<CartModel> {
 
-	private final TraderDTO trader;
-	private final List<SingleDTO> singles;
+	private final long traderId;
+	private final List<SingleModel> singles;
 
-	public static CartDTO from(Cart cart) {
-		TraderDTO traderDTO = TraderDTO.from(cart.trader());
-		List<SingleDTO> singlesDTO = new ArrayList<>();
+	public static CartModel from(Cart cart) {
+		List<SingleModel> singlesDTO = new ArrayList<>();
 		cart.singles().stream()
 				.collect(Collectors.groupingBy(Single::id))
 				.forEach((singleId, list) -> {
-					singlesDTO.add(SingleDTO.from(cart, list.get(0), list.size()));
+					singlesDTO.add(SingleModel.from(cart, list.get(0), list.size()));
 				});
 
-		CartDTO dto = new CartDTO(traderDTO, singlesDTO);
+		CartModel dto = new CartModel(cart.traderId(), singlesDTO);
 		dto.add(linkTo(methodOn(CartResource.class).clear(cart.id())).withRel("clear"));
 
 		return dto;

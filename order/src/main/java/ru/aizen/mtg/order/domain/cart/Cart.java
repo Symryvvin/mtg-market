@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.aizen.mtg.order.domain.single.Single;
-import ru.aizen.mtg.order.domain.trader.Trader;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,13 +23,13 @@ public class Cart {
 	@Id
 	private String id;
 	private final long clientId;
-	private final Trader trader;
+	private final long traderId;
 	private Collection<Single> singles;
 
-	public Cart(long clientId, Trader trader) {
+	public Cart(long clientId, long traderId) {
 		this.singles = new ArrayList<>();
-		this.trader = trader;
 		this.clientId = clientId;
+		this.traderId = traderId;
 	}
 
 	public void add(Single single) {
@@ -57,10 +56,6 @@ public class Cart {
 		if (toRemove.size() > 1) {
 			singles.remove(toRemove.getFirst());
 		}
-	}
-
-	public void removeAll() {
-		singles.clear();
 	}
 
 }

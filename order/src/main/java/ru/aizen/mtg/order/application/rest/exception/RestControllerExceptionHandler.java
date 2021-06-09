@@ -1,4 +1,4 @@
-package ru.aizen.mtg.order.application.rest;
+package ru.aizen.mtg.order.application.rest.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +23,12 @@ class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 				.body(new Error(HttpStatus.NOT_FOUND, e.getMessage()));
 	}
 
-//	@ExceptionHandler({NotAllowedException.class})
-//	public ResponseEntity<Error> forbidden(Exception e, WebRequest request) {
-//		logger.warn(e.getMessage(), e);
-//		return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//				.body(new Error(HttpStatus.FORBIDDEN, e.getMessage()));
-//	}
+	@ExceptionHandler({ForbiddenException.class})
+	public ResponseEntity<Error> forbidden(Exception e, WebRequest request) {
+		logger.warn(e.getMessage(), e);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(new Error(HttpStatus.FORBIDDEN, e.getMessage()));
+	}
 
 	@ExceptionHandler({Exception.class})
 	public ResponseEntity<Error> exception(Exception e, WebRequest request) {

@@ -2,16 +2,15 @@ package ru.aizen.mtg.order.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import ru.aizen.mtg.order.application.rest.response.store.StoreSingle;
 import ru.aizen.mtg.order.domain.cart.Cart;
 import ru.aizen.mtg.order.domain.cart.CartNotFoundException;
 import ru.aizen.mtg.order.domain.cart.CartRepository;
 import ru.aizen.mtg.order.domain.single.Single;
-import ru.aizen.mtg.order.domain.trader.Trader;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -34,32 +33,31 @@ public class CartService {
 		return cartRepository.findAllByClientId(userId);
 	}
 
-	public void addToUserCart(long userId, String storeId, String singleId) {
-		ResponseEntity<SingleResponse> response;
+
+	public Cart findById(String cartId) {
+		return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+	}
+
+	public void addToUserCart(long clientId, String storeId, String singleId) {
+		ResponseEntity<StoreSingle> response;
 		try {
-			response = restTemplate.getForEntity(
-					storeResource + "/store/{storeId}/single/{singleId}",
-					SingleResponse.class,
-					storeId,
-					singleId
-			);
+			response = restTemplate.getForEntity(storeResource + "/store/{storeId}/single/{singleId}",
+					StoreSingle.class, storeId, singleId);
+			StoreSingle storeSingle = response.getBody();
+			if (storeSingle != null) {
+				long traderId = storeSingle.getTraderId();
+
+				Cart cart = cartRepository.findByClientIdAndTraderId(clientId, storeSingle.getTraderId())
+						.orElseGet(() -> new Cart(clientId, traderId));
+
+				cart.add(new Single(storeSingle.getSingleId(), storeSingle.getInfo(), storeSingle.getPrice()));
+				cartRepository.save(cart);
+			} else {
+				throw new CartServiceException("Response from store is null");
+			}
+
 		} catch (RestClientException e) {
-			throw new CartServiceException("Can`t add single to cart");
-		}
-
-		SingleResponse body = response.getBody();
-		if (response.getStatusCode() == HttpStatus.OK && body != null) {
-			Trader trader = new Trader(body.getTraderId(), body.getTrader());
-
-			Optional<Cart> optionalCart = cartRepository.findByClientIdAndTraderId(userId, trader.id());
-			Cart cart = optionalCart.orElseGet(() -> new Cart(userId, trader));
-
-			Single single = new Single(body.getSingleId(), body.getInfo(), body.getPrice());
-
-			cart.add(single);
-			cartRepository.save(cart);
-		} else {
-			throw new CartServiceException("Can`t add single to cart");
+			throw new CartServiceException("Problem to get single info from store", e);
 		}
 	}
 
@@ -97,14 +95,7 @@ public class CartService {
 	}
 
 	public void clearCart(String cartId) {
-		Optional<Cart> optionalCart = cartRepository.findById(cartId);
-		if (optionalCart.isPresent()) {
-			Cart cart = optionalCart.get();
-			cart.removeAll();
-			cartRepository.save(cart);
-		} else {
-			throw new CartNotFoundException(cartId);
-		}
+		cartRepository.findById(cartId);
 	}
 
 }

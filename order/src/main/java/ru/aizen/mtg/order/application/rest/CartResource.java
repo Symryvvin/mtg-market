@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aizen.mtg.order.application.rest.request.AddSingleToCartDTO;
-import ru.aizen.mtg.order.application.rest.response.CartDTO;
+import ru.aizen.mtg.order.application.rest.response.representation.model.cart.CartModel;
 import ru.aizen.mtg.order.application.service.CartService;
 
 import java.util.stream.Collectors;
@@ -24,10 +24,10 @@ public class CartResource {
 
 	@GetMapping(path = "/edit",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public CollectionModel<CartDTO> edit(@RequestHeader("X-UserId") Long userId) {
+	public CollectionModel<CartModel> edit(@RequestHeader("X-UserId") Long userId) {
 		return CollectionModel.of(cartService.viewUserCarts(userId).stream()
 				.filter(cart -> !cart.singles().isEmpty())
-				.map(CartDTO::from)
+				.map(CartModel::from)
 				.collect(Collectors.toList())
 		);
 	}

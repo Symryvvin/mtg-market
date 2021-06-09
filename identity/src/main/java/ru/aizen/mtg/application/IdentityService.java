@@ -90,6 +90,12 @@ public class IdentityService {
 		}
 	}
 
+	public String usernameById(long userId) throws IdentityServiceException {
+		return accountRepository.findById(userId)
+				.map(Account::getLogin)
+				.orElseThrow(() -> new IdentityServiceException("User by id " + userId + " not found"));
+	}
+
 	public Collection<UserShortInfo> users() {
 		return accountRepository.findAll().stream()
 				.map(UserShortInfo::from)

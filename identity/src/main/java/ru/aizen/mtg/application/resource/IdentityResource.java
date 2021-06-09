@@ -88,4 +88,9 @@ public class IdentityResource {
 		return identityService.users();
 	}
 
+	@GetMapping(path = "user/{userId}/username")
+	public String username(@PathVariable("userId") long userId) {
+		return identityService.usernameById(userId);
+	}
+
 }
