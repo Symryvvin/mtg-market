@@ -22,3 +22,9 @@ spring:
 service:
   store:
     uri: ${STORE_SERVICE_URI}
+
+
+axon:
+  axonserver:
+    ssl-enabled: false
+    servers: localhost:8124
