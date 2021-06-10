@@ -24,7 +24,7 @@ class SearchResultPage extends React.Component {
     }
 
     componentDidMount() {
-        const detailsUri = "http://localhost:8080/store/singles/";
+        const detailsUri = "/store/singles/";
         this.oracleId = this.props.match.params.id;
 
         fetch(detailsUri + this.oracleId, {
@@ -57,16 +57,9 @@ class SearchResultPage extends React.Component {
 
     addToCart(event, single) {
         event.preventDefault();
-        fetch("http://localhost:8080/rest/order/cart/add", {
+        fetch("/rest/cart/add/" + single.storeId + "/" + single.singleId, {
             method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + this.state.token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                storeId: single.storeId,
-                singleId: single.singleId
-            })
+            headers: {'Authorization': 'Bearer ' + this.state.token}
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);

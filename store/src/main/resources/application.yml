@@ -2,7 +2,7 @@ server:
   port: 8083
   forward-headers-strategy: native
   servlet:
-    context-path: /store/
+    context-path: /
 
 spring:
   application:

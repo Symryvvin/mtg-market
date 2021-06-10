@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import ru.aizen.mtg.store.application.resource.StoreResource;
-import ru.aizen.mtg.store.application.resource.dto.CreateSingleDTO;
+import ru.aizen.mtg.store.application.resource.dto.request.CreateSingleDTO;
 import ru.aizen.mtg.store.domain.single.Single;
 import ru.aizen.mtg.store.domain.store.Store;
 

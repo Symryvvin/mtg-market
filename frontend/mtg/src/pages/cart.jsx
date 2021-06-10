@@ -8,8 +8,8 @@ import Cart from "../component/Cart";
 
 class CartPage extends React.Component {
     /**
-     * @typedef {{_embedded: {cartModelList: array}}} CartModel
-     * @typedef {{traderId: number}} Cart
+     * @typedef {{_embedded: {cartRepresentationList: array}}} CartModel
+     * @typedef {{storeId: string, singles: array, _links: {create_order: {href: string}}}} Cart
      */
 
     static propTypes = {
@@ -29,7 +29,7 @@ class CartPage extends React.Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:8080/rest/order/cart/edit", {
+        fetch("http://localhost:8080/rest/cart/edit", {
             headers: {'Authorization': 'Bearer ' + this.state.token},
         })
             .then(response => {
@@ -63,10 +63,9 @@ class CartPage extends React.Component {
 
         let cartRender;
         if (carts._embedded) {
-            cartRender = carts._embedded.cartModelList.map((cart) => (
-                <Cart key={cart.traderId}
-                      traderId={cart.traderId}
-                      singles={cart.singles}/>
+            cartRender = carts._embedded.cartRepresentationList.map((cart) => (
+                <Cart key={cart.storeId}
+                      cart={cart}/>
             ))
         } else {
             cartRender = <div/>

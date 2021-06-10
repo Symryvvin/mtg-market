@@ -6,11 +6,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aizen.mtg.store.application.resource.dto.CreateSingleDTO;
-import ru.aizen.mtg.store.application.resource.dto.CreateStoreDTO;
-import ru.aizen.mtg.store.application.resource.dto.ReserveSingleDTO;
-import ru.aizen.mtg.store.application.resource.dto.response.SingleInfoDTO;
+import ru.aizen.mtg.store.application.parser.ExcelSingleParser;
+import ru.aizen.mtg.store.application.parser.JsonSingleParser;
+import ru.aizen.mtg.store.application.resource.dto.request.CreateSingleDTO;
+import ru.aizen.mtg.store.application.resource.dto.request.CreateStoreDTO;
+import ru.aizen.mtg.store.application.resource.dto.request.ReserveSingleDTO;
 import ru.aizen.mtg.store.application.resource.dto.response.StoreDTO;
+import ru.aizen.mtg.store.application.resource.dto.response.StoreInfoRepresentation;
 import ru.aizen.mtg.store.application.resource.dto.response.Success;
 import ru.aizen.mtg.store.application.service.FoundCard;
 import ru.aizen.mtg.store.application.service.StoreService;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/store")
 public class StoreResource {
 
 	private final StoreService storeService;
@@ -74,6 +77,22 @@ public class StoreResource {
 
 		StoreDTO storeDTO = StoreDTO.view(store);
 		return ResponseEntity.ok(storeDTO);
+	}
+
+	@GetMapping(path = "/{storeId}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StoreDTO> find(@PathVariable("storeId") String storeId) {
+		Store store = storeService.find(storeId);
+
+		StoreDTO storeDTO = StoreDTO.view(store);
+		return ResponseEntity.ok(storeDTO);
+	}
+
+	@GetMapping(path = "/{storeId}/info",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public StoreInfoRepresentation info(@PathVariable("storeId") String storeId) {
+		Store store = storeService.find(storeId);
+		return StoreInfoRepresentation.from(store);
 	}
 
 	@PutMapping(path = "/{storeId}/singles/add",
@@ -196,14 +215,6 @@ public class StoreResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<FoundCard> findByOracleID(@PathVariable("oracleId") String oracleId) {
 		return storeService.findInStoresBySingleId(oracleId);
-	}
-
-	@GetMapping(path = "/{storeId}/single/{singleId}",
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public SingleInfoDTO detailsSingle(@PathVariable("storeId") String storeId,
-	                                   @PathVariable("singleId") String singleId) {
-		Store store = storeService.find(storeId);
-		return SingleInfoDTO.of(storeService.findSingleInStore(store, singleId), store);
 	}
 
 }

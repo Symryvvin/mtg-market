@@ -24,7 +24,7 @@ class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 				.body(new Error(HttpStatus.NOT_FOUND, e.getMessage()));
 	}
 
-	@ExceptionHandler({NotAllowedException.class})
+	@ExceptionHandler({ForbiddenException.class})
 	public ResponseEntity<Error> forbidden(Exception e, WebRequest request) {
 		logger.warn(e.getMessage(), e);
 		return ResponseEntity.status(HttpStatus.FORBIDDEN)

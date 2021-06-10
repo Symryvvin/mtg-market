@@ -1,35 +1,40 @@
 import React from "react";
 import {Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Cookies, withCookies} from "react-cookie";
+import {instanceOf} from "prop-types";
+import {Link} from "react-router-dom";
 
 
 class Cart extends React.Component {
     /**
-     * @typedef {{ _links: {increase: {href: string}, decrease: {href: string}, remove: {href: string}}, quantity: number, price: number }} Single
+     * @typedef {{ singleId: string, _links: {increase: {href: string}, decrease: {href: string}, remove: {href: string}}, quantity: number, price: number }} Single
+     * @typedef {{ traderName: string, _links: {self: {href: string}}, quantity: number, price: number }} Store
      */
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
 
     constructor(props) {
         super(props);
-
         this.state = {
-            trader: "",
-            singles: props.singles
+            store: null,
+            cart: this.props.cart
         };
     }
 
     componentDidMount() {
-        const {traderId} = this.props;
-
-        fetch("user/" + traderId + "/username")
+        const {cart} = this.props;
+        fetch("/store/" + cart.storeId + "/info")
             .then(response => {
                 if (!response.ok) {
                     console.log(response.error);
                     throw Error(response.statusText);
                 }
-                return response.text();
+                return response.json();
             })
             .then(response => {
                 this.setState({
-                    trader: response
+                    store: response
                 })
             });
     }
@@ -78,19 +83,68 @@ class Cart extends React.Component {
         });
     }
 
+    onClearStoreCartClick(event) {
+        const {cart} = this.state;
+        event.preventDefault();
+        fetch(cart._links.clear.href, {
+            method: 'DELETE'
+        }).then(response => {
+            if (!response.ok) {
+                console.log(response.error);
+                throw Error(response.statusText);
+            }
+            cart.singles.splice(0, cart.singles.length);
+            this.setState(this.state);
+        });
+    }
+
+    onCreateOrderClick(event) {
+        const {cart} = this.state;
+        const {cookies} = this.props;
+
+        event.preventDefault();
+        fetch(cart._links.create_order.href, {
+            method: 'POST',
+            headers: {'Authorization': 'Bearer ' + cookies.get('access_token')},
+        }).then(response => {
+            if (!response.ok) {
+                console.log(response.error);
+                throw Error(response.statusText);
+            }
+            console.log(response.json())
+        });
+    }
+
 
     render() {
-        const {singles, trader} = this.state;
+        const {cart, store} = this.state;
+        const singles = cart.singles;
+
+        let trader = "";
+        if (store) {
+            let storeLink = "/store/" + store.traderName;
+            trader = <Link to={storeLink}>{store.traderName}</Link>;
+        }
 
         return (
             <Grid container item className="w-75 p-2">
-                <Grid item>
-                    <a href="#">{trader}</a>
+                <Grid container
+                      item
+                      justify="space-between"
+                      alignContent="space-between">
+                    <Grid item>
+                        {trader}
+                        <Button
+                            onClick={(event) => this.onCreateOrderClick(event)}> Сделать заказ </Button>
+                    </Grid>
+                    <Button
+                        onClick={(event) => this.onClearStoreCartClick(event)}> Очистить все </Button>
                 </Grid>
                 <TableContainer component={Paper}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
+                                <TableCell align="left">Наименование</TableCell>
                                 <TableCell align="left">Инфо</TableCell>
                                 <TableCell align="center" width={200}>Количество</TableCell>
                                 <TableCell align="center" width={100}>Цена</TableCell>
@@ -99,8 +153,9 @@ class Cart extends React.Component {
                         </TableHead>
                         <TableBody>
                             {singles.map((single) => (
-                                <TableRow key={single.id}>
-                                    <TableCell align="left">{single.info}</TableCell>
+                                <TableRow key={single.singleId}>
+                                    <TableCell align="left">{single.name}</TableCell>
+                                    <TableCell align="left">{single.attributes}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             onClick={(event) => this.onDecreaseSingleClick(event, single)}> - </Button>
@@ -125,4 +180,4 @@ class Cart extends React.Component {
     }
 }
 
-export default Cart;
+export default withCookies(Cart);

@@ -1,11 +1,10 @@
-package ru.aizen.mtg.store.application.resource;
+package ru.aizen.mtg.store.application.parser;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aizen.mtg.store.application.resource.exception.SingleParserException;
 import ru.aizen.mtg.store.domain.single.Single;
 
 import java.io.IOException;

@@ -23,6 +23,10 @@ public class StoreServiceRouteConfig {
 						.uri(serviceUri))
 				.route("view_user_store", route -> route.path("/store/{owner}/{name}")
 						.uri(serviceUri))
+				.route("info", route -> route.path("/store/{storeId}/info")
+						.uri(serviceUri))
+				.route("find", route -> route.path("/store/{storeId}")
+						.uri(serviceUri))
 				.build();
 	}
 

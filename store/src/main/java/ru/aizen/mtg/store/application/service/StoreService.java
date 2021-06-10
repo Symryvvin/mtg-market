@@ -2,7 +2,7 @@ package ru.aizen.mtg.store.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.aizen.mtg.store.application.resource.exception.NotAllowedException;
+import ru.aizen.mtg.store.application.resource.exception.ForbiddenException;
 import ru.aizen.mtg.store.domain.single.Single;
 import ru.aizen.mtg.store.domain.single.SingleNotFoundException;
 import ru.aizen.mtg.store.domain.store.Store;
@@ -32,7 +32,7 @@ public class StoreService {
 		storeRepository.findById(storeId).ifPresent(
 				store -> {
 					if (store.owner().id() != userId) {
-						throw new NotAllowedException();
+						throw new ForbiddenException();
 					}
 				}
 		);
@@ -152,7 +152,4 @@ public class StoreService {
 				.collect(Collectors.toList());
 	}
 
-	public Single findSingleInStore(Store store, String singleId) {
-		return store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, store.name()));
-	}
 }

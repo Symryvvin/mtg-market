@@ -1,11 +1,10 @@
-package ru.aizen.mtg.store.application.resource;
+package ru.aizen.mtg.store.application.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.web.multipart.MultipartFile;
-import ru.aizen.mtg.store.application.resource.exception.SingleParserException;
 import ru.aizen.mtg.store.domain.single.Single;
 
 import java.io.IOException;

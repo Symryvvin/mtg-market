@@ -1,4 +1,4 @@
-package ru.aizen.mtg.store.application.resource;
+package ru.aizen.mtg.store.application.parser;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;

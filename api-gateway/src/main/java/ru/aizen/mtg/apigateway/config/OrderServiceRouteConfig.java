@@ -16,10 +16,7 @@ public class OrderServiceRouteConfig {
 	@Bean
 	public RouteLocator secureOrderLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
 		return builder.routes()
-				.route("edit_cart", route -> route.path("/rest/order/cart/edit")
-						.filters(f -> f.filter(jwtFilter))
-						.uri(serviceUri))
-				.route("add_to_cart", route -> route.path("/rest/order/cart/add")
+				.route("order_from_cart", route -> route.path("/rest/order/from/{cartId}")
 						.filters(f -> f.filter(jwtFilter))
 						.uri(serviceUri))
 				.build();
@@ -28,10 +25,6 @@ public class OrderServiceRouteConfig {
 	@Bean
 	public RouteLocator noSecureOrderLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route("increase", route -> route.path("/rest/order/cart/{cartId}/increase/{singleId}").uri(serviceUri))
-				.route("decrease", route -> route.path("/rest/order/cart/{cartId}/decrease/{singleId}").uri(serviceUri))
-				.route("remove", route -> route.path("/rest/order/cart/{cartId}/remove/{singleId}").uri(serviceUri))
-				.route("clear", route -> route.path("/rest/order/cart/{cartId}/clear").uri(serviceUri))
 				.build();
 	}
 

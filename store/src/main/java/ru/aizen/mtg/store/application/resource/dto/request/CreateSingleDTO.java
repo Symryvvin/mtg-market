@@ -1,4 +1,4 @@
-package ru.aizen.mtg.store.application.resource.dto;
+package ru.aizen.mtg.store.application.resource.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

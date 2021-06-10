@@ -1,4 +1,4 @@
-package ru.aizen.mtg.store.application.resource.exception;
+package ru.aizen.mtg.store.application.parser;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
