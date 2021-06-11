@@ -5,13 +5,10 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import reactor.core.publisher.Mono;
 import ru.aizen.mtg.apigateway.filter.jwt.JwtFilter;
-import ru.aizen.mtg.apigateway.filter.jwt.TokenData;
 
 @Configuration
-public class StoreServiceRouteConfig {
+public class StoreResourceRouteConfig {
 
 	@Value("${service.store.uri}")
 	private String serviceUri;
@@ -19,13 +16,13 @@ public class StoreServiceRouteConfig {
 	@Bean
 	public RouteLocator unsecureRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route("search", route -> route.path("/store/singles/{oracleId}")
+				.route("search", route -> route.path("/rest/store/singles/{oracleId}")
 						.uri(serviceUri))
-				.route("view_user_store", route -> route.path("/store/{owner}/{name}")
+				.route("view_by_name", route -> route.path("/rest/store/find/{traderName}")
 						.uri(serviceUri))
-				.route("info", route -> route.path("/store/{storeId}/info")
+				.route("info", route -> route.path("/rest/store/{storeId}/info")
 						.uri(serviceUri))
-				.route("find", route -> route.path("/store/{storeId}")
+				.route("find", route -> route.path("/rest/store/{storeId}")
 						.uri(serviceUri))
 				.build();
 	}
@@ -33,78 +30,60 @@ public class StoreServiceRouteConfig {
 	@Bean
 	public RouteLocator storeRouteLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
 		return builder.routes()
-				.route("create_store",
-						route -> route.path("/store/create")
-								.filters(f -> f.filter(jwtFilter)
-										.modifyRequestBody(String.class, CreateStore.class, MediaType.APPLICATION_JSON_VALUE,
-												(exchange, body) -> {
-													TokenData data = exchange.getAttribute("user.data");
-													if (data != null) {
-														return Mono.just(new CreateStore(
-																data.getUserId(),
-																data.getUsername(),
-																data.getUserLocation(),
-																body
-														));
-													} else {
-														return null;
-													}
-												}))
-								.uri(serviceUri))
-				.route("edit_store",
-						route -> route
-								.path("/store/{storeId}/edit")
-								.filters(f -> f.filter(jwtFilter))
-								.uri(serviceUri))
+				.route("create", route -> route.path("/rest/store")
+						.filters(f -> f.filter(jwtFilter))
+						.uri(serviceUri))
+				.route("edit_store", route -> route.path("/rest/store/edit")
+						.filters(f -> f.filter(jwtFilter))
+						.uri(serviceUri))
 				.route("import_singles",
 						route -> route
-								.path("/store/{storeId}/singles/import")
+								.path("/rest/store/{storeId}/singles/import")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("import_singles_json",
 						route -> route
-								.path("/store/{storeId}/singles/import/json")
+								.path("/rest/store/{storeId}/singles/import/json")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("find_user_stores",
 						route -> route
-								.path("/find/{userId}")
+								.path("/rest/find/{userId}")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("add_single",
 						route -> route
-								.path("/{storeId}/singles/add")
+								.path("/rest/{storeId}/singles/add")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
-
 				.route("edit_single_in_store",
 						route -> route
-								.path("/{storeId}/singles/{singleId}/edit")
+								.path("/rest/{storeId}/singles/{singleId}/edit")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("delete_single_in_store",
 						route -> route
-								.path("/{storeId}/singles/{singleId}/delete")
+								.path("/rest/{storeId}/singles/{singleId}/delete")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("reserve_singles",
 						route -> route
-								.path("/{storeId}/singles/reserve")
+								.path("/rest/{storeId}/singles/reserve")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("block_store",
 						route -> route
-								.path("/{storeId}/block")
+								.path("/rest/{storeId}/block")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("unblock_store",
 						route -> route
-								.path("/{storeId}/unblock")
+								.path("/rest/{storeId}/unblock")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.route("delete_store",
 						route -> route
-								.path("/{storeId}/delete")
+								.path("/rest/{storeId}/delete")
 								.filters(f -> f.filter(jwtFilter))
 								.uri(serviceUri))
 				.build();

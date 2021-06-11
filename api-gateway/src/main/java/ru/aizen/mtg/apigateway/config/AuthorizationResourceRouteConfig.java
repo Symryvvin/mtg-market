@@ -15,9 +15,9 @@ public class AuthorizationResourceRouteConfig {
 	@Bean
 	public RouteLocator noSecureAuthRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route("registration", route -> route.path("/registration")
+				.route("registration", route -> route.path("/rest/auth/registration")
 						.uri(serviceUri))
-				.route("login", route -> route.path("/login")
+				.route("login", route -> route.path("/rest/auth/login")
 						.uri(serviceUri))
 				.build();
 	}

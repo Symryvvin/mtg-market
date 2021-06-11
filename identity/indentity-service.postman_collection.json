@@ -70,11 +70,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/login",
+					"raw": "{{baseUri}}/rest/auth/login",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"auth",
 						"login"
 					]
 				}
@@ -122,11 +124,11 @@
 		{
 			"name": "become trader",
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "X-UserId",
-						"value": "27",
+						"value": "{{userId}}",
 						"type": "text"
 					}
 				],
@@ -163,12 +165,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/users",
+					"raw": "{{baseUri}}/rest/user/all",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"users"
+						"rest",
+						"user",
+						"all"
 					]
 				}
 			},
@@ -191,7 +195,13 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"fullName\": \"{{fullName}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"phone\": \"{{phone}}\"\r\n}",
@@ -237,7 +247,7 @@
 				"method": "PUT",
 				"header": [
 					{
-						"key": "",
+						"key": "X-UserId",
 						"value": "{{userId}}",
 						"type": "text"
 					}

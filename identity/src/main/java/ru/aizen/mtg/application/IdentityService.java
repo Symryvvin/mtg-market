@@ -140,7 +140,7 @@ public class IdentityService {
 				account.changeRole(trader);
 				accountRepository.save(account);
 
-				restTemplate.postForLocation(storeService + "/store/create",
+				restTemplate.postForLocation(storeService + "/store",
 						new CreateStoreDTO(
 								account.getId(),
 								account.getLogin(),

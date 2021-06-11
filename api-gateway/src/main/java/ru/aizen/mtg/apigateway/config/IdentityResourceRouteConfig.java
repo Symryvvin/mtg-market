@@ -24,6 +24,9 @@ public class IdentityResourceRouteConfig {
 	@Bean
 	public RouteLocator secureIdentityRouteLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
 		return builder.routes()
+				.route("user_profile", route -> route.path("/rest/user/{username}")
+						.filters(f -> f.filter(jwtFilter))
+						.uri(serviceUri))
 				.route("edit_profile", route -> route.path("/rest/user/edit/profile")
 						.filters(f -> f.filter(jwtFilter))
 						.uri(serviceUri))
