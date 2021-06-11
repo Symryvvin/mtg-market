@@ -29,7 +29,7 @@ class CartPage extends React.Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:8080/rest/cart/edit", {
+        fetch("/rest/cart/edit", {
             headers: {'Authorization': 'Bearer ' + this.state.token},
         })
             .then(response => {

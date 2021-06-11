@@ -5,7 +5,7 @@ import {useCookies} from 'react-cookie'
 import TopPanel from "../component/TopPanel";
 
 const MainPage = () => {
-    const autocompleteUri = "http://localhost:8080/rest/search/auto?search=";
+    const autocompleteUri = "/rest/search/auto?search=";
 
     const [oracleId, setOracleId] = React.useState(null);
     const [value, setValue] = React.useState(null);

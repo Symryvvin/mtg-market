@@ -14,7 +14,7 @@ class SingUpPage extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({username: data.get('username'), password: data.get('password')})
             };
-            fetch('http://localhost:8080/registration', requestOptions)
+            fetch('/rest/auth/registration', requestOptions)
                 .then(response => {
                     if (response.status !== 200) {
                         return response.json()

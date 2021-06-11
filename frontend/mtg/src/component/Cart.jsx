@@ -24,7 +24,7 @@ class Cart extends React.Component {
 
     componentDidMount() {
         const {cart} = this.props;
-        fetch("/store/" + cart.storeId + "/info")
+        fetch("/rest/store/" + cart.storeId + "/info")
             .then(response => {
                 if (!response.ok) {
                     console.log(response.error);

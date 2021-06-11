@@ -16,7 +16,7 @@ const SingInPage = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: data.get('username'), password: data.get('password')})
         };
-        fetch('http://localhost:8080/login', requestOptions)
+        fetch('/rest/auth/login', requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log(data);

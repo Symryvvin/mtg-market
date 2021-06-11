@@ -24,7 +24,7 @@ class SearchResultPage extends React.Component {
     }
 
     componentDidMount() {
-        const detailsUri = "/store/singles/";
+        const detailsUri = "/rest/store/singles/";
         this.oracleId = this.props.match.params.id;
 
         fetch(detailsUri + this.oracleId, {
