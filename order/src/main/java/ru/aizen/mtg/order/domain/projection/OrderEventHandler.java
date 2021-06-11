@@ -23,9 +23,9 @@ public class OrderEventHandler {
 		orderRepository.deleteByOrderId(event.getOrderId());
 
 		Order order = Order.create(event.getOrderId(),
-				generateOrderNumber(event.getOrderId(), event.getClientId(), event.getStoreId()),
+				generateOrderNumber(event.getOrderId(), event.getClientId(), event.getTraderId()),
 				event.getClientId(),
-				event.getStoreId(),
+				event.getTraderId(),
 				event.getStatus(),
 				event.getEventTime(),
 				event.getItems()
@@ -33,8 +33,8 @@ public class OrderEventHandler {
 		orderRepository.save(order);
 	}
 
-	private String generateOrderNumber(String orderId, long clientId, String storeId) {
-		return (orderId.substring(0, 4) + "-" + String.format("%05d", clientId) + "-" + storeId.substring(0, 4))
+	private String generateOrderNumber(String orderId, long clientId, long traderId) {
+		return (orderId.substring(0, 4) + "-" + String.format("%05d", clientId) + "-" + String.format("%05d", traderId))
 				.toUpperCase();
 	}
 

@@ -17,9 +17,9 @@ public class OrderEvent {
 
 	public static OrderEvent place(String orderId,
 	                               long clientId,
-	                               String storeId,
+	                               long traderId,
 	                               Collection<OrderItem> items) {
-		return new OrderPlacedEvent(orderId, clientId, storeId, items);
+		return new OrderPlacedEvent(orderId, clientId, traderId, items);
 	}
 
 	public static OrderEvent changeShippingAddress(String orderId, String shippingAddress) {

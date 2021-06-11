@@ -9,13 +9,13 @@ import java.util.Collection;
 public class PlaceOrderCommand extends OrderCommand {
 
 	private final long clientId;
-	private final String storeId;
+	private final long traderId;
 	private final Collection<OrderItem> items;
 
-	public PlaceOrderCommand(String orderId, long clientId, String storeId, Collection<OrderItem> items) {
+	public PlaceOrderCommand(String orderId, long clientId, long traderId, Collection<OrderItem> items) {
 		super(orderId);
 		this.clientId = clientId;
-		this.storeId = storeId;
+		this.traderId = traderId;
 		this.items = items;
 	}
 }

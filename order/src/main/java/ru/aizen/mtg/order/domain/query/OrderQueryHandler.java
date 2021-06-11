@@ -26,8 +26,8 @@ public class OrderQueryHandler {
 	}
 
 	@QueryHandler
-	public Collection<Order> handle(StoreOrderListQuery query) {
-		return orderRepository.findAllByStoreId(query.getStoreId());
+	public Collection<Order> handle(TraderOrderListQuery query) {
+		return orderRepository.findAllByTraderId(query.getTraderId());
 	}
 
 	@QueryHandler

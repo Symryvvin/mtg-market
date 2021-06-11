@@ -6,21 +6,21 @@ import org.axonframework.messaging.Message;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aizen.mtg.order.application.resource.request.PlaceOrderDTO;
 import ru.aizen.mtg.order.application.resource.response.Success;
+import ru.aizen.mtg.order.application.resource.response.order.OrderDetailsPresentation;
 import ru.aizen.mtg.order.application.resource.response.order.OrderPresentation;
 import ru.aizen.mtg.order.domain.command.*;
 import ru.aizen.mtg.order.domain.event.OrderEvent;
 import ru.aizen.mtg.order.domain.order.Order;
 import ru.aizen.mtg.order.domain.query.ClientOrderListQuery;
 import ru.aizen.mtg.order.domain.query.OrderQuery;
-import ru.aizen.mtg.order.domain.query.StoreOrderListQuery;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -45,7 +45,7 @@ public class OrderResource {
 				new PlaceOrderCommand(
 						UUID.randomUUID().toString(),
 						dto.getClientId(),
-						dto.getStoreId(),
+						dto.getTraderId(),
 						dto.getItems())
 		);
 		return ResponseEntity.ok(orderId);
@@ -58,7 +58,7 @@ public class OrderResource {
 	}
 
 	@PutMapping(path = "/{orderId}/change/address", consumes = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Success> changeAddress(@PathVariable("orderId") String orderId, @RequestBody String address) {
+	public ResponseEntity<Success> changeShippingAddress(@PathVariable("orderId") String orderId, @RequestBody String address) {
 		Order order = queryGateway.query(new OrderQuery(orderId), Order.class).join();
 		checkStatus(order);
 		commandGateway.sendAndWait(new ChangeShippingAddressCommand(orderId, address));
@@ -66,7 +66,7 @@ public class OrderResource {
 	}
 
 	@PutMapping(path = "/{orderId}/change/cost", consumes = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Success> changeCost(@PathVariable("orderId") String orderId, @RequestBody String cost) {
+	public ResponseEntity<Success> changeShippingCost(@PathVariable("orderId") String orderId, @RequestBody String cost) {
 		Order order = queryGateway.query(new OrderQuery(orderId), Order.class).join();
 		checkStatus(order);
 		commandGateway.sendAndWait(new ChangeShippingCostCommand(orderId, Double.parseDouble(cost)));
@@ -74,8 +74,8 @@ public class OrderResource {
 	}
 
 	@PutMapping(path = "/{orderId}/change/items", consumes = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Success> changeItems(@PathVariable("orderId") String orderId,
-	                                           @RequestBody String itemId) {
+	public ResponseEntity<Success> removeItem(@PathVariable("orderId") String orderId,
+	                                          @RequestBody String itemId) {
 		Order order = queryGateway.query(new OrderQuery(orderId), Order.class).join();
 		checkStatus(order);
 		String itemName = order.itemName(itemId);
@@ -117,7 +117,7 @@ public class OrderResource {
 	}
 
 	@GetMapping("/{orderId}")
-	public OrderPresentation view(@PathVariable("orderId") String orderId) {
+	public OrderDetailsPresentation view(@PathVariable("orderId") String orderId) {
 		Collection<OrderEvent> events = eventStore.readEvents(orderId).asStream()
 				.map(Message::getPayload)
 				.filter(event -> event instanceof OrderEvent)
@@ -125,27 +125,26 @@ public class OrderResource {
 				.collect(Collectors.toList());
 
 		Order order = queryGateway.query(new OrderQuery(orderId), Order.class).join();
-		return OrderPresentation.from(order, events);
+		return OrderDetailsPresentation.from(order, events);
 	}
 
-	@GetMapping("/all/store/{storeId}")
-	public Collection<OrderPresentation> storeOrders(@PathVariable("storeId") String storeId) {
-		Collection<Order> orders = queryGateway.query(new StoreOrderListQuery(storeId),
-				ResponseTypes.multipleInstancesOf(Order.class)).join();
-
-		return orders.stream().map(
-				order -> OrderPresentation.from(order, Collections.emptyList()))
-				.collect(Collectors.toList());
+	@GetMapping("/all/trader")
+	public CollectionModel<OrderPresentation> traderOrders(@RequestHeader("X-UserId") Long userId) {
+		return byUserId(userId);
 	}
 
 	@GetMapping("/all/client")
-	public Collection<OrderPresentation> storeOrders(  @RequestHeader("X-UserId") Long clientId) {
-		Collection<Order> orders = queryGateway.query(new ClientOrderListQuery(clientId),
+	public CollectionModel<OrderPresentation> clientOrders(@RequestHeader("X-UserId") Long userId) {
+		return byUserId(userId);
+	}
+
+	private CollectionModel<OrderPresentation> byUserId(long userId) {
+		Collection<Order> orders = queryGateway.query(new ClientOrderListQuery(userId),
 				ResponseTypes.multipleInstancesOf(Order.class)).join();
 
-		return orders.stream().map(
-				order -> OrderPresentation.from(order, Collections.emptyList()))
-				.collect(Collectors.toList());
+		return CollectionModel.of(orders.stream()
+				.map(OrderPresentation::from)
+				.collect(Collectors.toList()));
 	}
 
 }

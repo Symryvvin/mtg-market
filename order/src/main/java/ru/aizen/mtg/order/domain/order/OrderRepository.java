@@ -15,6 +15,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
 	Collection<Order> findAllByClientId(long clientId);
 
-	Collection<Order> findAllByStoreId(String StoreId);
+	Collection<Order> findAllByTraderId(long traderId);
 
 }

@@ -3,8 +3,8 @@ package ru.aizen.mtg.order.domain.query;
 import lombok.Data;
 
 @Data
-public class StoreOrderListQuery {
+public class TraderOrderListQuery {
 
-	private final String storeId;
+	private final long traderId;
 
 }

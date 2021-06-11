@@ -10,16 +10,16 @@ import java.util.Collection;
 public class OrderPlacedEvent extends OrderEvent {
 
 	private final long clientId;
-	private final String storeId;
+	private final long traderId;
 	private final Collection<OrderItem> items;
 
 	OrderPlacedEvent(String orderId,
 	                        long clientId,
-	                        String storeId,
+	                        long traderId,
 	                        Collection<OrderItem> items) {
 		super(orderId, OrderStatus.PLACED, null);
 		this.clientId = clientId;
-		this.storeId = storeId;
+		this.traderId = traderId;
 		this.items = items;
 	}
 }

@@ -16,8 +16,9 @@ public class Order {
 	private String orderId;
 	private String orderNumber;
 	private long clientId;
-	private String storeId;
+	private long traderId;
 	private OrderStatus status;
+	private LocalDateTime creationDate;
 	private LocalDateTime updatedTime;
 
 	private Collection<OrderItem> items;
@@ -25,29 +26,30 @@ public class Order {
 	private String shippedTo;
 
 	private Order(String orderId,
-	             String orderNumber,
-	             long clientId,
-	             String storeId,
-	             OrderStatus status,
-	             LocalDateTime updatedTime,
-	             Collection<OrderItem> items) {
+	              String orderNumber,
+	              long clientId,
+	              long traderId,
+	              OrderStatus status,
+	              LocalDateTime updatedTime,
+	              Collection<OrderItem> items) {
 		this.orderId = orderId;
 		this.orderNumber = orderNumber;
 		this.clientId = clientId;
-		this.storeId = storeId;
+		this.traderId = traderId;
 		this.status = status;
 		this.items = items;
+		this.creationDate = updatedTime;
 		this.updatedTime = updatedTime;
 	}
 
 	public static Order create(String orderId,
 	                           String orderNumber,
 	                           long clientId,
-	                           String storeId,
+	                           long traderId,
 	                           OrderStatus status,
 	                           LocalDateTime updatedTime,
 	                           Collection<OrderItem> items) {
-		return new Order(orderId, orderNumber, clientId, storeId, status, updatedTime, items);
+		return new Order(orderId, orderNumber, clientId, traderId, status, updatedTime, items);
 	}
 
 	public boolean isOnEndStatus() {
@@ -57,6 +59,7 @@ public class Order {
 	public void removeItem(String itemId) {
 		items.removeIf(item -> item.getSingleId().equalsIgnoreCase(itemId));
 	}
+
 	public String itemName(String itemId) {
 		return items.stream()
 				.filter(item -> item.getSingleId().equalsIgnoreCase(itemId))

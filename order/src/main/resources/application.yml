@@ -27,4 +27,4 @@ service:
 axon:
   axonserver:
     ssl-enabled: false
-    servers: localhost:8124
+    servers: ${AXON_SERVER}

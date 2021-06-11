@@ -9,7 +9,7 @@ import java.util.Collection;
 public class PlaceOrderDTO {
 
 	private final long clientId;
-	private final String storeId;
+	private final long traderId;
 	private final Collection<OrderItem> items;
 
 }

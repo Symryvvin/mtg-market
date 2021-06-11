@@ -7,9 +7,8 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.util.Assert;
 import ru.aizen.mtg.order.domain.command.*;
-import ru.aizen.mtg.order.domain.event.*;
-
-import java.util.Collection;
+import ru.aizen.mtg.order.domain.event.OrderEvent;
+import ru.aizen.mtg.order.domain.event.OrderPlacedEvent;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
@@ -20,18 +19,12 @@ public class OrderAggregate {
 
 	@AggregateIdentifier
 	private String orderId;
-	private long clientId;
-	private String storeId;
-	private OrderStatus status;
-	private Collection<OrderItem> items;
-	private double shippingCost;
-	private String shippedTo;
 
 	@CommandHandler
 	public OrderAggregate(PlaceOrderCommand command) {
 		Assert.notEmpty(command.getItems(), "Заказ пуст");
 
-		apply(OrderEvent.place(command.getOrderId(), command.getClientId(), command.getStoreId(), command.getItems()));
+		apply(OrderEvent.place(command.getOrderId(), command.getClientId(), command.getTraderId(), command.getItems()));
 	}
 
 	@CommandHandler
@@ -74,25 +67,6 @@ public class OrderAggregate {
 	@EventSourcingHandler
 	public void on(OrderPlacedEvent event) {
 		this.orderId = event.getOrderId();
-		this.clientId = event.getClientId();
-		this.storeId = event.getStoreId();
-		this.items = event.getItems();
-		this.status = event.getStatus();
-	}
-
-	@EventSourcingHandler
-	public void on(OrderConfirmedEvent event) {
-		status = event.getStatus();
-	}
-
-	@EventSourcingHandler
-	public void on(OrderCanceledEvent event) {
-		status = event.getStatus();
-	}
-
-	@EventSourcingHandler
-	public void on(OrderCompletedEvent event) {
-		status = event.getStatus();
 	}
 
 }
