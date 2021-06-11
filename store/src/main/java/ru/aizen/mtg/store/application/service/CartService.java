@@ -31,7 +31,7 @@ public class CartService {
 		Cart cart = cartRepository.findByClientId(clientId)
 				.orElseGet(() -> Cart.create(clientId));
 
-		Store store = storeRepository.findById(storeId).orElseThrow(() -> new StoreNotFountException(storeId));
+		Store store = storeRepository.findById(storeId).orElseThrow(StoreNotFountException::new);
 		Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, storeId));
 		cart.add(storeId, single);
 		cartRepository.save(cart);

@@ -13,10 +13,10 @@ public interface StoreRepository extends MongoRepository<Store, String> {
 	@Query(value = "{ 'singles.oracleId' : ?0}")
 	Collection<Store> findAllBySinglesOracleId(String oracleId);
 
-	Collection<Store> findAllByOwnerId(long userId);
+	Optional<Store> findByTraderId(long traderId);
 
-	Collection<Store> findAllByOwnerName(String ownerName);
+	Optional<Store> findByTraderName(String ownerName);
 
-	Optional<Store> findByNameAndOwnerName(String name, String ownerName);
+	boolean existsByTraderId(long traderId);
 
 }

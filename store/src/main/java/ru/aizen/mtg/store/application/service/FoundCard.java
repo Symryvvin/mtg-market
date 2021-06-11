@@ -38,8 +38,8 @@ public class FoundCard {
 				single.style().name(),
 				store.id(),
 				single.id(),
-				store.owner().name(),
-				store.owner().location(),
+				store.trader().name(),
+				store.trader().location(),
 				single.condition().getValue(),
 				single.price(),
 				single.inStock()

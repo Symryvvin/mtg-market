@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @ToString
 @Document
-public class StoreOwner {
+public class Trader {
 
 	private final long id;
 	private final String name;

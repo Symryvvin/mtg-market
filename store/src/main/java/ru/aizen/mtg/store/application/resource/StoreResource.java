@@ -22,10 +22,9 @@ import ru.aizen.mtg.store.domain.store.StoreNotFountException;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/store")
+@RequestMapping("/rest/store")
 public class StoreResource {
 
 	private final StoreService storeService;
@@ -35,63 +34,41 @@ public class StoreResource {
 		this.storeService = storeService;
 	}
 
-	@PostMapping(path = "/create",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Success> create(@RequestBody CreateStoreDTO request) {
-		//TODO request to identity for user location by userId
-		storeService.create(request.getUserId(), request.getUsername(), request.getUserLocation(), request.getStoreName());
+		storeService.create(request.getUserId(), request.getUsername(), request.getUserLocation());
 		return ResponseEntity.ok(
 				new Success(HttpStatus.CREATED, "Store created")
 		);
 	}
 
-	@GetMapping(path = "/{storeId}/edit",
+	@GetMapping(path = "/edit",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StoreDTO> userStores(@PathVariable("storeId") String storeId,
-	                                           @RequestHeader("X-UserId") Long userId) {
-		Store store = storeService.find(storeId);
-
-		storeService.permissionsToOperateByUserId(userId, storeId);
-
-		return ResponseEntity.ok(StoreDTO.of(store));
+	public StoreDTO userStores(@RequestHeader("X-UserId") Long userId) {
+		return StoreDTO.of(storeService.store(userId));
 	}
 
-	@GetMapping(path = "/find/{userId}",
+	@GetMapping(path = "/find/{traderName}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<StoreDTO>> userStores(@PathVariable("userId") long userId) {
-		Collection<Store> stores = storeService.stores(userId);
+	public StoreDTO view(@PathVariable("traderName") String trader) {
+		Store store = storeService.store(trader);
 
-		return ResponseEntity.ok(stores.stream()
-				.map(StoreDTO::of)
-				.collect(Collectors.toList()));
-	}
+		if (store == null) throw new StoreNotFountException();
 
-	@GetMapping(path = "/{owner}/{name}",
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StoreDTO> view(@PathVariable("owner") String owner,
-	                                     @PathVariable("name") String name) {
-		Store store = storeService.view(owner, name);
-
-		if (store == null) throw new StoreNotFountException(name, owner);
-
-		StoreDTO storeDTO = StoreDTO.view(store);
-		return ResponseEntity.ok(storeDTO);
+		return StoreDTO.view(store);
 	}
 
 	@GetMapping(path = "/{storeId}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StoreDTO> find(@PathVariable("storeId") String storeId) {
-		Store store = storeService.find(storeId);
-
-		StoreDTO storeDTO = StoreDTO.view(store);
-		return ResponseEntity.ok(storeDTO);
+	public StoreDTO find(@PathVariable("storeId") String storeId) {
+		return StoreDTO.view(storeService.findById(storeId));
 	}
 
 	@GetMapping(path = "/{storeId}/info",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public StoreInfoRepresentation info(@PathVariable("storeId") String storeId) {
-		Store store = storeService.find(storeId);
+		Store store = storeService.findById(storeId);
 		return StoreInfoRepresentation.from(store);
 	}
 

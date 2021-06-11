@@ -39,8 +39,8 @@ public class SingleDTO extends RepresentationModel<SingleDTO> {
 				single.price(),
 				single.inStock()
 		);
-		dto.add(linkTo(methodOn(StoreResource.class).editSingleInStore(store.id(), store.owner().id(), single.id(), new CreateSingleDTO())).withRel("edit"));
-		dto.add(linkTo(methodOn(StoreResource.class).deleteSingleFromStore(store.id(), store.owner().id(), single.id())).withRel("delete"));
+		dto.add(linkTo(methodOn(StoreResource.class).editSingleInStore(store.id(), store.trader().id(), single.id(), new CreateSingleDTO())).withRel("edit"));
+		dto.add(linkTo(methodOn(StoreResource.class).deleteSingleFromStore(store.id(), store.trader().id(), single.id())).withRel("delete"));
 		return dto;
 	}
 

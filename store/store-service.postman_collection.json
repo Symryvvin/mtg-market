@@ -6,6 +6,438 @@
 	},
 	"item": [
 		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "add to shopping cart",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"value": "27",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/add/:storeId/:singleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								"add",
+								":storeId",
+								":singleId"
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": "60b3b0e2416c030709334d98"
+								},
+								{
+									"key": "singleId",
+									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view client cart for edit",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "27"
+							}
+						],
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/edit",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "increase cat item quantity",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "4589"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/:cartId/increase/:singleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								":cartId",
+								"increase",
+								":singleId"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "60c2177cd3fc761bde3b2228"
+								},
+								{
+									"key": "singleId",
+									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "decrease cart item quantity",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "4589"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/:cartId/decrease/:singleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								":cartId",
+								"decrease",
+								":singleId"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "60c2177cd3fc761bde3b2228"
+								},
+								{
+									"key": "singleId",
+									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove cart item",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "4589"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/:cartId/remove/:singleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								":cartId",
+								"remove",
+								":singleId"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "60c2177cd3fc761bde3b2228"
+								},
+								{
+									"key": "singleId",
+									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clear cart",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "4589"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/:cartId/clear",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								":cartId",
+								"clear"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "60c2177cd3fc761bde3b2228"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clear cart for store",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "4589"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/:cartId/clear/:storeId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								":cartId",
+								"clear",
+								":storeId"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "60c21e29483faf6d7bd475ea"
+								},
+								{
+									"key": "storeId",
+									"value": "60b3b0e2416c030709334d98"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "create store",
 			"event": [
 				{
@@ -23,7 +455,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": {{userId}},\n    \"username\": \"{{username}}\",\n    \"userLocation\": \"{{location}}\",\n    \"storeName\": \"{{storeName}}\"\n}",
+					"raw": "{\n    \"userId\": {{userId}},\n    \"username\": \"{{username}}\",\n    \"userLocation\": \"{{location}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -31,13 +463,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/create",
+					"raw": "{{baseUri}}/rest/store",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"store",
-						"create"
+						"rest",
+						"store"
 					]
 				}
 			},
@@ -71,65 +503,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/store/:owner/:name",
+					"raw": "{{baseUri}}/rest/store/find/:traderId",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"store",
-						":owner",
-						":name"
-					],
-					"variable": [
-						{
-							"key": "owner",
-							"value": "{{username}}"
-						},
-						{
-							"key": "name",
-							"value": "{{storeName}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "find stores",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-UserId",
-						"value": "{{userId}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseUri}}/store/find/:userId",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
+						"rest",
 						"store",
 						"find",
-						":userId"
+						":traderId"
 					],
 					"variable": [
 						{
-							"key": "userId",
-							"value": "{{userId}}"
+							"key": "traderId",
+							"value": "Aizen"
 						}
 					]
 				}
@@ -159,20 +546,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/edit",
+					"raw": "{{baseUri}}/rest/store/edit",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
-						":storeId",
 						"edit"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						}
 					]
 				}
 			},
@@ -185,7 +566,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.collectionVariables.set(\"oracleId\", pm.variables.replaceIn('{{$randomUUID}}'));"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -202,7 +583,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"oracleId\": \"{{oracleId}}\",\n    \"oracleName\": \"Shock\",\n    \"name\": \"Шок\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"FOIL\",\n    \"condition\": \"NM\",\n    \"price\": 50.00,\n    \"inStock\": 12\n}",
+					"raw": "{\n    \"oracleId\": \"a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d\",\n    \"oracleName\": \"Shock\",\n    \"name\": \"Шок\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"FOIL\",\n    \"condition\": \"NM\",\n    \"price\": 50.00,\n    \"inStock\": 12\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -210,11 +591,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/singles/add",
+					"raw": "{{baseUri}}/rest/store/:storeId/singles/add",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						":storeId",
 						"singles",
@@ -270,11 +652,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/singles/:oracleId",
+					"raw": "{{baseUri}}/rest/store/singles/:oracleId",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						"singles",
 						":oracleId"
@@ -321,11 +704,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/singles/:singleId/edit",
+					"raw": "{{baseUri}}/rest/store/:storeId/singles/:singleId/edit",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						":storeId",
 						"singles",
@@ -372,11 +756,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/singles/reserve",
+					"raw": "{{baseUri}}/rest/store/:storeId/singles/reserve",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						":storeId",
 						"singles",
@@ -430,11 +815,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/singles/import",
+					"raw": "{{baseUri}}/rest/store/:storeId/singles/import",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						":storeId",
 						"singles",
@@ -473,11 +859,12 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/singles/:singleId/delete",
+					"raw": "{{baseUri}}/rest/store/:storeId/singles/:singleId/delete",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						":storeId",
 						"singles",
@@ -521,11 +908,12 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUri}}/store/:storeId/delete",
+					"raw": "{{baseUri}}/rest/store/:storeId/delete",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
 						":storeId",
 						"delete"
@@ -572,10 +960,6 @@
 		},
 		{
 			"key": "username",
-			"value": ""
-		},
-		{
-			"key": "storeName",
 			"value": ""
 		},
 		{

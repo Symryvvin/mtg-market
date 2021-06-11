@@ -23,24 +23,22 @@ public class Store {
 	@Id
 	private String id;
 	private boolean blocked;
-	private final String name;
-	private final StoreOwner owner;
+	private final Trader trader;
 	private Collection<Single> singles;
 
 	private LocalDateTime creationTime;
 	private LocalDateTime updateTime;
 
-	private Store(StoreOwner owner, String name) {
-		this.owner = owner;
-		this.name = name;
+	private Store(Trader trader) {
+		this.trader = trader;
 		this.singles = new ArrayList<>();
 		this.creationTime = LocalDateTime.now();
 		this.updateTime = creationTime;
 	}
 
-	public static Store create(long userId, String username, String userLocation, String name) {
-		StoreOwner owner = new StoreOwner(userId, username, userLocation);
-		return new Store(owner, name);
+	public static Store create(long userId, String username, String userLocation) {
+		Trader trader = new Trader(userId, username, userLocation);
+		return new Store(trader);
 	}
 
 	public Optional<Single> findSingleById(String singleId) {

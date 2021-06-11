@@ -20,7 +20,7 @@ public class StoreInfoRepresentation extends RepresentationModel<StoreInfoRepres
 
 	public static StoreInfoRepresentation from(Store store) {
 		StoreInfoRepresentation model = new StoreInfoRepresentation(
-				store.owner().name(),
+				store.trader().name(),
 				store.singles().size()
 		);
 

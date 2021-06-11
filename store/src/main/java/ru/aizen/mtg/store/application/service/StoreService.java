@@ -23,27 +23,35 @@ public class StoreService {
 		this.storeRepository = storeRepository;
 	}
 
-	public Store create(long userId, String username, String userLocation, String name) {
-		Store store = Store.create(userId, username, userLocation, name);
-		return storeRepository.save(store);
+	public Store create(long userId, String username, String userLocation) {
+		if (!storeRepository.existsByTraderId(userId)) {
+			Store store = Store.create(userId, username, userLocation);
+			return storeRepository.save(store);
+		} else {
+			return null;
+		}
 	}
 
 	public void permissionsToOperateByUserId(long userId, String storeId) {
 		storeRepository.findById(storeId).ifPresent(
 				store -> {
-					if (store.owner().id() != userId) {
+					if (store.trader().id() != userId) {
 						throw new ForbiddenException();
 					}
 				}
 		);
 	}
 
-	public Store find(String storeId) {
-		return storeRepository.findById(storeId).orElseThrow(() -> new StoreNotFountException(storeId));
+	public Store findById(String storeId) {
+		return storeRepository.findById(storeId).orElseThrow(StoreNotFountException::new);
 	}
 
-	public Store view(String owner, String name) {
-		return storeRepository.findByNameAndOwnerName(name, owner).orElseThrow(() -> new StoreNotFountException(name, owner));
+	public Store store(long userId) {
+		return storeRepository.findByTraderId(userId).orElseThrow(StoreNotFountException::new);
+	}
+
+	public Store store(String username) {
+		return storeRepository.findByTraderName(username).orElseThrow(StoreNotFountException::new);
 	}
 
 	public void blockStore(String storeId) {
@@ -53,7 +61,7 @@ public class StoreService {
 			store.block();
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 
@@ -64,20 +72,12 @@ public class StoreService {
 			store.unblock();
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 
 	public void removeStore(String storeId) {
 		storeRepository.deleteById(storeId);
-	}
-
-	public Collection<Store> stores(long userId) {
-		return storeRepository.findAllByOwnerId(userId);
-	}
-
-	public Collection<Store> stores(String username) {
-		return storeRepository.findAllByOwnerName(username);
 	}
 
 	public void addSingle(String storeId, Single single) {
@@ -87,7 +87,7 @@ public class StoreService {
 			store.add(single);
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 
@@ -98,7 +98,7 @@ public class StoreService {
 			store.add(singles);
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 
@@ -108,13 +108,13 @@ public class StoreService {
 		Optional<Store> storeOptional = storeRepository.findById(storeId);
 		if (storeOptional.isPresent()) {
 			Store store = storeOptional.get();
-			Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, store.name()));
+			Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, storeId));
 			single.printParameters(name, setCode, langCode, style);
 			single.tradeParameters(conditionValue, price, inStock);
 			store.update(single);
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 
@@ -125,7 +125,7 @@ public class StoreService {
 			store.remove(singleId);
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 
@@ -133,12 +133,12 @@ public class StoreService {
 		Optional<Store> storeOptional = storeRepository.findById(storeId);
 		if (storeOptional.isPresent()) {
 			Store store = storeOptional.get();
-			Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, store.name()));
+			Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, storeId));
 			single.reserve(count);
 			store.update(single);
 			storeRepository.save(store);
 		} else {
-			throw new StoreNotFountException(storeId);
+			throw new StoreNotFountException();
 		}
 	}
 

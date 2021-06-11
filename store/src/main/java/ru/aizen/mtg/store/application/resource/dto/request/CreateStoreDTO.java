@@ -14,6 +14,5 @@ public class CreateStoreDTO {
 	private long userId;
 	private String username;
 	private String userLocation;
-	private String storeName;
 
 }

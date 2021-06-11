@@ -33,7 +33,7 @@ class StoreServiceTest {
 	@BeforeEach
 	void beforeEach() {
 		service = new StoreService(repository);
-		Store testStore = Store.create(-1, "Test Username", "Test City", "MyStore");
+		Store testStore = Store.create(-1, "Test Username", "Test City");
 		Single testSingle = Single.create(
 				ORACLE_ID, "testSingleName")
 				.name("Name")
@@ -55,13 +55,12 @@ class StoreServiceTest {
 
 	@Test
 	void create() {
-		Store store = service.create(1, "Username", "Краснодар", "MyStore");
+		Store store = service.create(1, "Username", "Краснодар");
 
 		repository.findById(store.id()).ifPresentOrElse(
 				s -> {
-					assertEquals("Username", s.owner().name());
-					assertEquals("Краснодар", s.owner().location());
-					assertEquals("MyStore", s.name());
+					assertEquals("Username", s.trader().name());
+					assertEquals("Краснодар", s.trader().location());
 				},
 				() -> Assertions.fail("Store with id " + store.id() + " not found")
 		);
@@ -71,11 +70,10 @@ class StoreServiceTest {
 
 	@Test
 	void view() {
-		Store store = service.view("Test Username", "MyStore");
+		Store store = service.store("Test Username");
 
-		assertEquals("Test Username", store.owner().name());
-		assertEquals("Test City", store.owner().location());
-		assertEquals("MyStore", store.name());
+		assertEquals("Test Username", store.trader().name());
+		assertEquals("Test City", store.trader().location());
 	}
 
 	@Test
@@ -98,22 +96,6 @@ class StoreServiceTest {
 		service.removeStore(store.id());
 
 		assertFalse(repository.findById(store.id()).isPresent());
-	}
-
-	@Test
-	void stores() {
-		long userId = -999;
-		Store store1 = repository.save(Store.create(userId, "John Doe", "Краснодар", "MyStore1"));
-		Store store2 = repository.save(Store.create(userId, "John Doe", "Краснодар", "MyStore2"));
-
-		Collection<Store> storesByOwnerName = service.stores("John Doe");
-		Collection<Store> storesByOwnerId = service.stores(userId);
-
-		assertEquals(2, storesByOwnerName.size());
-		assertEquals(2, storesByOwnerId.size());
-
-		repository.delete(store1);
-		repository.delete(store2);
 	}
 
 	@Test

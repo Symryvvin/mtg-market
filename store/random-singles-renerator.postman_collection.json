@@ -42,11 +42,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/registration",
+					"raw": "{{baseUri}}/rest/auth/registration",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"auth",
 						"registration"
 					]
 				}
@@ -80,11 +82,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/login",
+					"raw": "{{baseUri}}/rest/auth/login",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
+						"auth",
 						"login"
 					]
 				}
@@ -92,44 +96,32 @@
 			"response": []
 		},
 		{
-			"name": "Изменение локации",
+			"name": "Получаем ID пользователя",
 			"event": [
 				{
-					"listen": "prerequest",
+					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.collectionVariables.set(\"settlement\", pm.variables.replaceIn('{{$randomCity}}'));",
-							"pm.collectionVariables.set(\"street\", pm.variables.replaceIn('{{$randomStreetName}}'));",
-							"pm.collectionVariables.set(\"building\", pm.variables.replaceIn(_.random(1, 200)));",
-							"pm.collectionVariables.set(\"apartment\", pm.variables.replaceIn(_.random(1, 200)));",
-							"pm.collectionVariables.set(\"postIndex\", pm.variables.replaceIn('{{$randomInt}}' + '{{$randomInt}}'));"
+							"const resp = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"userId\", pm.variables.replaceIn(resp.id));"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"settlement\": \"{{settlement}}\",\r\n  \"street\": \"{{street}}\",\r\n  \"building\": \"{{building}}\",\r\n  \"apartment\": \"{{apartment}}\",\r\n  \"postIndex\": {{postIndex}}\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{baseUri}}/user/:username/address/edit",
+					"raw": "{{baseUri}}/rest/user/:username",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"user",
-						":username",
-						"address",
-						"edit"
+						":username"
 					],
 					"variable": [
 						{
@@ -148,7 +140,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.collectionVariables.set(\"storeName\", pm.variables.replaceIn('{{$randomUserName}}'));"
+							"pm.collectionVariables.set(\"location\", pm.variables.replaceIn('{{$randomCity}}'));"
 						],
 						"type": "text/javascript"
 					}
@@ -159,21 +151,21 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{{storeName}}",
+					"raw": "{\n    \"userId\": {{userId}},\n    \"username\": \"{{username}}\",\n    \"userLocation\": \"{{location}}\"\n}",
 					"options": {
 						"raw": {
-							"language": "text"
+							"language": "json"
 						}
 					}
 				},
 				"url": {
-					"raw": "{{baseUri}}/store/create",
+					"raw": "{{baseUri}}/rest/store",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
-						"store",
-						"create"
+						"rest",
+						"store"
 					]
 				}
 			},
@@ -207,23 +199,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUri}}/store/:owner/:name",
+					"raw": "{{baseUri}}/rest/store/find/:traderName",
 					"host": [
 						"{{baseUri}}"
 					],
 					"path": [
+						"rest",
 						"store",
-						":owner",
-						":name"
+						"find",
+						":traderName"
 					],
 					"variable": [
 						{
-							"key": "owner",
+							"key": "traderName",
 							"value": "{{username}}"
-						},
-						{
-							"key": "name",
-							"value": "{{storeName}}"
 						}
 					]
 				}
@@ -240,7 +229,7 @@
 							"const resp = pm.response.json();",
 							"",
 							"pm.sendRequest({",
-							"    url: pm.collectionVariables.get('baseUri') + '/store/' + pm.collectionVariables.get('storeId') +'/singles/import/json',",
+							"    url: pm.collectionVariables.get('baseUri') + '/rest/store/' + pm.collectionVariables.get('storeId') +'/singles/import/json',",
 							"    method: 'PUT',",
 							"    header: {",
 							"         'content-type': 'application/json',",
@@ -260,7 +249,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-UserId",
+						"value": "{{userId}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{baseUri}}/rest/search/random?size={{$randomInt}}&lang=ru",
 					"host": [
@@ -338,27 +333,15 @@
 			"value": ""
 		},
 		{
-			"key": "apartment",
-			"value": ""
-		},
-		{
-			"key": "building",
-			"value": ""
-		},
-		{
-			"key": "postIndex",
-			"value": ""
-		},
-		{
 			"key": "settlement",
 			"value": ""
 		},
 		{
-			"key": "street",
+			"key": "location",
 			"value": ""
 		},
 		{
-			"key": "storeName",
+			"key": "userId",
 			"value": ""
 		}
 	]
