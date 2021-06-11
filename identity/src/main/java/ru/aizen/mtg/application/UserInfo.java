@@ -9,13 +9,15 @@ import ru.aizen.mtg.domain.profile.Profile;
 @ToString
 public class UserInfo {
 
+	private final long id;
 	private final String login;
 	private final String fullName;
 	private final String email;
 	private final String phone;
 	private final String address;
 
-	private UserInfo(String login, String fullName, String email, String phone, String address) {
+	private UserInfo(long id, String login, String fullName, String email, String phone, String address) {
+		this.id = id;
 		this.login = login;
 		this.fullName = fullName;
 		this.email = email;
@@ -26,10 +28,10 @@ public class UserInfo {
 	public static UserInfo from(Account account) {
 		Profile profile = account.getProfile();
 		if (profile == null) {
-			return new UserInfo(account.getLogin(), null, null, null, null);
+			return new UserInfo(account.getId(), account.getLogin(), null, null, null, null);
 		}
 		return new UserInfo(
-				account.getLogin(),
+				account.getId(), account.getLogin(),
 				profile.getFullName(),
 				profile.getEmail() == null ? null : profile.getEmail().getEmail(),
 				profile.getPhone() == null ? null : profile.getPhone().getFormattedPhone(),

@@ -9,16 +9,14 @@ import ru.aizen.mtg.application.IdentityService;
 import ru.aizen.mtg.application.UserInfo;
 import ru.aizen.mtg.application.UserShortInfo;
 import ru.aizen.mtg.application.resource.dto.UserAddressUpdateDTO;
-import ru.aizen.mtg.application.resource.dto.UserLoginDTO;
-import ru.aizen.mtg.application.resource.dto.UserRegistrationDTO;
 import ru.aizen.mtg.application.resource.dto.UserUpdateDTO;
 import ru.aizen.mtg.application.resource.dto.response.Success;
-import ru.aizen.mtg.application.resource.dto.response.UserLogin;
+import ru.aizen.mtg.domain.account.security.Role;
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/rest/user")
 public class IdentityResource {
 
 	private final IdentityService identityService;
@@ -28,30 +26,12 @@ public class IdentityResource {
 		this.identityService = identityService;
 	}
 
-	@PostMapping(path = "/registration",
+	@PutMapping(path = "/edit/profile",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> create(@RequestBody UserRegistrationDTO request) {
-		identityService.create(request.getUsername(), request.getPassword());
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-
-	@PostMapping(path = "/login",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserLogin> create(@RequestBody UserLoginDTO request) {
-		String token = identityService.authenticate(request.getUsername(), request.getPassword());
-		return ResponseEntity.ok(
-				new UserLogin(true, HttpStatus.OK.value(), token, "User login successful")
-		);
-	}
-
-	@PutMapping(path = "user/{username}/edit",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Success> updateUser(@PathVariable("username") String username,
+	public ResponseEntity<Success> updateUser(@RequestHeader("X-UserId") Long userId,
 	                                          @RequestBody UserUpdateDTO request) {
-		identityService.updateProfile(username,
+		identityService.updateProfile(userId,
 				request.getFullName(),
 				request.getEmail(),
 				request.getPhone());
@@ -60,12 +40,12 @@ public class IdentityResource {
 		);
 	}
 
-	@PutMapping(path = "user/{username}/address/edit",
+	@PutMapping(path = "/edit/address",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Success> updateAddress(@PathVariable("username") String username,
+	public ResponseEntity<Success> updateAddress(@RequestHeader("X-UserId") Long userId,
 	                                             @RequestBody UserAddressUpdateDTO request) {
-		identityService.updateProfileAddress(username,
+		identityService.updateProfileAddress(userId,
 				request.getSettlement(),
 				request.getStreet(),
 				request.getBuilding(),
@@ -76,21 +56,23 @@ public class IdentityResource {
 		);
 	}
 
-	@GetMapping(path = "/user/{username}",
+	@GetMapping(path = "{username}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserInfo findUser(@PathVariable("username") String username) {
+	public UserInfo userByName(@PathVariable("username") String username) {
 		return identityService.userInfo(username);
 	}
 
-	@GetMapping(path = "/users",
+	@GetMapping(path = "/all",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<UserShortInfo> users() {
 		return identityService.users();
 	}
 
-	@GetMapping(path = "user/{userId}/username")
-	public String username(@PathVariable("userId") long userId) {
-		return identityService.usernameById(userId);
+	@PutMapping("/become/trader")
+	public ResponseEntity<Success> becomeTrader(@RequestHeader("X-UserId") Long userId) {
+		identityService.changeRole(userId, Role.TRADER);
+
+		return ResponseEntity.ok(Success.OK("Вам назначена роль 'Продавец' ваш магазин будет создан автоматически"));
 	}
 
 }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import ru.aizen.mtg.domain.account.security.Role;
 import ru.aizen.mtg.domain.profile.Profile;
 
@@ -58,6 +59,18 @@ public class Account {
 			this.password = newPassword;
 		} else {
 			throw new AccountException("Old password does not match");
+		}
+	}
+
+	public boolean isCompletelyFilled() {
+		if (profile != null && profile.getAddress() != null) {
+			var address = profile.getAddress();
+			return StringUtils.hasText(profile.getFullName()) &&
+					profile.getEmail() != null &&
+					profile.getPhone() != null &&
+					StringUtils.hasText(address.getSettlement());
+		} else {
+			return false;
 		}
 	}
 

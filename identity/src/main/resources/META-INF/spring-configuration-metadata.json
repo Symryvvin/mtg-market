@@ -9,5 +9,10 @@
       "name": "jwt.privateKey",
       "type": "java.lang.String",
       "description": "Json web token private key."
+    },
+    {
+      "name": "storeService",
+      "type": "java.lang.String",
+      "description": "Store Service Url."
     }
   ] }
