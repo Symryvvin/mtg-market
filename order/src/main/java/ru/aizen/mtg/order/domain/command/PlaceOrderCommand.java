@@ -1,20 +1,21 @@
 package ru.aizen.mtg.order.domain.command;
 
-import lombok.Data;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import lombok.Getter;
 import ru.aizen.mtg.order.domain.order.OrderItem;
-import ru.aizen.mtg.order.domain.order.OrderStatus;
 
 import java.util.Collection;
 
-@Data
-public class PlaceOrderCommand {
+@Getter
+public class PlaceOrderCommand extends OrderCommand {
 
-	@TargetAggregateIdentifier
-	private final String orderId;
-	private final OrderStatus status = OrderStatus.PLACED;
 	private final long clientId;
 	private final String storeId;
 	private final Collection<OrderItem> items;
 
+	public PlaceOrderCommand(String orderId, long clientId, String storeId, Collection<OrderItem> items) {
+		super(orderId);
+		this.clientId = clientId;
+		this.storeId = storeId;
+		this.items = items;
+	}
 }

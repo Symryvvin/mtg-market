@@ -1,19 +1,25 @@
 package ru.aizen.mtg.order.domain.event;
 
-import lombok.Data;
+import lombok.Getter;
 import ru.aizen.mtg.order.domain.order.OrderItem;
 import ru.aizen.mtg.order.domain.order.OrderStatus;
 
 import java.util.Collection;
 
-@Data
-public class OrderPlacedEvent {
+@Getter
+public class OrderPlacedEvent extends OrderEvent {
 
-	private final String orderId;
-	private final String orderNumber;
-	private final OrderStatus status = OrderStatus.PLACED;
 	private final long clientId;
 	private final String storeId;
 	private final Collection<OrderItem> items;
 
+	OrderPlacedEvent(String orderId,
+	                        long clientId,
+	                        String storeId,
+	                        Collection<OrderItem> items) {
+		super(orderId, OrderStatus.PLACED, null);
+		this.clientId = clientId;
+		this.storeId = storeId;
+		this.items = items;
+	}
 }

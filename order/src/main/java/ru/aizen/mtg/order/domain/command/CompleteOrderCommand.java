@@ -1,12 +1,8 @@
 package ru.aizen.mtg.order.domain.command;
 
-import lombok.Data;
-import ru.aizen.mtg.order.domain.order.OrderStatus;
+public class CompleteOrderCommand extends OrderCommand {
 
-@Data
-public class CompleteOrderCommand {
-
-	private final String orderId;
-	private final OrderStatus status = OrderStatus.COMPLETED;
-
+	public CompleteOrderCommand(String orderId) {
+		super(orderId);
+	}
 }

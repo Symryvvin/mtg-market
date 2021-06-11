@@ -1,12 +1,13 @@
 package ru.aizen.mtg.order.domain.event;
 
-import lombok.Data;
+import lombok.Getter;
 import ru.aizen.mtg.order.domain.order.OrderStatus;
 
-@Data
-public class OrderCanceledEvent {
+@Getter
+public class OrderCanceledEvent extends OrderEvent {
 
-	private final String orderId;
-	private final OrderStatus status = OrderStatus.CANCELED;
+	OrderCanceledEvent(String orderId) {
+		super(orderId, OrderStatus.CANCELED, null);
+	}
 
 }

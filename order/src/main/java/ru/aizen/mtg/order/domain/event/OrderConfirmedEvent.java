@@ -1,12 +1,13 @@
 package ru.aizen.mtg.order.domain.event;
 
-import lombok.Data;
+import lombok.Getter;
 import ru.aizen.mtg.order.domain.order.OrderStatus;
 
-@Data
-public class OrderConfirmedEvent {
+@Getter
+public class OrderConfirmedEvent extends OrderEvent {
 
-	private final String orderId;
-	private final OrderStatus status = OrderStatus.CONFIRMED;
+	OrderConfirmedEvent(String orderId) {
+		super(orderId, OrderStatus.CONFIRMED, null);
+	}
 
 }

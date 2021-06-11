@@ -1,16 +1,8 @@
 package ru.aizen.mtg.order.domain.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
-import ru.aizen.mtg.order.domain.order.OrderStatus;
+public class ConfirmOrderCommand extends OrderCommand {
 
-@Getter
-@AllArgsConstructor
-public class ConfirmOrderCommand {
-
-	@TargetAggregateIdentifier
-	private final String orderId;
-	private final OrderStatus status = OrderStatus.CONFIRMED;
-
+	public ConfirmOrderCommand(String orderId) {
+		super(orderId);
+	}
 }

@@ -1,3 +1,11 @@
+# dev
+
+Запуск axon-server в docker
+```shell
+docker run -d --name order-event-store -p 8024:8024 -p 8124:8124 axoniq/axonserver
+```
+
+
 ##### Установка базы данных для службы поиска (Search Service)
 ```shell
 helm install mtg-db bitnami/postgresql -f deploy/database/search/values.yml -n mtg
@@ -20,7 +28,5 @@ identity/src/main/resources/sql/create_identity_tables.sql
 ```shell
 helm install store-db bitnami/mongodb -f deploy/database/store/values.yml -n mtg
 ```
-###### Путь к скриптам:
-```
-store/src/main/resources/
-```
+
+

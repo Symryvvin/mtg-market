@@ -1,13 +1,16 @@
 package ru.aizen.mtg.order.domain.command;
 
-import lombok.Data;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import lombok.Getter;
 
-@Data
-public class RemoveOrderItemCommand {
+@Getter
+public class RemoveOrderItemCommand extends OrderCommand {
 
-	@TargetAggregateIdentifier
-	private final String orderId;
 	private final String itemId;
+	private final String item;
 
+	public RemoveOrderItemCommand(String orderId, String itemId, String item) {
+		super(orderId);
+		this.itemId = itemId;
+		this.item = item;
+	}
 }

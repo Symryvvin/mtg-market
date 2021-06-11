@@ -1,14 +1,16 @@
-package ru.aizen.mtg.order.application.resource.response;
+package ru.aizen.mtg.order.application.resource.response.order;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
+import ru.aizen.mtg.order.domain.event.OrderEvent;
 import ru.aizen.mtg.order.domain.order.Order;
 import ru.aizen.mtg.order.domain.order.OrderItem;
 import ru.aizen.mtg.order.domain.order.OrderStatus;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,7 +25,9 @@ public class OrderPresentation extends RepresentationModel<OrderPresentation> {
 	private final double shippingCost;
 	private final String shippedTo;
 
-	public static OrderPresentation from(Order order) {
+	private final Collection<EventLog> eventLogs;
+
+	public static OrderPresentation from(Order order, Collection<OrderEvent> events) {
 		return new OrderPresentation(
 				order.orderId(),
 				order.orderNumber(),
@@ -32,7 +36,8 @@ public class OrderPresentation extends RepresentationModel<OrderPresentation> {
 				order.status(),
 				order.items(),
 				order.shippingCost(),
-				order.shippedTo()
+				order.shippedTo(),
+				events.stream().map(EventLog::from).collect(Collectors.toList())
 		);
 	}
 

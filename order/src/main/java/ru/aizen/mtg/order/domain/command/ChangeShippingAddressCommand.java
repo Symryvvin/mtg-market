@@ -1,13 +1,15 @@
 package ru.aizen.mtg.order.domain.command;
 
-import lombok.Data;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import lombok.Getter;
 
-@Data
-public class ChangeShippingAddressCommand {
+@Getter
+public class ChangeShippingAddressCommand extends OrderCommand {
 
-	@TargetAggregateIdentifier
-	private final String orderId;
 	private final String shippingAddress;
+
+	public ChangeShippingAddressCommand(String orderId, String shippingAddress) {
+		super(orderId);
+		this.shippingAddress = shippingAddress;
+	}
 
 }

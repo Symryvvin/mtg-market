@@ -1,13 +1,14 @@
 package ru.aizen.mtg.order.domain.command;
 
-import lombok.Data;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import lombok.Getter;
 
-@Data
-public class ChangeShippingCostCommand {
+@Getter
+public class ChangeShippingCostCommand extends OrderCommand {
 
-	@TargetAggregateIdentifier
-	private final String orderId;
 	private final double shippingCost;
 
+	public ChangeShippingCostCommand(String orderId, double shippingCost) {
+		super(orderId);
+		this.shippingCost = shippingCost;
+	}
 }

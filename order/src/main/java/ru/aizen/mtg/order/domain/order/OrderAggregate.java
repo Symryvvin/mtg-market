@@ -20,7 +20,6 @@ public class OrderAggregate {
 
 	@AggregateIdentifier
 	private String orderId;
-	private String orderNumber;
 	private long clientId;
 	private String storeId;
 	private OrderStatus status;
@@ -32,37 +31,44 @@ public class OrderAggregate {
 	public OrderAggregate(PlaceOrderCommand command) {
 		Assert.notEmpty(command.getItems(), "Заказ пуст");
 
-		String orderNumber = command.getOrderId().substring(0, 4) + "-" +
-				String.format("%05d", command.getClientId()) + "-" +
-				command.getStoreId().substring(0, 4);
+		apply(OrderEvent.place(command.getOrderId(), command.getClientId(), command.getStoreId(), command.getItems()));
+	}
 
-		apply(new OrderPlacedEvent(
-				command.getOrderId(),
-				orderNumber.toUpperCase(),
-				command.getClientId(),
-				command.getStoreId(),
-				command.getItems())
-		);
+	@CommandHandler
+	public void handle(ChangeShippingAddressCommand command) {
+		Assert.hasText(command.getShippingAddress(), "Адрес доставки пуст");
+
+		apply(OrderEvent.changeShippingAddress(command.getOrderId(), command.getShippingAddress()));
+	}
+
+	@CommandHandler
+	public void handle(ChangeShippingCostCommand command) {
+		apply(OrderEvent.changeShippingCost(command.getOrderId(), command.getShippingCost()));
+	}
+
+	@CommandHandler
+	public void handle(RemoveOrderItemCommand command) {
+		apply(OrderEvent.removeItem(command.getOrderId(), command.getItemId(), command.getItem()));
 	}
 
 	@CommandHandler
 	public void handle(ConfirmOrderCommand command) {
-		apply(new OrderConfirmedEvent(command.getOrderId()));
+		apply(OrderEvent.confirm(command.getOrderId()));
 	}
 
 	@CommandHandler
 	public void handle(PayOrderCommand command) {
-		apply(new OrderPaidEvent(command.getOrderId(), command.getPaymentInfo()));
+		apply(OrderEvent.pay(command.getOrderId(), command.getPaymentInfo()));
 	}
 
 	@CommandHandler
 	public void handle(CancelOrderCommand command) {
-		apply(new OrderCanceledEvent(command.getOrderId()));
+		apply(OrderEvent.cancel(command.getOrderId()));
 	}
 
 	@CommandHandler
 	public void handle(CompleteOrderCommand command) {
-		apply(new OrderCompletedEvent(command.getOrderId()));
+		apply(OrderEvent.complete(command.getOrderId()));
 	}
 
 	@EventSourcingHandler
@@ -72,7 +78,6 @@ public class OrderAggregate {
 		this.storeId = event.getStoreId();
 		this.items = event.getItems();
 		this.status = event.getStatus();
-		this.orderNumber = event.getOrderNumber();
 	}
 
 	@EventSourcingHandler

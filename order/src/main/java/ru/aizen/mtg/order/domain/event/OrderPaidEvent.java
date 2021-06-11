@@ -1,13 +1,15 @@
 package ru.aizen.mtg.order.domain.event;
 
-import lombok.Data;
+import lombok.Getter;
 import ru.aizen.mtg.order.domain.order.OrderStatus;
 
-@Data
-public class OrderPaidEvent {
+@Getter
+public class OrderPaidEvent extends OrderEvent {
 
-	private final String orderId;
 	private final String paymentInfo;
-	private final OrderStatus status = OrderStatus.PAID;
 
+	OrderPaidEvent(String orderId, String paymentInfo) {
+		super(orderId, OrderStatus.PAID, paymentInfo);
+		this.paymentInfo = paymentInfo;
+	}
 }
