@@ -5,7 +5,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.aizen.mtg.store.application.resource.dto.response.CartRepresentation;
+import ru.aizen.mtg.store.application.resource.dto.response.CartPresentation;
 import ru.aizen.mtg.store.application.service.CartService;
 import ru.aizen.mtg.store.domain.cart.Cart;
 
@@ -23,57 +23,61 @@ public class CartResource {
 		this.cartService = cartService;
 	}
 
-	@GetMapping(path = "/edit",
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public CollectionModel<CartRepresentation> edit(@RequestHeader("X-UserId") Long clientId) {
-		Collection<CartRepresentation> models = new ArrayList<>();
+	@GetMapping(path = "/edit", produces = MediaType.APPLICATION_JSON_VALUE)
+	public CollectionModel<CartPresentation> edit(@RequestHeader("X-UserId") Long clientId) {
+		Collection<CartPresentation> models = new ArrayList<>();
 
 		Cart cart = cartService.clientCart(clientId);
-		cart.groupedByStore().forEach((storeId, items) -> {
-			models.add(CartRepresentation.from(cart.id(), storeId, items));
+		cart.groupedByStore().forEach((traderId, items) -> {
+			models.add(CartPresentation.from(cart, traderId, items));
 		});
 		return CollectionModel.of(models);
 	}
 
-	@PutMapping(path = "/add/{storeId}/{singleId}")
-	public ResponseEntity<Void> add(@RequestHeader("X-UserId") Long clientId,
-	                                @PathVariable("storeId") String storeId,
+	@PutMapping(path = "/add/{traderId}/{singleId}")
+	public ResponseEntity<Void> add(@RequestHeader("X-UserId") Long userId,
+	                                @PathVariable("traderId") Long traderId,
 	                                @PathVariable("singleId") String singleId) {
-		cartService.addToCart(clientId, storeId, singleId);
+		cartService.addToCart(userId, traderId, singleId);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "/{cardId}/remove/{singleId}")
-	public ResponseEntity<Void> remove(@PathVariable("cardId") String cartId,
+	@PutMapping(path = "/remove/{singleId}")
+	public ResponseEntity<Void> remove(@RequestHeader("X-UserId") Long userId,
 	                                   @PathVariable("singleId") String singleId) {
-		cartService.removeCartItem(cartId, singleId);
+		Cart cart = cartService.clientCart(userId);
+
+		cartService.removeCartItem(cart, singleId);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "/{cardId}/increase/{singleId}")
-	public ResponseEntity<Void> increase(@PathVariable("cardId") String cartId,
+	@PutMapping(path = "/increase/{singleId}")
+	public ResponseEntity<Void> increase(@RequestHeader("X-UserId") Long userId,
 	                                     @PathVariable("singleId") String singleId) {
-		cartService.increaseCartItemQuantity(cartId, singleId);
+		Cart cart = cartService.clientCart(userId);
+		cartService.increaseCartItemQuantity(cart, singleId);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "/{cardId}/decrease/{singleId}")
-	public ResponseEntity<Void> decrease(@PathVariable("cardId") String cartId,
+	@PutMapping(path = "/decrease/{singleId}")
+	public ResponseEntity<Void> decrease(@RequestHeader("X-UserId") Long userId,
 	                                     @PathVariable("singleId") String singleId) {
-		cartService.decreaseCartItemQuantity(cartId, singleId);
+		Cart cart = cartService.clientCart(userId);
+		cartService.decreaseCartItemQuantity(cart, singleId);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping("/{cardId}/clear")
-	public ResponseEntity<Void> clear(@PathVariable("cardId") String cartId) {
-		cartService.clearCart(cartId);
+	@DeleteMapping("/clear")
+	public ResponseEntity<Void> clear(@RequestHeader("X-UserId") Long userId) {
+		cartService.clearCart(userId);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping("/{cardId}/clear/{storeId}")
-	public ResponseEntity<Void> clearStoreCart(@PathVariable("cardId") String cartId,
-	                                           @PathVariable("storeId") String storeId) {
-		cartService.clearStoreCart(cartId, storeId);
+	@DeleteMapping("/clear/{traderId}")
+	public ResponseEntity<Void> clearCart(@RequestHeader("X-UserId") Long userId,
+	                                      @PathVariable("traderId") long traderId) {
+		Cart cart = cartService.clientCart(userId);
+		cartService.clearCart(cart, traderId);
 		return ResponseEntity.ok().build();
 	}
 

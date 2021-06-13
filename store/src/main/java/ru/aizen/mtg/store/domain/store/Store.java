@@ -17,7 +17,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @ToString
-@Document(collection = "card_store")
+@Document(collection = "store")
 public class Store {
 
 	@Id
@@ -64,7 +64,7 @@ public class Store {
 		if (singles == null || singles.isEmpty()) {
 			return;
 		}
-		this.singles = new ArrayList<>(singles);
+		this.singles.addAll(singles);
 		this.updateTime = LocalDateTime.now();
 	}
 

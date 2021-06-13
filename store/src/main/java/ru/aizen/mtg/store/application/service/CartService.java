@@ -27,13 +27,14 @@ public class CartService {
 		return cartRepository.findByClientId(clientId).orElseThrow(() -> new CartNotFoundException(clientId));
 	}
 
-	public void addToCart(long clientId, String storeId, String singleId) {
+	public void addToCart(long clientId, long traderId, String singleId) {
 		Cart cart = cartRepository.findByClientId(clientId)
 				.orElseGet(() -> Cart.create(clientId));
 
-		Store store = storeRepository.findById(storeId).orElseThrow(StoreNotFountException::new);
-		Single single = store.findSingleById(singleId).orElseThrow(() -> new SingleNotFoundException(singleId, storeId));
-		cart.add(storeId, single);
+		Store store = storeRepository.findByTraderId(traderId).orElseThrow(StoreNotFountException::new);
+		Single single = store.findSingleById(singleId)
+				.orElseThrow(() -> new SingleNotFoundException(singleId, store.trader().name()));
+		cart.add(traderId, single);
 		cartRepository.save(cart);
 	}
 
@@ -41,32 +42,28 @@ public class CartService {
 		return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
 	}
 
-	public void removeCartItem(String cartId, String singleId) {
-		Cart cart = findById(cartId);
+	public void removeCartItem(Cart cart, String singleId) {
 		cart.remove(singleId);
 		cartRepository.save(cart);
 	}
 
-	public void increaseCartItemQuantity(String cartId, String singleId) {
-		Cart cart = findById(cartId);
+	public void increaseCartItemQuantity(Cart cart, String singleId) {
 		cart.increase(singleId);
 		cartRepository.save(cart);
 	}
 
-	public void decreaseCartItemQuantity(String cartId, String singleId) {
-		Cart cart = findById(cartId);
+	public void decreaseCartItemQuantity(Cart cart, String singleId) {
 		cart.decrease(singleId);
 		cartRepository.save(cart);
 	}
 
-	public void clearStoreCart(String cartId, String storeId) {
-		Cart cart = findById(cartId);
-		cart.clearForStore(storeId);
+	public void clearCart(Cart cart, long traderId) {
+		cart.clear(traderId);
 		cartRepository.save(cart);
 	}
 
-	public void clearCart(String cartId) {
-		cartRepository.deleteById(cartId);
+	public void clearCart(long clientId) {
+		cartRepository.deleteByClientId(clientId);
 	}
 
 

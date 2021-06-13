@@ -36,8 +36,8 @@ public class Cart {
 		return new Cart(clientId);
 	}
 
-	public void add(String storeId, Single single) {
-		CartItem item = CartItem.from(single, storeId);
+	public void add(long traderId, Single single) {
+		CartItem item = CartItem.from(single, traderId);
 		if (items.containsKey(single.id())) {
 			items.get(single.id()).increaseQuantity();
 		} else {
@@ -61,18 +61,18 @@ public class Cart {
 		}
 	}
 
-	public void clearForStore(String storeId) {
+	public void clear(long traderId) {
 		var copy = items.values().stream()
-				.filter(cartItem -> cartItem.storeId().equalsIgnoreCase(storeId))
+				.filter(cartItem -> cartItem.traderId() == traderId)
 				.map(CartItem::singleId)
 				.collect(Collectors.toList());
 
 		copy.forEach(id -> items.remove(id));
 	}
 
-	public Map<String, List<CartItem>> groupedByStore() {
+	public Map<Long, List<CartItem>> groupedByStore() {
 		return items.values().stream()
-				.collect(Collectors.groupingBy(CartItem::storeId));
+				.collect(Collectors.groupingBy(CartItem::traderId));
 	}
 
 }

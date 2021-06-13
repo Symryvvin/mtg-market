@@ -10,4 +10,6 @@ public interface CartRepository extends MongoRepository<Cart, String> {
 
 	Optional<Cart> findByClientId(long clientId);
 
+	void deleteByClientId(long clientId);
+
 }

@@ -15,7 +15,7 @@ public interface StoreRepository extends MongoRepository<Store, String> {
 
 	Optional<Store> findByTraderId(long traderId);
 
-	Optional<Store> findByTraderName(String ownerName);
+	Optional<Store> findByTraderName(String traderName);
 
 	boolean existsByTraderId(long traderId);
 

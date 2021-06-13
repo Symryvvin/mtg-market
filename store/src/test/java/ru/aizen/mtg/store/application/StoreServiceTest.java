@@ -28,7 +28,7 @@ class StoreServiceTest {
 	private StoreRepository repository;
 	private StoreService service;
 
-	private Store store;
+	private Store testStore;
 
 	@BeforeEach
 	void beforeEach() {
@@ -45,12 +45,12 @@ class StoreServiceTest {
 				.price(1.5);
 		testStore.add(testSingle);
 
-		store = repository.save(testStore);
+		this.testStore = repository.save(testStore);
 	}
 
 	@AfterEach
 	void afterEach() {
-		repository.delete(store);
+		repository.delete(testStore);
 	}
 
 	@Test
@@ -78,29 +78,20 @@ class StoreServiceTest {
 
 	@Test
 	void blockStore() {
-		service.blockStore(store.id());
-		repository.findById(store.id()).ifPresentOrElse(
-				s -> assertTrue(s.blocked()),
-				() -> Assertions.fail("Store with id " + store.id() + " not found")
-		);
+		Store store = service.store(testStore.trader().id());
 
-		service.unblockStore(store.id());
-		repository.findById(store.id()).ifPresentOrElse(
-				s -> assertFalse(s.blocked()),
-				() -> Assertions.fail("Store with id " + store.id() + " not found")
-		);
-	}
+		service.blockStore(store);
+		assertTrue(store.blocked());
 
-	@Test
-	void removeStore() {
-		service.removeStore(store.id());
-
-		assertFalse(repository.findById(store.id()).isPresent());
+		service.unblockStore(store);
+		assertFalse(store.blocked());
 	}
 
 	@Test
 	void addSingle() {
-		service.addSingle(store.id(), Single.create(
+		Store store = service.store(testStore.trader().id());
+
+		service.addSingle(store, Single.create(
 				UUID.randomUUID().toString(), "oracleName")
 				.name("name")
 				.setCode("code")
@@ -110,14 +101,14 @@ class StoreServiceTest {
 				.inStock(1)
 				.price(0.25));
 
-		repository.findById(store.id()).ifPresentOrElse(
-				s -> assertEquals(2, s.singles().size()),
-				() -> Assertions.fail("Store with id " + store.id() + " not found")
-		);
+
+		assertEquals(2, store.singles().size());
 	}
 
 	@Test
 	void addSingles() {
+		Store store = service.store(testStore.trader().id());
+
 		Collection<Single> singles = Arrays.asList(
 				Single.create(UUID.randomUUID().toString(), "oracleName")
 						.name("name")
@@ -136,16 +127,15 @@ class StoreServiceTest {
 						.inStock(1)
 						.price(0.25));
 
-		service.addSingles(store.id(), singles);
+		service.addSingles(store, singles);
 
-		repository.findById(store.id()).ifPresentOrElse(
-				s -> assertEquals(2, s.singles().size()),
-				() -> Assertions.fail("Store with id " + store.id() + " not found")
-		);
+		assertEquals(3, store.singles().size());
 	}
 
 	@Test
 	void editSingle() {
+		Store store = service.store(testStore.trader().id());
+
 		Single single = Single.create(
 				UUID.randomUUID().toString(), "oracleName")
 				.name("name")
@@ -156,29 +146,27 @@ class StoreServiceTest {
 				.inStock(1)
 				.price(0.25);
 
-		service.addSingle(store.id(), single);
+		service.addSingle(store, single);
 
-		service.editSingle(store.id(), single.id(),
+		service.editSingle(store, single.id(),
 				"new_name", "code", "lang", "FOIL", "M", single.price(), single.inStock());
 
-		repository.findById(store.id()).ifPresentOrElse(
-				s -> s.findSingleById(single.id()).ifPresentOrElse(
-						updatedSingle -> assertEquals("new_name", updatedSingle.name()),
-						() -> Assertions.fail("Single with id " + single.id() + " not found")
-				),
-				() -> Assertions.fail("Store with id " + store.id() + " not found")
-		);
+		store.findSingleById(single.id()).ifPresentOrElse(
+				updatedSingle -> assertEquals("new_name", updatedSingle.name()),
+				() -> Assertions.fail("Single with id " + single.id() + " not found"));
 	}
 
 	@Test
 	void deleteSingle() {
+		Store store = service.store(testStore.trader().id());
+
 		store.singles().stream().findAny().ifPresentOrElse(
 				single -> {
-					service.deleteSingle(store.id(), single.id());
+					service.deleteSingle(store, single.id());
 
-					repository.findById(store.id()).ifPresentOrElse(
+					repository.findByTraderId(testStore.trader().id()).ifPresentOrElse(
 							s -> assertFalse(s.findSingleById(single.id()).isPresent()),
-							() -> Assertions.fail("Store with id " + store.id() + " not found")
+							() -> Assertions.fail("Store with id " + testStore.id() + " not found")
 					);
 				},
 				() -> Assertions.fail("No singles in store")
@@ -187,6 +175,8 @@ class StoreServiceTest {
 
 	@Test
 	void reserveSingle() {
+		Store store = service.store(testStore.trader().id());
+
 		Single single = Single.create(
 				UUID.randomUUID().toString(), "oracleName")
 				.name("name")
@@ -197,15 +187,15 @@ class StoreServiceTest {
 				.inStock(2)
 				.price(0.25);
 
-		service.addSingle(store.id(), single);
-		service.reserveSingle(store.id(), single.id(), 2);
+		service.addSingle(store, single);
+		service.reserveSingle(store, single.id(), 2);
 
-		repository.findById(store.id()).ifPresentOrElse(
+		repository.findByTraderId(store.trader().id()).ifPresentOrElse(
 				s -> s.findSingleById(single.id()).ifPresentOrElse(
 						updatedSingle -> assertTrue(updatedSingle.isReserved()),
 						() -> Assertions.fail("Single with id " + single.id() + " not found")
 				),
-				() -> Assertions.fail("Store with id " + store.id() + " not found")
+				() -> Assertions.fail("Store with id " + testStore.id() + " not found")
 		);
 	}
 

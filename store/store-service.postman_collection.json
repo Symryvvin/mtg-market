@@ -6,7 +6,435 @@
 	},
 	"item": [
 		{
-			"name": "cart",
+			"name": "store-resource",
+			"item": [
+				{
+					"name": "create store",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": {{traderId}},\n    \"username\": \"{{username}}\",\n    \"userLocation\": \"{{location}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/store",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view store",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}/rest/store/view/:traderName",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"store",
+								"view",
+								":traderName"
+							],
+							"variable": [
+								{
+									"key": "traderName",
+									"value": "{{username}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit store",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "{{traderId}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUri}}/rest/store/edit",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"store",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "single-resource",
+			"item": [
+				{
+					"name": "add single",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "{{traderId}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oracleId\": \"a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d\",\n    \"oracleName\": \"Shock\",\n    \"name\": \"Шок\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"FOIL\",\n    \"condition\": \"NM\",\n    \"price\": 50.00,\n    \"inStock\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/single/add",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"single",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search singles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resp = pm.response.json();",
+									"",
+									"pm.collectionVariables.set(\"singleId\", pm.variables.replaceIn(resp._embedded.singles[0].singleId));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/single/search/:oracleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"single",
+								"search",
+								":oracleId"
+							],
+							"variable": [
+								{
+									"key": "oracleId",
+									"value": "{{oracleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit single",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"value": "{{userId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Отвергнуть\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"REGULAR\",\n    \"condition\": \"SP\",\n    \"price\": 20.00,\n    \"inStock\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/single/edit/:singleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"single",
+								"edit",
+								":singleId"
+							],
+							"variable": [
+								{
+									"key": "singleId",
+									"value": "{{singleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reserve singles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"singleId\": \"{{singleId}}\",\n        \"count\": 2\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/single/reserve/:traderId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"single",
+								"reserve",
+								":traderId"
+							],
+							"variable": [
+								{
+									"key": "traderId",
+									"value": "{{traderId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "import singles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-UserId",
+								"value": "{{userId}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/aizen/Desktop/import.xlsx"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUri}}/rest/single/import/excel",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"single",
+								"import",
+								"excel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete single",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-UserId",
+								"value": "{{userId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUri}}/rest/single/delete/:singleId",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"single",
+								"delete",
+								":singleId"
+							],
+							"variable": [
+								{
+									"key": "singleId",
+									"value": "{{singleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart-resrouce",
 			"item": [
 				{
 					"name": "add to shopping cart",
@@ -35,12 +463,12 @@
 						"header": [
 							{
 								"key": "X-UserId",
-								"value": "27",
+								"value": "{{clientId}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{baseUri}}/rest/cart/add/:storeId/:singleId",
+							"raw": "{{baseUri}}/rest/cart/add/:traderId/:singleId",
 							"host": [
 								"{{baseUri}}"
 							],
@@ -48,17 +476,17 @@
 								"rest",
 								"cart",
 								"add",
-								":storeId",
+								":traderId",
 								":singleId"
 							],
 							"variable": [
 								{
-									"key": "storeId",
-									"value": "60b3b0e2416c030709334d98"
+									"key": "traderId",
+									"value": "{{traderId}}"
 								},
 								{
 									"key": "singleId",
-									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+									"value": "{{singleId}}"
 								}
 							]
 						}
@@ -93,7 +521,7 @@
 							{
 								"key": "X-UserId",
 								"type": "text",
-								"value": "27"
+								"value": "{{clientId}}"
 							}
 						],
 						"url": {
@@ -138,38 +566,24 @@
 							{
 								"key": "X-UserId",
 								"type": "text",
-								"value": "4589"
+								"value": "{{clientId}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{baseUri}}/rest/cart/:cartId/increase/:singleId",
+							"raw": "{{baseUri}}/rest/cart/increase/:singleId",
 							"host": [
 								"{{baseUri}}"
 							],
 							"path": [
 								"rest",
 								"cart",
-								":cartId",
 								"increase",
 								":singleId"
 							],
 							"variable": [
 								{
-									"key": "cartId",
-									"value": "60c2177cd3fc761bde3b2228"
-								},
-								{
 									"key": "singleId",
-									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+									"value": "{{singleId}}"
 								}
 							]
 						}
@@ -204,38 +618,24 @@
 							{
 								"key": "X-UserId",
 								"type": "text",
-								"value": "4589"
+								"value": "{{clientId}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{baseUri}}/rest/cart/:cartId/decrease/:singleId",
+							"raw": "{{baseUri}}/rest/cart/decrease/:singleId",
 							"host": [
 								"{{baseUri}}"
 							],
 							"path": [
 								"rest",
 								"cart",
-								":cartId",
 								"decrease",
 								":singleId"
 							],
 							"variable": [
 								{
-									"key": "cartId",
-									"value": "60c2177cd3fc761bde3b2228"
-								},
-								{
 									"key": "singleId",
-									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
+									"value": "{{singleId}}"
 								}
 							]
 						}
@@ -270,99 +670,24 @@
 							{
 								"key": "X-UserId",
 								"type": "text",
-								"value": "4589"
+								"value": "{{clientId}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{baseUri}}/rest/cart/:cartId/remove/:singleId",
+							"raw": "{{baseUri}}/rest/cart/remove/:singleId",
 							"host": [
 								"{{baseUri}}"
 							],
 							"path": [
 								"rest",
 								"cart",
-								":cartId",
 								"remove",
 								":singleId"
 							],
 							"variable": [
 								{
-									"key": "cartId",
-									"value": "60c2177cd3fc761bde3b2228"
-								},
-								{
 									"key": "singleId",
-									"value": "0452fdd6-fdae-4ee6-bd5b-04b515b901e2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "clear cart",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-UserId",
-								"type": "text",
-								"value": "4589"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUri}}/rest/cart/:cartId/clear",
-							"host": [
-								"{{baseUri}}"
-							],
-							"path": [
-								"rest",
-								"cart",
-								":cartId",
-								"clear"
-							],
-							"variable": [
-								{
-									"key": "cartId",
-									"value": "60c2177cd3fc761bde3b2228"
+									"value": "{{singleId}}"
 								}
 							]
 						}
@@ -392,541 +717,101 @@
 						}
 					],
 					"request": {
-						"method": "PUT",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "X-UserId",
 								"type": "text",
-								"value": "4589"
+								"value": "{{clientId}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "a1b74c3a-3668-4a7a-8fe3-a98c7c4a68c6",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{baseUri}}/rest/cart/:cartId/clear/:storeId",
+							"raw": "{{baseUri}}/rest/cart/clear/:traderId",
 							"host": [
 								"{{baseUri}}"
 							],
 							"path": [
 								"rest",
 								"cart",
-								":cartId",
 								"clear",
-								":storeId"
+								":traderId"
 							],
 							"variable": [
 								{
-									"key": "cartId",
-									"value": "60c21e29483faf6d7bd475ea"
-								},
-								{
-									"key": "storeId",
-									"value": "60b3b0e2416c030709334d98"
+									"key": "traderId",
+									"value": "{{traderId}}"
 								}
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "clear cart",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-UserId",
+								"type": "text",
+								"value": "{{clientId}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUri}}/rest/cart/clear",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"rest",
+								"cart",
+								"clear"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
-		},
-		{
-			"name": "create store",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"userId\": {{userId}},\n    \"username\": \"{{username}}\",\n    \"userLocation\": \"{{location}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUri}}/rest/store",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "view store",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const resp = pm.response.json();",
-							"",
-							"pm.collectionVariables.set(\"storeId\", pm.variables.replaceIn(resp.id));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUri}}/rest/store/find/:traderId",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						"find",
-						":traderId"
-					],
-					"variable": [
-						{
-							"key": "traderId",
-							"value": "Aizen"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "edit store",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-UserId",
-						"type": "text",
-						"value": "{{userId}}"
-					}
-				],
-				"url": {
-					"raw": "{{baseUri}}/rest/store/edit",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						"edit"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add single",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "X-UserId",
-						"value": "{{userId}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"oracleId\": \"a9d288b8-cdc1-4e55-a0c9-d6edfc95e65d\",\n    \"oracleName\": \"Shock\",\n    \"name\": \"Шок\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"FOIL\",\n    \"condition\": \"NM\",\n    \"price\": 50.00,\n    \"inStock\": 12\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUri}}/rest/store/:storeId/singles/add",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						":storeId",
-						"singles",
-						"add"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "search singles",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const resp = pm.response.json();",
-							"",
-							"pm.collectionVariables.set(\"singleId\", pm.variables.replaceIn(resp[0].singleId));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUri}}/rest/store/singles/:oracleId",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						"singles",
-						":oracleId"
-					],
-					"variable": [
-						{
-							"key": "oracleId",
-							"value": "{{oracleId}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "edit single",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "X-UserId",
-						"value": "{{userId}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"Отвергнуть\",\n    \"setCode\": \"aer\",\n    \"langCode\": \"ru\",\n    \"style\": \"REGULAR\",\n    \"condition\": \"SP\",\n    \"price\": 20.00,\n    \"inStock\": 4\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUri}}/rest/store/:storeId/singles/:singleId/edit",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						":storeId",
-						"singles",
-						":singleId",
-						"edit"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						},
-						{
-							"key": "singleId",
-							"value": "{{singleId}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "reserve singles",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[\n    {\n        \"singleId\": \"{{singleId}}\",\n        \"count\": 2\n    }\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUri}}/rest/store/:storeId/singles/reserve",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						":storeId",
-						"singles",
-						"reserve"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "import singles",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "X-UserId",
-						"value": "{{userId}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "file",
-							"type": "file",
-							"src": "/home/aizen/Desktop/import.xlsx"
-						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUri}}/rest/store/:storeId/singles/import",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						":storeId",
-						"singles",
-						"import"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete single",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "X-UserId",
-						"value": "{{userId}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseUri}}/rest/store/:storeId/singles/:singleId/delete",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						":storeId",
-						"singles",
-						":singleId",
-						"delete"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						},
-						{
-							"key": "singleId",
-							"value": "{{singleId}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete store",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "X-UserId",
-						"value": "{{userId}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseUri}}/rest/store/:storeId/delete",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						":storeId",
-						"delete"
-					],
-					"variable": [
-						{
-							"key": "storeId",
-							"value": "{{storeId}}"
-						}
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [
@@ -955,15 +840,11 @@
 			"value": ""
 		},
 		{
-			"key": "userId",
+			"key": "traderId",
 			"value": ""
 		},
 		{
 			"key": "username",
-			"value": ""
-		},
-		{
-			"key": "storeId",
 			"value": ""
 		},
 		{
@@ -977,6 +858,10 @@
 		{
 			"key": "baseUri",
 			"value": "http://localhost:8083"
+		},
+		{
+			"key": "clientId",
+			"value": ""
 		}
 	]
 }

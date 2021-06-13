@@ -56,7 +56,7 @@ public class Single {
 
 	public void reserve(int count) {
 		if (this.inStock < count) {
-			throw new IllegalArgumentException("Can`t reserve more single that has in stock");
+			throw new IllegalArgumentException("Нельзя зарезервировать карт больше чем есть у продавца");
 		}
 
 		this.inStock -= count;

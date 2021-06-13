@@ -1,6 +1,5 @@
 package ru.aizen.mtg.store.application.resource.dto.response;
 
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class StoreInfoRepresentation extends RepresentationModel<StoreInfoRepres
 				store.singles().size()
 		);
 
-		model.add(linkTo(methodOn(StoreResource.class).find(store.id())).withSelfRel());
+		model.add(linkTo(methodOn(StoreResource.class).view(store.trader().name())).withSelfRel());
 
 		return model;
 	}

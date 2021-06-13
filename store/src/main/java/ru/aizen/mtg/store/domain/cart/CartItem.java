@@ -13,19 +13,19 @@ import ru.aizen.mtg.store.domain.single.Single;
 @Document
 public class CartItem {
 
-	private final String storeId;
+	private final long traderId;
 	private final String singleId;
 	private final String name;
 	private final String attributes;
 	private final double price;
 	private int quantity;
 
-	public static CartItem from(Single single, String storeId) {
+	public static CartItem from(Single single, long traderId) {
 		String name = single.oracleName().equalsIgnoreCase(single.name()) ?
 				single.oracleName() :
 				single.name() + "(" + single.oracleName() + ")";
 		String attributes = single.setCode() + " " + single.langCode() + " " + single.style() + " " + single.condition();
-		return new CartItem(storeId, single.id(), name, attributes, single.price(), 1);
+		return new CartItem(traderId, single.id(), name, attributes, single.price(), 1);
 	}
 
 	public void increaseQuantity() {
