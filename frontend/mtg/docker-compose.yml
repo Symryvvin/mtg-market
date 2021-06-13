@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  identity:
+    build:
+      context: ""
+    image: symryvvin/mtg-frontend
+    container_name: mtg-frontend
+    ports:
+      - "7777:80"
