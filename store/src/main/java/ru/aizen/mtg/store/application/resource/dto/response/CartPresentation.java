@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 import ru.aizen.mtg.store.application.resource.CartResource;
+import ru.aizen.mtg.store.application.resource.StoreResource;
 import ru.aizen.mtg.store.domain.cart.Cart;
 import ru.aizen.mtg.store.domain.cart.CartItem;
 
@@ -30,6 +31,7 @@ public class CartPresentation extends RepresentationModel<CartPresentation> {
 				items.stream().map(item -> CartItemPresentation.from(cart.clientId(), item)).collect(Collectors.toList())
 		);
 
+		model.add(linkTo(methodOn(StoreResource.class).info(traderId)).withRel("info"));
 		model.add(linkTo(methodOn(CartResource.class).clear(cart.clientId())).withRel("clearAll"));
 		model.add(linkTo(methodOn(CartResource.class).clearCart(cart.clientId(), traderId)).withRel("clear"));
 

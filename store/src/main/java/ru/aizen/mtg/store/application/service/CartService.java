@@ -24,7 +24,7 @@ public class CartService {
 	}
 
 	public Cart clientCart(long clientId) {
-		return cartRepository.findByClientId(clientId).orElseThrow(() -> new CartNotFoundException(clientId));
+		return cartRepository.findByClientId(clientId).orElseGet(() -> Cart.create(clientId));
 	}
 
 	public void addToCart(long clientId, long traderId, String singleId) {

@@ -172,54 +172,6 @@
 			"response": []
 		},
 		{
-			"name": "Получание ID магазина",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const resp = pm.response.json();",
-							"",
-							"pm.collectionVariables.set(\"storeId\", pm.variables.replaceIn(resp.id));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUri}}/rest/store/find/:traderName",
-					"host": [
-						"{{baseUri}}"
-					],
-					"path": [
-						"rest",
-						"store",
-						"find",
-						":traderName"
-					],
-					"variable": [
-						{
-							"key": "traderName",
-							"value": "{{username}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Генерация случайного списка карт из базы (1-1000)",
 			"event": [
 				{
@@ -229,7 +181,7 @@
 							"const resp = pm.response.json();",
 							"",
 							"pm.sendRequest({",
-							"    url: pm.collectionVariables.get('baseUri') + '/rest/store/' + pm.collectionVariables.get('storeId') +'/singles/import/json',",
+							"    url: pm.collectionVariables.get('baseUri') + '/rest/single/import/json',",
 							"    method: 'PUT',",
 							"    header: {",
 							"         'content-type': 'application/json',",
@@ -326,10 +278,6 @@
 		},
 		{
 			"key": "username",
-			"value": ""
-		},
-		{
-			"key": "storeId",
 			"value": ""
 		},
 		{

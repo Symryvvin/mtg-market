@@ -23,10 +23,10 @@ public class FoundSingle extends RepresentationModel<FoundSingle> {
 	private final String langCode;
 	private final String style;
 
-	private final String storeId;
+	private final long traderId;
 	private final String singleId;
-	private final String ownerName;
-	private final String ownerLocation;
+	private final String traderName;
+	private final String traderLocation;
 
 	private final String condition;
 	private final double price;
@@ -39,7 +39,7 @@ public class FoundSingle extends RepresentationModel<FoundSingle> {
 				single.setCode(),
 				single.langCode(),
 				single.style().name(),
-				store.id(),
+				store.trader().id(),
 				single.id(),
 				store.trader().name(),
 				store.trader().location(),
@@ -49,7 +49,7 @@ public class FoundSingle extends RepresentationModel<FoundSingle> {
 		);
 
 		model.add(linkTo(methodOn(CartResource.class)
-				.add(null, store.trader().id(), single.id())).withRel("addToCart"));
+				.add(0L, store.trader().id(), single.id())).withRel("addToCart"));
 
 		return model;
 	}
