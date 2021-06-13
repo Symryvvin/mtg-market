@@ -67,8 +67,8 @@ class TopPanel extends React.Component {
                           keepMounted
                           open={Boolean(this.state.anchorEl)}
                           onClose={this.handleClose}>
-                        <MenuItem onClick={this.handleClose}> <Link to="/profile/:username">Профиль</Link></MenuItem>
-                        <MenuItem onClick={this.handleClose}>Магазины</MenuItem>
+                        <MenuItem onClick={this.handleClose}> <Link to="/profile">Профиль</Link></MenuItem>
+                        <MenuItem onClick={this.handleClose}>Магазин</MenuItem>
                         <MenuItem onClick={this.handleClose}>Заказы</MenuItem>
                         <MenuItem onClick={this.logout}>Выход</MenuItem>
                     </Menu>

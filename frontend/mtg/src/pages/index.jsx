@@ -1,7 +1,6 @@
 import React from "react";
 import {Button, Grid, TextField} from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {useCookies} from 'react-cookie'
 import TopPanel from "../component/TopPanel";
 
 const MainPage = () => {
@@ -11,16 +10,6 @@ const MainPage = () => {
     const [value, setValue] = React.useState(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState([]);
-
-    const [isLogin, setIsLogin] = React.useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token'])
-
-    const logout = () => {
-        removeCookie('access_token');
-        removeCookie('refresh_token');
-        window.location.href = '/';
-        setIsLogin(false);
-    }
 
     const search = () => {
         if (oracleId) {
@@ -43,12 +32,6 @@ const MainPage = () => {
             });
 
     }, [value, inputValue]);
-
-    React.useEffect(() => {
-        if (cookies.access_token) {
-            setIsLogin(true);
-        }
-    }, [cookies])
 
     return (
         <Grid container direction="column" justify="space-between" alignItems="stretch" className="vh-100">

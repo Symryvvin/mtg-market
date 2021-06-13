@@ -100,6 +100,16 @@ public class IdentityService {
 		}
 	}
 
+	public UserInfo userInfo(long userId) throws IdentityServiceException {
+		Optional<Account> accountOptional = accountRepository.findById(userId);
+
+		if (accountOptional.isPresent()) {
+			return UserInfo.from(accountOptional.get());
+		} else {
+			throw new IdentityServiceException("User with name " + userId + " not found");
+		}
+	}
+
 	public Collection<UserShortInfo> users() {
 		return accountRepository.findAll().stream()
 				.map(UserShortInfo::from)
@@ -140,7 +150,7 @@ public class IdentityService {
 				account.changeRole(trader);
 				accountRepository.save(account);
 
-				restTemplate.postForLocation(storeService + "/store",
+				restTemplate.postForLocation(storeService + "/rest/store",
 						new CreateStoreDTO(
 								account.getId(),
 								account.getLogin(),
@@ -153,5 +163,9 @@ public class IdentityService {
 		} else {
 			throw new IdentityServiceException("Пользователь не найден");
 		}
+	}
+
+	public void delete(long userId) {
+		accountRepository.deleteById(userId);
 	}
 }

@@ -25,6 +25,7 @@ public class FrontendRouteConfig {
 				.route("cart", route -> route.path("/cart").uri(reactAppUri))
 				.route("not_found", route -> route.path("/404").uri(reactAppUri))
 				.route("search", route -> route.path("/search/{oracleId}").uri(reactAppUri))
+				.route("profile", route -> route.path("/profile/**").uri(reactAppUri))
 				.build();
 	}
 

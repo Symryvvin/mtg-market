@@ -6,6 +6,7 @@ import lombok.Getter;
 public class Error {
 
 	private final int statusCode;
+	private final boolean success = false;
 	private final String message;
 
 	public Error(int statusCode, String message) {

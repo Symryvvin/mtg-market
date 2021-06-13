@@ -1,7 +1,6 @@
 package ru.aizen.mtg.application.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,21 +28,19 @@ public class IdentityResource {
 	@PutMapping(path = "/edit/profile",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Success> updateUser(@RequestHeader("X-UserId") Long userId,
+	public ResponseEntity<Void> updateUser(@RequestHeader("X-UserId") Long userId,
 	                                          @RequestBody UserUpdateDTO request) {
 		identityService.updateProfile(userId,
 				request.getFullName(),
 				request.getEmail(),
 				request.getPhone());
-		return ResponseEntity.ok(
-				new Success(HttpStatus.OK.value(), "User updated successful")
-		);
+		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping(path = "/edit/address",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Success> updateAddress(@RequestHeader("X-UserId") Long userId,
+	public ResponseEntity<Void> updateAddress(@RequestHeader("X-UserId") Long userId,
 	                                             @RequestBody UserAddressUpdateDTO request) {
 		identityService.updateProfileAddress(userId,
 				request.getSettlement(),
@@ -51,15 +48,19 @@ public class IdentityResource {
 				request.getBuilding(),
 				request.getApartment(),
 				request.getPostIndex());
-		return ResponseEntity.ok(
-				new Success(HttpStatus.OK.value(), "User address updated successful")
-		);
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping(path = "{username}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserInfo userByName(@PathVariable("username") String username) {
 		return identityService.userInfo(username);
+	}
+
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserInfo userByName(@RequestHeader("X-UserId") Long userId) {
+		return identityService.userInfo(userId);
 	}
 
 	@GetMapping(path = "/all",

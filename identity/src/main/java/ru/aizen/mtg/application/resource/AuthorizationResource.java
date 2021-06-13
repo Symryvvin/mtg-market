@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.aizen.mtg.application.IdentityService;
 import ru.aizen.mtg.application.resource.dto.UserLoginDTO;
 import ru.aizen.mtg.application.resource.dto.UserRegistrationDTO;
@@ -40,6 +37,12 @@ public class AuthorizationResource {
 		return ResponseEntity.ok(
 				new UserLogin(true, HttpStatus.OK.value(), token, "Вход выполнен успешно")
 		);
+	}
+
+	@DeleteMapping(path = "/delete/{userId}")
+	public ResponseEntity<Void> delete(@PathVariable("userId") long userId) {
+		identityService.delete(userId);
+		return ResponseEntity.ok().build();
 	}
 
 }
