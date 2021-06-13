@@ -15,14 +15,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CartItemPresentation extends RepresentationModel<CartPresentation> {
 
 	private final String singleId;
+	private final String oracleName;
 	private final String name;
+	private final String setCode;
 	private final String attributes;
 	private final double price;
 	private final int quantity;
 
 	public static CartItemPresentation from(long clientId, CartItem item) {
-		CartItemPresentation model = new CartItemPresentation(item.singleId(),
+		CartItemPresentation model = new CartItemPresentation(
+				item.singleId(),
+				item.oracleName(),
 				item.name(),
+				item.setCode(),
 				item.attributes(),
 				item.price(),
 				item.quantity());

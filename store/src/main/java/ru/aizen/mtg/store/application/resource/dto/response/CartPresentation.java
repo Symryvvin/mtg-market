@@ -31,6 +31,7 @@ public class CartPresentation extends RepresentationModel<CartPresentation> {
 				items.stream().map(item -> CartItemPresentation.from(cart.clientId(), item)).collect(Collectors.toList())
 		);
 
+		model.add(linkTo(methodOn(CartResource.class).placeOrder(cart.clientId(), traderId)).withRel("placeOrder"));
 		model.add(linkTo(methodOn(StoreResource.class).info(traderId)).withRel("info"));
 		model.add(linkTo(methodOn(CartResource.class).clear(cart.clientId())).withRel("clearAll"));
 		model.add(linkTo(methodOn(CartResource.class).clearCart(cart.clientId(), traderId)).withRel("clear"));

@@ -54,6 +54,10 @@ public class Single {
 		return this;
 	}
 
+	public boolean hasInStock() {
+		return this.inStock > 0;
+	}
+
 	public void reserve(int count) {
 		if (this.inStock < count) {
 			throw new IllegalArgumentException("Нельзя зарезервировать карт больше чем есть у продавца");

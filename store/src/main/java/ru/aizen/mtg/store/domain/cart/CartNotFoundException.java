@@ -6,8 +6,4 @@ public class CartNotFoundException extends RuntimeException {
 		super("Корзина пользователя с ID [" + userId + "] не найдена");
 	}
 
-	public CartNotFoundException(String cartId) {
-		super("Корзина с ID [" + cartId + "] не найдена");
-	}
-
 }

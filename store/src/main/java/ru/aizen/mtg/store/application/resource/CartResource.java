@@ -81,5 +81,11 @@ public class CartResource {
 		return ResponseEntity.ok().build();
 	}
 
+	@PostMapping(value = "/place/order/{traderId}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> placeOrder(@RequestHeader("X-UserId") Long userId,
+	                                         @PathVariable("traderId") long traderId) {
+		return ResponseEntity.ok(cartService.placeOrder(userId, traderId));
+	}
+
 
 }

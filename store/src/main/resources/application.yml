@@ -18,3 +18,6 @@ spring:
       port: 31389
       username: user
       password: pass
+
+
+orderService: ${ORDER_SERVICE_URI}

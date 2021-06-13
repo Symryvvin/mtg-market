@@ -1,8 +1,22 @@
 import React from "react";
-import {Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {
+    Button,
+    Grid,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow
+} from "@material-ui/core";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
 import {Link} from "react-router-dom";
+import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
+import RemoveCircleTwoToneIcon from '@material-ui/icons/RemoveCircleTwoTone';
+import {AddCircleTwoTone} from "@material-ui/icons";
 
 
 class Cart extends React.Component {
@@ -51,11 +65,13 @@ class Cart extends React.Component {
             headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
-                console.log(response.error);
-                throw Error(response.statusText);
+                response.json().then(response => {
+                    alert(response.message);
+                })
+            } else {
+                single.quantity += 1;
+                this.setState(this.state);
             }
-            single.quantity += 1;
-            this.setState(this.state);
         });
     }
 
@@ -118,13 +134,27 @@ class Cart extends React.Component {
             headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
-                console.log(response.error);
-                throw Error(response.statusText);
+                response.json().then(response => {
+                    alert(response.message);
+                })
+            } else {
+                response.text().then(orderId => {
+                    alert(orderId);
+                    window.location.href = "/order/" + orderId;
+                })
+
+
             }
-            console.log(response.json())
-        });
+        })
     }
 
+    singleName(single) {
+        if (single.oracleName === single.name) {
+            return (<div>{single.oracleName}</div>)
+        } else {
+            return (<div>{single.name}<br/><small>{single.oracleName}</small></div>)
+        }
+    }
 
     render() {
         const {cart, store} = this.state;
@@ -141,20 +171,20 @@ class Cart extends React.Component {
                 <Grid container
                       item
                       justify="space-between"
-                      alignContent="space-between">
+                      className="py-2">
+                    {trader}
                     <Grid item>
-                        {trader}
-                        <Button
-                            onClick={(event) => this.onCreateOrderClick(event)}> Сделать заказ </Button>
+                        <Button variant="contained"
+                                color="primary"
+                                onClick={(event) => this.onCreateOrderClick(event)}> Сделать заказ </Button>
                     </Grid>
-                    <Button
-                        onClick={(event) => this.onClearStoreCartClick(event)}> Очистить все </Button>
                 </Grid>
                 <TableContainer component={Paper}>
                     <Table size="small">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Наименование</TableCell>
+                                <TableCell align="left">Сет</TableCell>
                                 <TableCell align="left">Инфо</TableCell>
                                 <TableCell align="center" width={200}>Количество</TableCell>
                                 <TableCell align="center" width={100}>Цена</TableCell>
@@ -164,27 +194,43 @@ class Cart extends React.Component {
                         <TableBody>
                             {singles.map((single) => (
                                 <TableRow key={single.singleId}>
-                                    <TableCell align="left">{single.name}</TableCell>
+                                    <TableCell align="left">{this.singleName(single)}</TableCell>
+                                    <TableCell align="center">
+                                        <i className={"ss ss-2x ss-" + single.setCode}/></TableCell>
                                     <TableCell align="left">{single.attributes}</TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            onClick={(event) => this.onDecreaseSingleClick(event, single)}> - </Button>
+                                        <IconButton onClick={(event) => this.onDecreaseSingleClick(event, single)}>
+                                            <RemoveCircleTwoToneIcon/>
+                                        </IconButton>
                                         {single.quantity}
-                                        <Button
-                                            onClick={(event) => this.onIncreaseSingleClick(event, single)}> + </Button>
+                                        <IconButton onClick={(event) => this.onIncreaseSingleClick(event, single)}>
+                                            <AddCircleTwoTone/>
+                                        </IconButton>
                                     </TableCell>
                                     <TableCell align="center">
                                         {Math.round(parseFloat(single.price) * parseInt(single.quantity))}
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            onClick={(event) => this.onRemoveSingleClick(event, singles, single)}> x </Button>
+                                        <IconButton
+                                            onClick={(event) => this.onRemoveSingleClick(event, singles, single)}>
+                                            <RemoveShoppingCartIcon/>
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Grid container
+                      item
+                      justify="flex-end"
+                      className="py-2">
+                    <Grid item>
+                        <Button variant="contained"
+                                color="secondary"
+                                onClick={(event) => this.onClearStoreCartClick(event)}> Очистить все </Button>
+                    </Grid>
+                </Grid>
             </Grid>
         )
     }

@@ -47,6 +47,14 @@ public class Store {
 				.findFirst();
 	}
 
+	public int inStock(String singleId) {
+		return singles.stream()
+				.filter(single -> single.id().equalsIgnoreCase(singleId))
+				.map(Single::inStock)
+				.findFirst()
+				.orElse(0);
+	}
+
 	public void block() {
 		this.blocked = true;
 	}

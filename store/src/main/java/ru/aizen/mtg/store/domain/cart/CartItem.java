@@ -15,17 +15,24 @@ public class CartItem {
 
 	private final long traderId;
 	private final String singleId;
+	private final String oracleName;
 	private final String name;
+	private final String setCode;
 	private final String attributes;
 	private final double price;
 	private int quantity;
 
 	public static CartItem from(Single single, long traderId) {
-		String name = single.oracleName().equalsIgnoreCase(single.name()) ?
-				single.oracleName() :
-				single.name() + "(" + single.oracleName() + ")";
-		String attributes = single.setCode() + " " + single.langCode() + " " + single.style() + " " + single.condition();
-		return new CartItem(traderId, single.id(), name, attributes, single.price(), 1);
+		String attributes = single.langCode() + " " + single.style() + " " + single.condition();
+		return new CartItem(
+				traderId,
+				single.id(),
+				single.oracleName(),
+				single.name(),
+				single.setCode(),
+				attributes,
+				single.price(),
+				1);
 	}
 
 	public void increaseQuantity() {
