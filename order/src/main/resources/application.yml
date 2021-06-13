@@ -2,7 +2,7 @@ server:
   port: 8084
   forward-headers-strategy: native
   servlet:
-    context-path: /rest/order/
+    context-path: /
 
 spring:
   application:

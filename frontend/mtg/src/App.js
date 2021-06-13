@@ -13,6 +13,8 @@ import {Component} from "react";
 import CartPage from "./pages/cart";
 import ProfilePage from "./pages/profile";
 import StorePage from "./pages/store";
+import OrdersPage from "./pages/orders";
+import OrderPage from "./pages/order";
 
 
 class App extends Component {
@@ -25,6 +27,8 @@ class App extends Component {
                 <Route exact path="/profile/:username" component={ProfilePage}/>
                 <Route exact path="/store" component={StorePage}/>
                 <Route exact path="/store/:username" component={StorePage}/>
+                <Route exact path="/orders" component={OrdersPage}/>
+                <Route exact path="/order/:id" component={OrderPage}/>
                 <Route exact path="/cart" component={CartPage}/>
                 <Route exact path="/sing_up" component={SingUpPage}/>
                 <Route exact path="/sing_in" component={SingInPage}/>

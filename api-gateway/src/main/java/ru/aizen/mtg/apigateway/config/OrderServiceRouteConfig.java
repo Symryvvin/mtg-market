@@ -16,7 +16,7 @@ public class OrderServiceRouteConfig {
 	@Bean
 	public RouteLocator secureOrderLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
 		return builder.routes()
-				.route("order_from_cart", route -> route.path("/rest/order/from/{cartId}")
+				.route("order", route -> route.path("/rest/order/**")
 						.filters(f -> f.filter(jwtFilter))
 						.uri(serviceUri))
 				.build();

@@ -56,7 +56,7 @@ class TopPanel extends React.Component {
     render() {
         return (
             <Grid container item>
-                <Grid container item  className="border bg-light p-2">
+                <Grid container item className="border bg-light p-2">
                     <Grid item hidden={this.state.isLogin}>
                         <Link to="/sing_in">Войти</Link>
                         <span> или </span>
@@ -75,12 +75,12 @@ class TopPanel extends React.Component {
                               keepMounted
                               open={Boolean(this.state.anchorEl)}
                               onClose={this.handleClose}>
-                            <MenuItem onClick={this.handleClose}> <Link to="/profile">Профиль</Link></MenuItem>
-                            <MenuItem onClick={this.handleClose}> <Link to="/store">Магазин</Link></MenuItem>
-                            <MenuItem onClick={this.handleClose}>Заказы</MenuItem>
+                            <MenuItem onClick={this.handleClose}><Link to="/profile">Профиль</Link></MenuItem>
+                            <MenuItem onClick={this.handleClose}><Link to="/store">Магазин</Link></MenuItem>
+                            <MenuItem onClick={this.handleClose}><Link to="/orders">Заказы</Link></MenuItem>
                             <MenuItem onClick={this.logout}>Выход</MenuItem>
                         </Menu>
-                        <IconButton href="/" >
+                        <IconButton href="/">
                             <HomeTwoToneIcon/>
                         </IconButton>
                         <IconButton href="/cart">

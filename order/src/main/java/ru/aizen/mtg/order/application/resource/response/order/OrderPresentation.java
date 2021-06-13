@@ -6,7 +6,6 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 import ru.aizen.mtg.order.application.resource.OrderResource;
 import ru.aizen.mtg.order.domain.order.Order;
-import ru.aizen.mtg.order.domain.order.OrderItem;
 
 import java.time.LocalDateTime;
 
@@ -22,12 +21,12 @@ public class OrderPresentation extends RepresentationModel<OrderPresentation> {
 	private final String orderNumber;
 	private final LocalDateTime creationDate;
 	private final String status;
-	private final double totalCost;
+	private final String totalCost;
 	private final int itemCount;
 
 	public static OrderPresentation from(Order order) {
 		double totalCost = order.items().stream()
-				.mapToDouble(OrderItem::getPrice)
+				.mapToDouble(item -> item.getPrice() * item.getQuantity())
 				.sum() + order.shippingCost();
 
 		var model = new OrderPresentation(
@@ -35,7 +34,7 @@ public class OrderPresentation extends RepresentationModel<OrderPresentation> {
 				order.orderNumber(),
 				order.creationDate(),
 				order.status().getMessage(),
-				totalCost,
+				String.format("%1$,.2f", totalCost),
 				order.items().size()
 		);
 

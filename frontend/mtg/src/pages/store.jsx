@@ -87,7 +87,7 @@ class StorePage extends React.Component {
                     <Grid item>
                         <h2>Магазин</h2>
                     </Grid>
-                    <Grid item className="w-75">
+                    <Grid item className="w-50">
                         <TableContainer component={Paper}>
                             <Table size="small">
                                 <TableHead>

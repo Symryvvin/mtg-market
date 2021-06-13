@@ -25,7 +25,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("rest/order")
 public class OrderResource {
 
 	private final CommandGateway commandGateway;

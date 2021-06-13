@@ -27,6 +27,8 @@ public class FrontendRouteConfig {
 				.route("search", route -> route.path("/search/{oracleId}").uri(reactAppUri))
 				.route("profile", route -> route.path("/profile/**").uri(reactAppUri))
 				.route("store", route -> route.path("/store/**").uri(reactAppUri))
+				.route("order", route -> route.path("/order/{orderId}").uri(reactAppUri))
+				.route("orders", route -> route.path("/orders").uri(reactAppUri))
 				.build();
 	}
 

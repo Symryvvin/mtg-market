@@ -27,14 +27,14 @@ public class OrderDetailsPresentation extends RepresentationModel<OrderDetailsPr
 	private final Collection<OrderItem> items;
 	private final double shippingCost;
 	private final String shippedTo;
-	private final double totalCost;
+	private final String totalCost;
 
 	private final Collection<EventLog> eventLogs;
 
 	public static OrderDetailsPresentation from(Order order, Collection<OrderEvent> events) {
 		double totalCost = order.items().stream()
-				.mapToDouble(OrderItem::getPrice)
-				.sum();
+				.mapToDouble(item -> item.getPrice() * item.getQuantity())
+				.sum() + order.shippingCost();
 
 		var model = new OrderDetailsPresentation(
 				order.orderId(),
@@ -45,7 +45,7 @@ public class OrderDetailsPresentation extends RepresentationModel<OrderDetailsPr
 				order.items(),
 				order.shippingCost(),
 				order.shippedTo(),
-				totalCost,
+				String.format("%1$,.2f", totalCost),
 				events.stream().map(EventLog::from).collect(Collectors.toList())
 		);
 
