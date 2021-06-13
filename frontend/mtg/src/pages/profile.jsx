@@ -2,7 +2,6 @@ import React from "react";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
 import {Button, Grid} from "@material-ui/core";
-import {Link} from "react-router-dom";
 import TopPanel from "../component/TopPanel";
 
 class ProfilePage extends React.Component {
@@ -99,9 +98,6 @@ class ProfilePage extends React.Component {
                                     color="primary"
                                     onClick={(event) => this.becomeTrader(event)}>Стать продавцом</Button>
                         </Grid>
-                    </Grid>
-                    <Grid container item justify="flex-end" className="w-75">
-                        <Link to="/">Назад</Link>
                     </Grid>
                 </Grid>
             )

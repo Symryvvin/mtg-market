@@ -2,7 +2,6 @@ import React from "react";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
 import {Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
-import {Link} from "react-router-dom";
 import TopPanel from "../component/TopPanel";
 
 class SearchResultPage extends React.Component {
@@ -136,9 +135,6 @@ class SearchResultPage extends React.Component {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    </Grid>
-                    <Grid container item justify="flex-end" className="w-75">
-                        <Link to="/">Назад</Link>
                     </Grid>
                 </Grid>
             );

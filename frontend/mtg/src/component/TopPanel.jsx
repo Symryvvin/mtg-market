@@ -1,8 +1,12 @@
 import React from "react";
-import {Button, Grid, Menu, MenuItem} from "@material-ui/core";
+import {Grid, IconButton, Menu, MenuItem} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
+import DehazeIcon from '@material-ui/icons/Dehaze';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import HomeIcon from '@material-ui/icons/Home';
+import Search from "./Search";
 
 class TopPanel extends React.Component {
 
@@ -51,28 +55,41 @@ class TopPanel extends React.Component {
 
     render() {
         return (
-            <Grid container item className="border bg-light p-2">
-                <Grid item hidden={this.state.isLogin}>
-                    <Link to="/sing_in">Войти</Link>
-                    <span> или </span>
-                    <Link to="/sing_up">Регистрация</Link>
+            <Grid container item>
+                <Grid container item  className="border bg-light p-2">
+                    <Grid item hidden={this.state.isLogin}>
+                        <Link to="/sing_in">Войти</Link>
+                        <span> или </span>
+                        <Link to="/sing_up">Регистрация</Link>
+                    </Grid>
+                    <Grid container item
+                          direction="row"
+                          justify="space-between"
+                          alignItems="center"
+                          hidden={!this.state.isLogin}>
+                        <IconButton aria-label="main-menu" aria-haspopup="true" onClick={this.handleClick}>
+                            <DehazeIcon/>
+                        </IconButton>
+                        <Menu id="main-menu"
+                              anchorEl={this.state.anchorEl}
+                              keepMounted
+                              open={Boolean(this.state.anchorEl)}
+                              onClose={this.handleClose}>
+                            <MenuItem onClick={this.handleClose}> <Link to="/profile">Профиль</Link></MenuItem>
+                            <MenuItem onClick={this.handleClose}>Магазин</MenuItem>
+                            <MenuItem onClick={this.handleClose}>Заказы</MenuItem>
+                            <MenuItem onClick={this.logout}>Выход</MenuItem>
+                        </Menu>
+                        <IconButton href="/" >
+                            <HomeIcon/>
+                        </IconButton>
+                        <IconButton href="/cart">
+                            <ShoppingCartIcon/>
+                        </IconButton>
+                    </Grid>
                 </Grid>
-                <Grid container justify="space-between" alignItems="center" item hidden={!this.state.isLogin}>
-                    <Button aria-controls="main-menu"
-                            style={{textTransform: "none"}}
-                            aria-haspopup="true"
-                            onClick={this.handleClick}> Меню </Button>
-                    <Menu id="main-menu"
-                          anchorEl={this.state.anchorEl}
-                          keepMounted
-                          open={Boolean(this.state.anchorEl)}
-                          onClose={this.handleClose}>
-                        <MenuItem onClick={this.handleClose}> <Link to="/profile">Профиль</Link></MenuItem>
-                        <MenuItem onClick={this.handleClose}>Магазин</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Заказы</MenuItem>
-                        <MenuItem onClick={this.logout}>Выход</MenuItem>
-                    </Menu>
-                    <Link to="/cart">Корзина</Link>
+                <Grid item className="w-100">
+                    <Search/>
                 </Grid>
             </Grid>
         )

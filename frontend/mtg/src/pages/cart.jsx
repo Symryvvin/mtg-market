@@ -2,7 +2,6 @@ import React from "react";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
 import {Grid} from "@material-ui/core";
-import {Link} from "react-router-dom";
 import TopPanel from "../component/TopPanel";
 import Cart from "../component/Cart";
 
@@ -87,9 +86,6 @@ class CartPage extends React.Component {
                         <h2>Корзина</h2>
                     </Grid>
                     {cartRender}
-                    <Grid container item justify="flex-end" className="w-75">
-                        <Link to="/">Назад</Link>
-                    </Grid>
                 </Grid>
             );
         }
