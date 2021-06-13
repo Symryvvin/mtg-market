@@ -4,8 +4,8 @@ import {Link} from "react-router-dom";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
 import DehazeIcon from '@material-ui/icons/Dehaze';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import HomeIcon from '@material-ui/icons/Home';
+import ShoppingCartTwoToneIcon from '@material-ui/icons/ShoppingCartTwoTone';
+import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
 import Search from "./Search";
 
 class TopPanel extends React.Component {
@@ -76,15 +76,15 @@ class TopPanel extends React.Component {
                               open={Boolean(this.state.anchorEl)}
                               onClose={this.handleClose}>
                             <MenuItem onClick={this.handleClose}> <Link to="/profile">Профиль</Link></MenuItem>
-                            <MenuItem onClick={this.handleClose}>Магазин</MenuItem>
+                            <MenuItem onClick={this.handleClose}> <Link to="/store">Магазин</Link></MenuItem>
                             <MenuItem onClick={this.handleClose}>Заказы</MenuItem>
                             <MenuItem onClick={this.logout}>Выход</MenuItem>
                         </Menu>
                         <IconButton href="/" >
-                            <HomeIcon/>
+                            <HomeTwoToneIcon/>
                         </IconButton>
                         <IconButton href="/cart">
-                            <ShoppingCartIcon/>
+                            <ShoppingCartTwoToneIcon/>
                         </IconButton>
                     </Grid>
                 </Grid>

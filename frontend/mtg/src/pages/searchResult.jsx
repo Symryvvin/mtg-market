@@ -1,8 +1,19 @@
 import React from "react";
 import {Cookies, withCookies} from "react-cookie";
 import {instanceOf} from "prop-types";
-import {Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {
+    Grid,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow
+} from "@material-ui/core";
 import TopPanel from "../component/TopPanel";
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 class SearchResultPage extends React.Component {
     static propTypes = {
@@ -72,6 +83,14 @@ class SearchResultPage extends React.Component {
         });
     }
 
+    singleName(single) {
+        if (single.oracleName === single.name) {
+            return (<div>{single.oracleName}</div>)
+        } else {
+            return (<div>{single.name}<br/><small>{single.oracleName}</small></div>)
+        }
+    }
+
     /**
      * @typedef {{oracleName: string, name: string, setCode: string, langCode: string,
      * traderId: number, traderName: string, traderLocation: string, inStock: number,
@@ -102,7 +121,7 @@ class SearchResultPage extends React.Component {
                             <Table size="small">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="right">Наименование</TableCell>
+                                        <TableCell align="left">Наименование</TableCell>
                                         <TableCell align="right">Сет</TableCell>
                                         <TableCell align="right">Язык</TableCell>
                                         <TableCell align="right">Стиль</TableCell>
@@ -117,8 +136,9 @@ class SearchResultPage extends React.Component {
                                 <TableBody>
                                     {singles.map((single) => (
                                         <TableRow key={single.singleId}>
-                                            <TableCell align="right">{single.oracleName} - {single.name}</TableCell>
-                                            <TableCell align="right">{single.setCode}</TableCell>
+                                            <TableCell align="left">{this.singleName(single)}</TableCell>
+                                            <TableCell align="center">
+                                                <i className={"ss ss-2x ss-" + single.setCode}/></TableCell>
                                             <TableCell align="right">{single.langCode}</TableCell>
                                             <TableCell align="right">{single.style}</TableCell>
                                             <TableCell align="right">{single.traderName}</TableCell>
@@ -127,8 +147,9 @@ class SearchResultPage extends React.Component {
                                             <TableCell align="right">{single.inStock}</TableCell>
                                             <TableCell align="right">{single.price}</TableCell>
                                             <TableCell align="right">
-                                                <Button
-                                                    onClick={(event) => this.addToCart(event, single)}> + </Button>
+                                                <IconButton onClick={(event) => this.addToCart(event, single)}>
+                                                    <AddShoppingCartIcon/>
+                                                </IconButton>
                                             </TableCell>
                                         </TableRow>
                                     ))}

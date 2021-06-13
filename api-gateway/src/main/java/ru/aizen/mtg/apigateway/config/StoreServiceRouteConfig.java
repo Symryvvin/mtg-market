@@ -16,6 +16,9 @@ public class StoreServiceRouteConfig {
 	@Bean
 	public RouteLocator storeResourceRouteLocator(RouteLocatorBuilder builder, JwtFilter jwtFilter) {
 		return builder.routes()
+				.route("edit", route -> route.path("/rest/store/edit")
+						.filters(f -> f.filter(jwtFilter))
+						.uri(serviceUri))
 				.route("block", route -> route.path("/rest/store/block")
 						.filters(f -> f.filter(jwtFilter))
 						.uri(serviceUri))
