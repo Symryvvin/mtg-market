@@ -29,28 +29,26 @@ public class JwtFilter implements GatewayFilter {
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		String token = getToken(exchange.getRequest().getHeaders());
+		try {
+			String token = getToken(exchange.getRequest().getHeaders());
+			if (token.isEmpty()) {
+				throw new JwtTokenServiceException("Отсутствует токен авторизации");
+			}
 
-		if (token == null) {
+			String userId = tokenService.userId(token);
+			TokenData data = tokenService.parse(token);
+			exchange.getAttributes().put("user.data", data);
+			exchange.mutate()
+					.request(builder -> builder.header("X-UserId", userId));
+			return chain.filter(exchange);
+		} catch (JwtTokenServiceException e) {
 			exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 			return exchange.getResponse().setComplete();
-		} else {
-			try {
-				String userId = tokenService.userId(token);
-				TokenData data = tokenService.parse(token);
-				exchange.getAttributes().put("user.data", data);
-				exchange.mutate()
-						.request(builder -> builder.header("X-UserId", userId));
-				return chain.filter(exchange);
-			} catch (JwtTokenServiceException e) {
-				exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-				return exchange.getResponse().setComplete();
-			}
 		}
 	}
 
 
-	private String getToken(HttpHeaders httpHeaders) {
+	private String getToken(HttpHeaders httpHeaders) throws JwtTokenServiceException {
 		return httpHeaders.entrySet().stream()
 				.filter(entry -> entry.getKey().equalsIgnoreCase(HttpHeaders.AUTHORIZATION))
 				.flatMap(entry -> entry.getValue().stream())
@@ -59,11 +57,11 @@ public class JwtFilter implements GatewayFilter {
 					if (matcher.matches()) {
 						return matcher.group(2);
 					} else {
-						return null;
+						return "";
 					}
 				})
 				.findFirst()
-				.orElse(null);
+				.orElseThrow(() -> new JwtTokenServiceException("Пользователь не авторизован"));
 	}
 
 }

@@ -88,7 +88,7 @@ class TopPanel extends React.Component {
                         </IconButton>
                     </Grid>
                 </Grid>
-                <Grid item className="w-100">
+                <Grid item className="w-100 py-4">
                     <Search/>
                 </Grid>
             </Grid>

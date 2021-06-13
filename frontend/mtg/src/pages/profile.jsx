@@ -32,6 +32,13 @@ class ProfilePage extends React.Component {
                 headers: {'Authorization': 'Bearer ' + token},
             })
                 .then(response => {
+                    if (response.status === 401) {
+                        this.setState({
+                            error: true,
+                            errorMessage: "Не авторизован"
+                        })
+                        throw Error("Не авторизован");
+                    }
                     if (!response.ok) {
                         response.json().then(response => {
                             this.setState({

@@ -6,4 +6,8 @@ public class JwtTokenServiceException extends Exception {
 		super(message, cause);
 	}
 
+	public JwtTokenServiceException(String message) {
+		super(message);
+	}
+
 }
