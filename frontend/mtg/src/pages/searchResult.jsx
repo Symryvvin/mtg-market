@@ -15,7 +15,7 @@ class SearchResultPage extends React.Component {
         const {cookies} = props;
         this.state = {
             token: cookies.get('access_token'),
-            oracleId: null,
+            oracleId: this.props.match.params.id,
             errorMessage: '',
             error: null,
             isLoaded: false,
@@ -24,10 +24,9 @@ class SearchResultPage extends React.Component {
     }
 
     componentDidMount() {
-        const detailsUri = "/rest/store/singles/";
-        this.oracleId = this.props.match.params.id;
+        const {oracleId} = this.state;
 
-        fetch(detailsUri + this.oracleId, {
+        fetch("/rest/single/search/" + oracleId, {
             headers: {'Authorization': 'Bearer ' + this.state.token},
         })
             .then(response => {
@@ -57,9 +56,15 @@ class SearchResultPage extends React.Component {
 
     addToCart(event, single) {
         event.preventDefault();
-        fetch("/rest/cart/add/" + single.storeId + "/" + single.singleId, {
+
+        const {token} = this.state;
+
+        fetch(single._links.addToCart.href, {
             method: 'PUT',
-            headers: {'Authorization': 'Bearer ' + this.state.token}
+            headers: [
+                ["Authorization", 'Bearer ' + token],
+                ['X-UserId', single.traderId]
+            ],
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);
@@ -68,8 +73,16 @@ class SearchResultPage extends React.Component {
         });
     }
 
+    /**
+     * @typedef {{oracleName: string, name: string, setCode: string, langCode: string,
+     * traderId: number, traderName: string, traderLocation: string, inStock: number,
+     * _links: {addToCart: {href: string}}}} Single
+     */
+
     render() {
         const {error, errorMessage, isLoaded, items} = this.state;
+
+        let singles = items._embedded ? items._embedded.singles : [];
 
         if (error) {
             return <div>Ошибка: {errorMessage}</div>;
@@ -103,14 +116,14 @@ class SearchResultPage extends React.Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {items.map((single) => (
+                                    {singles.map((single) => (
                                         <TableRow key={single.singleId}>
                                             <TableCell align="right">{single.oracleName} - {single.name}</TableCell>
                                             <TableCell align="right">{single.setCode}</TableCell>
                                             <TableCell align="right">{single.langCode}</TableCell>
                                             <TableCell align="right">{single.style}</TableCell>
-                                            <TableCell align="right">{single.ownerName}</TableCell>
-                                            <TableCell align="right">{single.ownerLocation}</TableCell>
+                                            <TableCell align="right">{single.traderName}</TableCell>
+                                            <TableCell align="right">{single.traderLocation}</TableCell>
                                             <TableCell align="right">{single.condition}</TableCell>
                                             <TableCell align="right">{single.inStock}</TableCell>
                                             <TableCell align="right">{single.price}</TableCell>

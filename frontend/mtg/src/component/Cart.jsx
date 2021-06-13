@@ -8,7 +8,8 @@ import {Link} from "react-router-dom";
 class Cart extends React.Component {
     /**
      * @typedef {{ singleId: string, _links: {increase: {href: string}, decrease: {href: string}, remove: {href: string}}, quantity: number, price: number }} Single
-     * @typedef {{ traderName: string, _links: {self: {href: string}}, quantity: number, price: number }} Store
+     * @typedef {{ traderName: string, traderId: string
+     * _links: {self: {href: string}}, quantity: number, price: number }} Store
      */
     static propTypes = {
         cookies: instanceOf(Cookies).isRequired
@@ -16,15 +17,18 @@ class Cart extends React.Component {
 
     constructor(props) {
         super(props);
+        const {cookies} = props;
         this.state = {
+            token: cookies.get('access_token'),
             store: null,
             cart: this.props.cart
         };
     }
 
     componentDidMount() {
-        const {cart} = this.props;
-        fetch("/rest/store/" + cart.storeId + "/info")
+        const {cart} = this.state;
+
+        fetch(cart._links.info.href)
             .then(response => {
                 if (!response.ok) {
                     console.log(response.error);
@@ -40,9 +44,11 @@ class Cart extends React.Component {
     }
 
     onIncreaseSingleClick(event, single) {
+        const {token} = this.state;
         event.preventDefault();
         fetch(single._links.increase.href, {
-            method: 'PUT'
+            method: 'PUT',
+            headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);
@@ -54,9 +60,11 @@ class Cart extends React.Component {
     }
 
     onDecreaseSingleClick(event, single) {
+        const {token} = this.state;
         event.preventDefault();
         fetch(single._links.decrease.href, {
-            method: 'PUT'
+            method: 'PUT',
+            headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);
@@ -70,9 +78,11 @@ class Cart extends React.Component {
     }
 
     onRemoveSingleClick(event, singles, single) {
+        const {token} = this.state;
         event.preventDefault();
         fetch(single._links.remove.href, {
-            method: 'PUT'
+            method: 'PUT',
+            headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);
@@ -84,10 +94,12 @@ class Cart extends React.Component {
     }
 
     onClearStoreCartClick(event) {
+        const {token} = this.state;
         const {cart} = this.state;
         event.preventDefault();
         fetch(cart._links.clear.href, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);
@@ -99,13 +111,11 @@ class Cart extends React.Component {
     }
 
     onCreateOrderClick(event) {
-        const {cart} = this.state;
-        const {cookies} = this.props;
-
+        const {token, cart} = this.state;
         event.preventDefault();
-        fetch(cart._links.create_order.href, {
+        fetch(cart._links.placeOrder.href, {
             method: 'POST',
-            headers: {'Authorization': 'Bearer ' + cookies.get('access_token')},
+            headers: {'Authorization': 'Bearer ' + token}
         }).then(response => {
             if (!response.ok) {
                 console.log(response.error);
