@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine
+FROM openjdk:11
 
 USER root
 ARG APP_HOME=/opt/app/@project.name@

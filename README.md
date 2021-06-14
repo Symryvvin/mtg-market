@@ -83,27 +83,13 @@ docker push symryvvin/card-db:1.0
 kubectl apply -f deploy/card-db/application.yml -n mtg
 ```
 ---
-
-
 #### Api Gateway
 build
 ```shell
-docker-compose -f identity/target/docker-compose.yml build
+docker-compose -f api-gateway/target/docker-compose.yml build
 docker push symryvvin/api-gateway:1.0
 ```
 deploy
 ```shell
 kubectl apply -f deploy/gateway/application.yml -n mtg
-
-
-
-
-
-
-
-
-
-```shell
-docker-compose -f search/target/docker-compose.yml build
-docker-compose -f identity/target/docker-compose.yml build
 ```
