@@ -51,6 +51,7 @@ docker push symryvvin/store:1.0
 ```shell
 kubectl apply -f deploy/store/application.yml -n mtg
 ```
+---
 #### Служба заказов
 ###### docker
 ```shell
@@ -62,22 +63,26 @@ docker push symryvvin/order:1.0
 kubectl apply -f deploy/order/axon-server.yml -n mtg
 kubectl apply -f deploy/order/application.yml -n mtg
 ```
-
-
-
-##### Установка базы данных для службы поиска (Search Service)
+---
+#### Служба базы данных карт
+###### database
 ```shell
 helm install mtg-db bitnami/postgresql -f deploy/database/search/values.yml -n mtg
 ```
-###### Путь к скриптам:
+###### scripts
 ```
 search/src/main/resources/sql/create_card_table.sql
 ```
-
-
-
-
-
+###### docker
+```shell
+docker-compose -f card-db/target/docker-compose.yml build
+docker push symryvvin/card-db:1.0
+```
+###### deploy
+```shell
+kubectl apply -f deploy/card-db/application.yml -n mtg
+```
+---
 
 
 #### Api Gateway

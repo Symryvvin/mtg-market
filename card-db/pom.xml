@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>ru.aizen.mtg</groupId>
-    <artifactId>search</artifactId>
-    <version>0.1.0</version>
-    <name>search</name>
+    <artifactId>card-db</artifactId>
+    <version>1.0</version>
+    <name>card-db</name>
 
     <properties>
         <java.version>11</java.version>

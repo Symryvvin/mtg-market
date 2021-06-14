@@ -6,11 +6,11 @@
 
     <groupId>ru.aizen</groupId>
     <artifactId>mtg-market</artifactId>
-    <version>0.1.0</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>search</module>
+        <module>card-db</module>
         <module>identity</module>
         <module>store</module>
         <module>api-gateway</module>
