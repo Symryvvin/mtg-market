@@ -13,24 +13,45 @@ docker run -d --name order-event-store -p 8024:8024 -p 8124:8124 axoniq/axonserv
 kubectl create namespace mtg
 kubectl config set-context --current --namespace mtg
 ```
-
-#### Служба идентификации
 build
 ```shell
 mvn clean install
+```
+---
+#### Служба идентификации
+###### database
+```shell
+helm install identity-db bitnami/postgresql -f deploy/database/identity/values.yml -n mtg
+```
+###### scripts
+```
+identity/src/main/resources/sql/create_identity_tables.sql
+```
+###### docker
+```shell
 docker-compose -f identity/target/docker-compose.yml build
 docker push symryvvin/identity:1.0
 ```
-deploy app
+###### deploy
 ```shell
 kubectl apply -f deploy/identity/application.yml -n mtg
 ```
-
-
-install db
+---
+#### Служба управления магазином
+###### database
 ```shell
 helm install store-db bitnami/mongodb -f deploy/database/store/values.yml -n mtg
 ```
+###### docker
+```shell
+docker-compose -f store/target/docker-compose.yml build
+docker push symryvvin/store:1.0
+```
+###### deploy
+```shell
+kubectl apply -f deploy/store/application.yml -n mtg
+```
+
 
 
 
@@ -43,24 +64,21 @@ helm install mtg-db bitnami/postgresql -f deploy/database/search/values.yml -n m
 search/src/main/resources/sql/create_card_table.sql
 ```
 
-##### Установка базы данных для службы идентификации (Identity Service)
+
+
+
+
+
+
+#### Api Gateway
+build
 ```shell
-helm install identity-db bitnami/postgresql -f deploy/database/identity/values.yml -n mtg
+docker-compose -f identity/target/docker-compose.yml build
+docker push symryvvin/api-gateway:1.0
 ```
-###### Путь к скриптам:
-```
-identity/src/main/resources/sql/create_identity_tables.sql
-```
-
-##### Установка базы данных для службы управления коллекциями и магазинами (Store Service)
+deploy
 ```shell
-helm install store-db bitnami/mongodb -f deploy/database/store/values.yml -n mtg
-```
-
-
-
-
-
+kubectl apply -f deploy/gateway/application.yml -n mtg
 
 
 

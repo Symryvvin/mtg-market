@@ -13,11 +13,10 @@ spring:
       max-request-size: 10MB
   data:
     mongodb:
-      database: store
-      host: 192.168.49.2
-      port: 31389
-      username: user
-      password: pass
-
+      database: ${DB_NAME}
+      host: ${DB_HOST}
+      port: ${DB_PORT}
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
 
 orderService: ${ORDER_SERVICE_URI}

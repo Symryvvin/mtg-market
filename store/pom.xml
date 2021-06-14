@@ -10,9 +10,10 @@
 	</parent>
 	<groupId>ru.aizen.mtg</groupId>
 	<artifactId>store</artifactId>
-	<version>0.1.0</version>
+	<version>1.0</version>
 	<properties>
 		<java.version>11</java.version>
+		<maven.resource.plugin.version>3.2.0</maven.resource.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,6 +52,31 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resource.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>copy-container-config</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/docker</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
