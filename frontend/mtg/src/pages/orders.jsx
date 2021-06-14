@@ -64,7 +64,10 @@ class OrdersPage extends React.Component {
                 return response.json()
             })
             .then(response => {
-                return response._embedded.orders;
+                if (response._embedded) {
+                    return response._embedded.orders;
+                }
+                return [];
             })
             .catch(function (error) {
                 console.log(error);
@@ -101,7 +104,7 @@ class OrdersPage extends React.Component {
     }
 
     dateFormat(date) {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        const options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'};
         return new Intl.DateTimeFormat('Ru-ru', options).format(new Date(date));
     }
 

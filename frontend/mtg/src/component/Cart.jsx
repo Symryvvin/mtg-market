@@ -139,7 +139,6 @@ class Cart extends React.Component {
                 })
             } else {
                 response.text().then(orderId => {
-                    alert(orderId);
                     window.location.href = "/order/" + orderId;
                 })
 

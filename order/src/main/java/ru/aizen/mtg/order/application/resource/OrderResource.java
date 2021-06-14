@@ -18,7 +18,9 @@ import ru.aizen.mtg.order.domain.command.*;
 import ru.aizen.mtg.order.domain.event.OrderEvent;
 import ru.aizen.mtg.order.domain.order.Order;
 import ru.aizen.mtg.order.domain.query.ClientOrderListQuery;
+import ru.aizen.mtg.order.domain.query.OrderListQuery;
 import ru.aizen.mtg.order.domain.query.OrderQuery;
+import ru.aizen.mtg.order.domain.query.TraderOrderListQuery;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -130,16 +132,16 @@ public class OrderResource {
 
 	@GetMapping("/all/trader")
 	public CollectionModel<OrderPresentation> traderOrders(@RequestHeader("X-UserId") Long userId) {
-		return byUserId(userId);
+		return byUserId(new TraderOrderListQuery(userId));
 	}
 
 	@GetMapping("/all/client")
 	public CollectionModel<OrderPresentation> clientOrders(@RequestHeader("X-UserId") Long userId) {
-		return byUserId(userId);
+		return byUserId(new ClientOrderListQuery(userId));
 	}
 
-	private CollectionModel<OrderPresentation> byUserId(long userId) {
-		Collection<Order> orders = queryGateway.query(new ClientOrderListQuery(userId),
+	private CollectionModel<OrderPresentation> byUserId(OrderListQuery query) {
+		Collection<Order> orders = queryGateway.query(query,
 				ResponseTypes.multipleInstancesOf(Order.class)).join();
 
 		return CollectionModel.of(orders.stream()
