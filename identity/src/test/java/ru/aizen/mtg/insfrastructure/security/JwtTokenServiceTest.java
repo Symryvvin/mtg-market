@@ -58,8 +58,7 @@ class JwtTokenServiceTest {
 	@Test
 	void generate() throws AccountException {
 		String token = tokenService.generate(Account.register("login", "password"));
-		System.out.println(tokenService.parse(token));
-		//assertEquals("login", tokenService.validate(token));
+		assertEquals("login", tokenService.parse(token).get("username"));
 	}
 
 }

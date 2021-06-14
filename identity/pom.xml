@@ -6,11 +6,11 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.4.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>ru.aizen.mtg</groupId>
 	<artifactId>identity</artifactId>
-	<version>0.1.0</version>
+	<version>1.0</version>
 	<name>identity</name>
 
 	<properties>
