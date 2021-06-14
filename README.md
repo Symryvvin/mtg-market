@@ -51,7 +51,17 @@ docker push symryvvin/store:1.0
 ```shell
 kubectl apply -f deploy/store/application.yml -n mtg
 ```
-
+#### Служба заказов
+###### docker
+```shell
+docker-compose -f order/target/docker-compose.yml build
+docker push symryvvin/order:1.0
+```
+###### deploy
+```shell
+kubectl apply -f deploy/order/axon-server.yml -n mtg
+kubectl apply -f deploy/order/application.yml -n mtg
+```
 
 
 

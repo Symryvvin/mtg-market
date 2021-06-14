@@ -47,7 +47,7 @@ spec:
       targetPort: 8024
   selector:
     app: axonserver
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
