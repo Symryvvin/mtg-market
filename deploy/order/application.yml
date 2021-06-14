@@ -48,7 +48,7 @@ data:
   DB_HOST: store-db
   DB_PORT: "27017"
   DB_USERNAME: user
-  STORE_SERVICE_URI: store-svc.mtg:8080
+  STORE_SERVICE_URI: http://store-svc.mtg:8080
   AXON_SERVER: axonserver:8124
 ---
 apiVersion: v1

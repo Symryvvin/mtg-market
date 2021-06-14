@@ -46,7 +46,7 @@ metadata:
 data:
   DB_URL: jdbc:postgresql://identity-db:5432/user
   DB_USERNAME: usr
-  STORE_SERVICE_URI: store-svc.mtg:8080
+  STORE_SERVICE_URI: http://store-svc.mtg:8080
   JWT_PRIVATE_KEY: |
     -----BEGIN PRIVATE KEY-----
     MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDPqdJDSaR4XcpM
